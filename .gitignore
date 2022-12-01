@@ -1,3 +1,8 @@
 *tester*
 *subject*
 .DS_Store
+Снимок*
+webserv
+webserv.dSYM/
+.vscode/
+*.o
