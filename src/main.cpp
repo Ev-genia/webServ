@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:25:05 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/01 17:42:08 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/02 10:55:09 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int main(int ac, char **av)
 		exitError("Wrong numbers of arguments");
 	addrIn.sin_family = AF_INET;
 	addrIn.sin_port = htons(8080);
-	addrIn.sin_addr.s_addr = htonl(INADDR_ANY);
+	addrIn.sin_addr.s_addr = INADDR_ANY;
+	memset(addrIn.sin_zero, '\0', sizeof(addrIn.sin_zero));
 	struct sockaddr *addr = reinterpret_cast<struct sockaddr *>(&addrIn);
 	addrLen = sizeof(*addr);
 	socketFd = socket(addrIn.sin_family, SOCK_STREAM, 0);
@@ -59,8 +60,8 @@ int main(int ac, char **av)
 	FD_SET(socketFd, &fdReadMaster);
 	FD_ZERO(&fdWriteMaster);
 	FD_SET(socketFd, &fdWriteMaster);
-	// char *hello = "Hello world!";
-	char *hello = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
+	char *hello = "Hello world!";
+	// char *hello = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
 	while (1)
 	{
 		std::cout << "\n+++++++ Waiting for new connection ++++++++\n" << std::endl;
@@ -78,11 +79,11 @@ int main(int ac, char **av)
 		{
 			exitError("In accept");
 		}
-		char buffer[30000];// = {0};
-		valread = recv(fd, buffer, strlen(buffer), MSG_PEEK);
-		std::cout << "valread: " << valread << std::endl;
-		std::cerr << buffer << std::endl;
-		send(fd, hello, strlen(hello), 0);
+		char buffer[30000] = {0};
+		valread = recv(fd, buffer, 30000, MSG_PEEK);
+		printf("%s\n", buffer);
+		// send(fd, hello, strlen(hello), 0);
+		write(fd, hello, strlen(hello));
 		std::cout << "------------------Hello message sent-------------------\n" << std::endl;
 		close(fd);
 	}
