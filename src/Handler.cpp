@@ -1,19 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Handler.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/30 12:25:05 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/05 13:39:48 by mlarra           ###   ########.fr       */
+/*   Created: 2022/12/05 15:24:49 by mlarra            #+#    #+#             */
+/*   Updated: 2022/12/05 16:03:24 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/webserv.hpp"
+#include "Handler.hpp"
 
-int	main(int argc, char **argv)
+Handler::Handler(std::vector<Server> * enterServers): _servers(enterServers)
 {
-	if (argc != 2)
-		exitError("Bad arguments");
+	// _servers = enterServers;
 }
+
+Handler::~Handler()
+{
+}
+
+

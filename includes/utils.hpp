@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/30 12:25:05 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/05 13:39:48 by mlarra           ###   ########.fr       */
+/*   Created: 2022/12/05 13:35:08 by mlarra            #+#    #+#             */
+/*   Updated: 2022/12/05 13:39:35 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/webserv.hpp"
+#ifndef UTILS_HPP
+# define UTILS_HPP
 
-int	main(int argc, char **argv)
-{
-	if (argc != 2)
-		exitError("Bad arguments");
-}
+# include "webserv.hpp"
+
+void	exitError(std::string str);
+
+#endif

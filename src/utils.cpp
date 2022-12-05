@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/30 12:25:05 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/05 13:39:48 by mlarra           ###   ########.fr       */
+/*   Created: 2022/12/05 13:35:02 by mlarra            #+#    #+#             */
+/*   Updated: 2022/12/05 15:05:50 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/webserv.hpp"
+#include "utils.hpp"
 
-int	main(int argc, char **argv)
+void	exitError(std::string str)
 {
-	if (argc != 2)
-		exitError("Bad arguments");
+	perror(str.c_str());
+	std::cerr << " error exit" << std::endl;
+	exit(1);
 }
