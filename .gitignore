@@ -6,3 +6,4 @@ webserv
 webserv.dSYM/
 .vscode/
 *.o
+photo*
