@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   webserv.hpp                                        :+:      :+:    :+:   */
+/*   Utils.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/30 12:24:11 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/05 13:38:48 by mlarra           ###   ########.fr       */
+/*   Created: 2022/12/05 13:35:08 by mlarra            #+#    #+#             */
+/*   Updated: 2022/12/05 13:39:35 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WEBSERV_HPP
-# define WEBSERV_HPP
+#ifndef UTILS_HPP
+# define UTILS_HPP
 
-# include <iostream>
-# include <sys/socket.h>
-# include <sys/select.h>
-# include <netinet/in.h>
-// # include <event.h>
-# include <unistd.h>
-# include <fcntl.h>
-# include <map>
+# include "webserv.hpp"
 
-# include "Server.hpp"
-# include "utils.hpp"
+void	exitError(std::string str);
 
 #endif

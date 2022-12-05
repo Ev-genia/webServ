@@ -1,39 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Server.hpp                                         :+:      :+:    :+:   */
+/*   Handler.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/05 13:22:42 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/05 15:13:33 by mlarra           ###   ########.fr       */
+/*   Created: 2022/12/05 15:23:51 by mlarra            #+#    #+#             */
+/*   Updated: 2022/12/05 15:45:16 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER_HPP
-# define SERVER_HPP
+#ifndef HANDLER_HPP
+# define HANDLER_HPP
 
 # include "webserv.hpp"
 
-class Server
+class Server;
+
+class Handler
 {
 private:
-	int									_socketFd;
-	bool								_autoindex;
-	std::map<std::string, std::string>	_params;
-	// std::vector<Location>				_locations;
-	struct sockaddr_in					_addrIn;
-	// int									_reuse;
+	std::vector<Server>	*_servers;
 public:
-	Server();
-	~Server();
-	bool								getAutoIndex() const;
-	std::map<std::string, std::string>	getParams() const;
-	int									getSocketFd() const;
-	void								initSocket();
-	void								setAddr();
+	Handler(std::vector<Server> *);
+	~Handler();
+	void	serverRun();
 };
-
 
 
 #endif
