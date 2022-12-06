@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 11:39:55 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/05 15:15:30 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/06 15:03:27 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,8 @@ int	Server::getSocketFd() const
 
 void	Server::initSocket()
 {
-	int	addrLen;
-	
 	setAddr();
 	struct sockaddr *addr = reinterpret_cast<struct sockaddr *>(&_addrIn);
-	addrLen = sizeof(*addr);
 	_socketFd = socket(_addrIn.sin_family, SOCK_STREAM, 0);
 	if (_socketFd == -1)
 		exitError("Socket");

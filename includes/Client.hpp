@@ -1,41 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Handler.hpp                                        :+:      :+:    :+:   */
+/*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/05 15:23:51 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/06 17:34:47 by mlarra           ###   ########.fr       */
+/*   Created: 2022/12/06 12:50:10 by mlarra            #+#    #+#             */
+/*   Updated: 2022/12/06 16:37:59 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HANDLER_HPP
-# define HANDLER_HPP
+#ifndef CLIENT_HPP
+# define CLIENT_HPP
 
-# define RECV_SIZE 2048
 # include "webserv.hpp"
 
-class Server;
-class Client;
-
-class Handler
+class Client
 {
 private:
-	std::vector<Server>*	_servers;
-	std::vector<Client>		_clients;
-	fd_set					_fdSet;
-	// fd_set					_fdReadSave;
-	// fd_set					_fdRead;
-	// fd_set					_fdWriteSave;
-	// fd_set					_fdWrite;
-	// std::vector<int>		_fds;
-	int						_maxFd;
+	int					_fd;
+	int					_serverFd;
+	struct sockaddr_in	_clientAddrIn;
+	std::string			_ipAddress;
+	std::string			_response;
+	// struct timeval		_timeout;
 public:
-	Handler(std::vector<Server> *);
-	~Handler();
-	void	initFds();
-	void	serverRun();
+	std::string	request;
+	Client(int);
+	~Client();
+	int			getFd() const;
+	void		acceptClient();
+	std::string	getResponse();
+	std::string	getIpAddress();
 };
 
 
