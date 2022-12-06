@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:24:11 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/05 13:38:48 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/05 16:17:31 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,7 @@
 
 # include "Server.hpp"
 # include "utils.hpp"
+# include "Handler.hpp"
+# include "Config.hpp"
 
 #endif
