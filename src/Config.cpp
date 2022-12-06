@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:23:10 by wcollen           #+#    #+#             */
-/*   Updated: 2022/12/05 23:45:04 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/06 23:28:34 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,38 @@ Config::Config(const char *fileName)
 
 Config::~Config() {}
 
+std::pair<std::string, bool> Config::isKeyWord(std::string src, std::string keyWords[], int num)
+{
+	for (int i = 0; i < num; i++)
+	{
+		if ((src.compare(0, keyWords[i].size(), keyWords[i])) == 0)
+			return std::make_pair(keyWords[i], true);
+	}
+	return std::make_pair("", false);	
+}
+
+void	Config::trimConfigStr(std::string &str)
+{
+	str.erase(0, str.find_first_not_of(" "));
+	while (str.back() != ' ')
+		str.erase(str.back());
+}
+
+std::pair<std::string, std::string> Config::splitConfigParam(std::string src)
+{
+	int space = src.find(" ");
+	std::string first = src.substr(0, space);
+	while (isspace(src[space]))
+		space++;
+	int lenSecond = space;
+	while (src[lenSecond] != ';' && src[lenSecond] != '\n')
+		lenSecond++;
+	std::string second = src.substr(space, lenSecond - space);
+	this->trimConfigStr(first);
+	this->trimConfigStr(second);
+	return (std::make_pair(first, second));
+}
+
 std::vector<Server> *Config::getConfig()
 {
 	return &_serverTable;
@@ -45,7 +77,7 @@ std::vector<Server> *Config::getConfig()
 
 void	Config::parse()
 {
-	std::pair<std::string, bool> pair;
+	std::pair<std::string, bool> wordInConfig;
 	bool inServer = false, inLocation = false;
 	int pos = 0;
 	int servCount = 0;
@@ -78,6 +110,32 @@ void	Config::parse()
 		
 		while (isspace(_contentString[pos]))
 			pos++;
-		ret = isKeyWords(_contentString.substr(pos), _keyWords, 11);
+		wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 11);
+		Server s;
+		_serverTable.push_back(s);
+		while(wordInConfig.second == true && wordInConfig.first != "server" &&
+			inLocation == false && inServer == true)
+		{
+			std::pair<std::string, std::string> param = this->splitConfigParam(_contentString.substr(pos));
+			_serverTable[servCount].getParams().insert(param);
+			while (_contentString[pos] != '\n')
+				pos++;
+			while (isspace(_contentString[pos]))
+				pos++;
+			wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 11);
+			if (wordInConfig.first == "location" && inServer == true)
+			{
+				while (wordInConfig.first == "location")
+				{
+					inLocation = true;
+					pos += 8;
+					while (isspace(_contentString[pos]))
+						pos++;
+					Location loc;
+					//loc.setPath(this->get)
+				}
+			}
+			
+		}
 	}
 }
