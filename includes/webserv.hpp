@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:24:11 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/05 13:38:48 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/06 23:15:34 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@
 
 # include "Config.hpp"
 # include "Server.hpp"
+# include "Location.hpp"
 
 #endif
