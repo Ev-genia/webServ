@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   main_old.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:25:05 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/01 17:42:08 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/05 16:18:40 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/webserv.hpp"
 
-void	exitError(std::string str)
-{
-	std::cerr << str << std::endl;
-	exit(1);
-}
+// void	exitError(std::string str)
+// {
+// 	std::cerr << str << std::endl;
+// 	exit(1);
+// }
 
 
 

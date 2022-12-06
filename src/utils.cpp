@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:35:02 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/05 15:05:50 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/05 17:11:58 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 void	exitError(std::string str)
 {
 	perror(str.c_str());
-	std::cerr << " error exit" << std::endl;
+	// std::cerr << " error exit" << std::endl;
 	exit(1);
 }

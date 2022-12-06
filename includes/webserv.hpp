@@ -24,6 +24,8 @@
 
 # include "Server.hpp"
 # include "utils.hpp"
+# include "Handler.hpp"
+# include "Config.hpp"
 
 # include "Config.hpp"
 # include "Server.hpp"
