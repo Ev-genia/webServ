@@ -41,6 +41,44 @@ void	Handler::initFds()
 		exitError("Could not init Fds in Handler");
 }
 
+void	Handler::process(Client client)
+{
+	int			poz;
+	int			pozEnter;
+	int			pozContentL;
+	// int		body;
+	bool		isBrowser = false;
+	std::string	subStrLen;
+	int			contentLen;
+
+	if (client.request.find("Transfer-Encoding: chunked") != std::string::npos &&
+		client.request.find("Transfer-Encoding: chunked") < client.request.find("\r\n\r\n"))
+		processChunk(client);
+	if (client.request != "")
+	{
+		// Request			request(_requests[socket]);
+
+		// if (request.getRet() != 200)
+		// 	request.setMethod("GET");
+
+		poz = client.request.find("\n\r\n\r");
+		if (poz != std::string::npos)
+		{
+			// body = client.request.find("Content-Length");
+			pozContentL = client.request.find("Content-Length");
+			// if (body != std::string::npos)
+			if (pozContentL != std::string::npos)
+			{
+				isBrowser = true;
+				// pozEnter = client.request.find("\n\r", body);
+				pozEnter = client.request.find("\n\r", pozContentL);
+				subStrLen = client.request.substr(pozContentL + 15, pozEnter - pozContentL);
+				contentLen = strtoul(subStrLen.c_str(), 0, 0);
+			}
+		}
+	}
+}
+
 void	Handler::serverRun()
 {
 	while (true)
