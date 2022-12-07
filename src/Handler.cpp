@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:24:49 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/06 23:40:19 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/07 14:04:21 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,44 @@ void	Handler::initFds()
 	}
 	if (_maxFd == 0)
 		exitError("Could not init Fds in Handler");
+}
+
+void	Handler::process(Client client)
+{
+	int			poz;
+	int			pozEnter;
+	int			pozContentL;
+	// int		body;
+	bool		isBrowser = false;
+	std::string	subStrLen;
+	int			contentLen;
+
+	if (client.request.find("Transfer-Encoding: chunked") != std::string::npos &&
+		client.request.find("Transfer-Encoding: chunked") < client.request.find("\r\n\r\n"))
+		processChunk(client);
+	if (client.request != "")
+	{
+		// Request			request(_requests[socket]);
+
+		// if (request.getRet() != 200)
+		// 	request.setMethod("GET");
+
+		poz = client.request.find("\n\r\n\r");
+		if (poz != std::string::npos)
+		{
+			// body = client.request.find("Content-Length");
+			pozContentL = client.request.find("Content-Length");
+			// if (body != std::string::npos)
+			if (pozContentL != std::string::npos)
+			{
+				isBrowser = true;
+				// pozEnter = client.request.find("\n\r", body);
+				pozEnter = client.request.find("\n\r", pozContentL);
+				subStrLen = client.request.substr(pozContentL + 15, pozEnter - pozContentL);
+				contentLen = strtoul(subStrLen.c_str(), 0, 0);
+			}
+		}
+	}
 }
 
 void	Handler::serverRun()
@@ -99,10 +137,11 @@ void	Handler::serverRun()
 				{
 					buffer[ret] = 0;
 					it->request += buffer;
+					memset(buffer, 0, RECV_SIZE);
 				}
 //where is a process chank?!
-				// else if (ret == 0)
-				// {}
+				else if (ret == 0)
+					process(*it);
 				else if (ret == -1)
 				{
 					FD_CLR(fdClient, &_fdSet);

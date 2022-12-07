@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:22:42 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/05 15:13:33 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/07 10:35:48 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ private:
 	int									_socketFd;
 	bool								_autoindex;
 	std::map<std::string, std::string>	_params;
-	// std::vector<Location>				_locations;
+	std::vector<Location>				_locations;
 	struct sockaddr_in					_addrIn;
 	// int									_reuse;
 public:
