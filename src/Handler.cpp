@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   Handler.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:24:49 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/06 23:40:19 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/07 16:57:15 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Handler.hpp"
+#include "../includes/Handler.hpp"
 
 Handler::Handler(std::vector<Server> * enterServers): _servers(enterServers)
 {

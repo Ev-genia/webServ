@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:22:42 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/05 15:13:33 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/07 17:02:41 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,16 @@
 
 # include "webserv.hpp"
 
+class Location;
+class Client;
+
 class Server
 {
 private:
 	int									_socketFd;
 	bool								_autoindex;
 	std::map<std::string, std::string>	_params;
-	// std::vector<Location>				_locations;
+	std::vector<Location>				_locations;
 	struct sockaddr_in					_addrIn;
 	// int									_reuse;
 public:
@@ -30,6 +33,7 @@ public:
 	bool								getAutoIndex() const;
 	std::map<std::string, std::string>	getParams() const;
 	int									getSocketFd() const;
+	std::vector<Location>				getLocations() const;
 	void								initSocket();
 	void								setAddr();
 };

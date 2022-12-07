@@ -6,19 +6,14 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:22:52 by wcollen           #+#    #+#             */
-/*   Updated: 2022/12/06 17:09:41 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/07 16:41:40 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CONFIG_HPP
-# define IFNDEF_HPP
-# include <iostream>
-# include <vector>
-# include <fcntl.h>
-# include <unistd.h>
-# include <iostream>
+# define CONFIG_HPP
 
-# include "Server.hpp"
+# include "webserv.hpp"
 
 # define BUFFER_SIZE 1024
 
@@ -32,6 +27,9 @@ private:
 	std::pair<std::string, bool>		isKeyWord(std::string src, std::string keyWords[], int num);
 	std::pair<std::string, std::string> splitConfigParam(std::string src);
 	void								trimConfigStr(std::string &str);
+	std::string							extractPathFromStrConfig(std::string src, int pos);
+	void								parseServerConfig(bool &inServer, bool &inLocation, int &pos, int &serverCount);
+	void								parseLocationConfig(bool &inLocation, int &pos, int &servCount);
 public:
 	Config(const char *fileName);
 	~Config();
@@ -39,7 +37,8 @@ public:
 	void					parse();
 	
 	void					check();
-	std::vector	<Server>	*getConfig(); 
+	std::vector	<Server>	*getConfig();
+	
 };
 
 #endif
