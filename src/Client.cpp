@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:49:54 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/06 16:37:56 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/07 16:57:24 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Client.hpp"
+#include "../includes/Client.hpp"
 
 Client::Client(int enterServerFd): _serverFd(enterServerFd), _fd(-1), _response("")
 {

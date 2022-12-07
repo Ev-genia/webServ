@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   Handler.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:24:49 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/07 14:04:21 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/07 16:57:15 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Handler.hpp"
+#include "../includes/Handler.hpp"
 
 Handler::Handler(std::vector<Server> * enterServers): _servers(enterServers)
 {
@@ -137,11 +137,10 @@ void	Handler::serverRun()
 				{
 					buffer[ret] = 0;
 					it->request += buffer;
-					memset(buffer, 0, RECV_SIZE);
 				}
 //where is a process chank?!
-				else if (ret == 0)
-					process(*it);
+				// else if (ret == 0)
+				// {}
 				else if (ret == -1)
 				{
 					FD_CLR(fdClient, &_fdSet);

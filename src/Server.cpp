@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 11:39:55 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/06 15:03:27 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/07 16:57:00 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Server.hpp"
+#include "../includes/Server.hpp"
 
-Server::Server()
+Server::Server(): _locations()
 {
 	_socketFd = -1;
 	_autoindex = false;
@@ -34,6 +34,11 @@ std::map<std::string, std::string>	Server::getParams() const
 int	Server::getSocketFd() const
 {
 	return _socketFd;
+}
+
+std::vector<Location> Server::getLocations() const
+{
+	return this->_locations;
 }
 
 void	Server::initSocket()
