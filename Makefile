@@ -6,7 +6,7 @@
 #    By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/30 12:15:15 by mlarra            #+#    #+#              #
-#    Updated: 2022/12/07 16:33:09 by wcollen          ###   ########.fr        #
+#    Updated: 2022/12/07 17:41:25 by wcollen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME		=	webserv
 
 DIR			=	./src/
 
-SRC			=	${DIR}main.cpp
+SRC			=	${addprefix ${DIR}, main.cpp Config.cpp Client.cpp Handler.cpp Location.cpp Server.cpp utils.cpp } 
 
 DIR_HEADERS	=	./includes/
 
