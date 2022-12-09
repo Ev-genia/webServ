@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:22:52 by wcollen           #+#    #+#             */
-/*   Updated: 2022/12/07 16:41:40 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/09 15:27:58 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ private:
 	void								trimConfigStr(std::string &str);
 	std::string							extractPathFromStrConfig(std::string src, int pos);
 	void								parseServerConfig(bool &inServer, bool &inLocation, int &pos, int &serverCount);
-	void								parseLocationConfig(bool &inLocation, int &pos, int &servCount);
+	void								parseLocationConfig(bool &inLocation, int &pos, int &servCount, std::pair<std::string, bool> &wordInConfig);
 public:
 	Config(const char *fileName);
 	~Config();
