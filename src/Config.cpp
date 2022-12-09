@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:23:10 by wcollen           #+#    #+#             */
-/*   Updated: 2022/12/07 16:57:20 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/09 15:31:05 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ Config::Config(const char *fileName)
 	close(fd);
 	std::size_t start = 0;
 	std::size_t end = 0;
-	while (start = _contentString.find('#') != std::string::npos)
+	while ((start = _contentString.find('#')) != std::string::npos)
 	{
 		end = _contentString.find('\n', start);
 		_contentString.erase(start, end - start);
@@ -51,7 +51,7 @@ std::pair<std::string, bool> Config::isKeyWord(std::string src, std::string keyW
 void	Config::trimConfigStr(std::string &str)
 {
 	str.erase(0, str.find_first_not_of(" "));
-	while (str.back() != ' ')
+	while (str.back() == ' ')	
 		str.erase(str.back());
 }
 
@@ -78,7 +78,7 @@ std::vector<Server> *Config::getConfig()
 std::string	Config::extractPathFromStrConfig(std::string src, int pos)
 {
 	int lenStr = pos;
-	while(isspace(src[pos]) == 0 && src[pos] != '\n')
+	while(isspace(src[lenStr]) == 0 && src[lenStr] != '{')
 		lenStr++;
 	return (src.substr(pos, lenStr - pos));
 }
@@ -101,16 +101,13 @@ void		Config::parseServerConfig(bool &inServer, bool &inLocation, int &pos, int 
 		while (isspace(_contentString[pos]))
 			pos++;
 		wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 11);
-		if (wordInConfig.first == "location" && inServer == true)
-		{
-			this->parseLocationConfig(inLocation, pos, servCount);
-		}
+		if (wordInConfig.first == "location" && inServer == true)	
+			this->parseLocationConfig(inLocation, pos, servCount, wordInConfig);
 	}
 }
 
-void		Config::parseLocationConfig(bool &inLocation, int &pos, int &servCount)
+void	Config::parseLocationConfig(bool &inLocation, int &pos, int &servCount, std::pair<std::string, bool> &wordInConfig)
 {
-	std::pair<std::string, bool> wordInConfig;
 	std::pair<std::string, std::string> param;
 
 	while (wordInConfig.first == "location")
@@ -125,6 +122,7 @@ void		Config::parseLocationConfig(bool &inLocation, int &pos, int &servCount)
 		while (_contentString[pos] == '{' || isspace(_contentString[pos]))
 			pos++;
 		wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 11);
+
 		while (wordInConfig.second == true)
 		{
 			param = this->splitConfigParam(_contentString.substr(pos));
@@ -150,7 +148,7 @@ void		Config::parseLocationConfig(bool &inLocation, int &pos, int &servCount)
 
 void	Config::parse()
 {
-	//std::pair<std::string, bool> wordInConfig;
+std::pair<std::string, bool> wordInConfig;
 	bool inServer = false, inLocation = false;
 	int pos = 0;
 	int servCount = 0;
@@ -165,7 +163,7 @@ void	Config::parse()
 		while (isspace(_contentString[pos]))
 			pos++;
 		if (!(_contentString[pos]))
-			break;
+			break ;
 		if (_contentString.substr(pos, 6) == "server")
 			pos += 6;
 		else
@@ -183,72 +181,24 @@ void	Config::parse()
 		while (isspace(_contentString[pos]))
 			pos++;
 		this->parseServerConfig(inServer, inLocation, pos, servCount);
-		// wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 11);
-		// Server s;
-		// _serverTable.push_back(s);
-		// while(wordInConfig.second == true && wordInConfig.first != "server" &&
-		// 	inLocation == false && inServer == true)
-		// {
-		// 	std::pair<std::string, std::string> param = this->splitConfigParam(_contentString.substr(pos));
-		// 	_serverTable[servCount].getParams().insert(param);
-		// 	while (_contentString[pos] != '\n')
-		// 		pos++;
-		// 	while (isspace(_contentString[pos]))
-		// 		pos++;
-		// 	wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 11);
-		// 	if (wordInConfig.first == "location" && inServer == true)
-		// 	{
-		// 		while (wordInConfig.first == "location")
-		// 		{
-		// 			inLocation = true;
-		// 			pos += 8;
-		// 			while (isspace(_contentString[pos]))
-		// 				pos++;
-		// 			Location loc;
-		// 			loc.setPath(this->extractPathFromStrConfig(_contentString, pos));
-		// 			pos += loc.getPath().size();
-		// 			while (_contentString[pos] == '{' || isspace(_contentString[pos]))
-		// 				pos++;
-		// 			wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 11);
-		// 			while (wordInConfig.second == true)
-		// 			{
-		// 				param = this->splitConfigParam(_contentString.substr(pos));
-		// 				loc.getLocationStrMap().insert(param);
-		// 				while (_contentString[pos] != '\n')
-		// 					pos++;
-		// 				while (isspace(_contentString[pos]))
-		// 					pos++;
-		// 				wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 11);
-		// 			}
-		// 			_serverTable[servCount].getLocations().push_back(loc);
-		// 			while (inLocation && (isspace(_contentString[pos]) || _contentString[pos] == '}'))
-		// 			{
-		// 				if (_contentString[pos] == '}')
-		// 					inLocation = false;
-		// 				pos++;
-		// 			}
-		// 			while (isspace(_contentString[pos]))
-		// 				pos++;
-		// 			wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 11);
-		// 		}
-		// 	}
-		// }
-		servCount++;
+ 		servCount++;
 	}
 	std::cout<<"servCount = "<<servCount<< std::endl;
-	std::vector<Server>::iterator s_it = _serverTable.begin();
 	int i = 0;
-	while(s_it !=_serverTable.end())
-	{
-		std::map<std::string, std::string>::iterator it = _serverTable[i].getParams().begin();
-		std::map<std::string, std::string>::iterator it_end = _serverTable[i].getParams().end();
+	//while( i < servCount)
+	//{
+		std::map<std::string, std::string> myMap = _serverTable[0].getParams();
+			std::cout<<"Upss"<<std::endl;
+		std::map<std::string, std::string>::iterator it = myMap.begin();
+		std::cout<<myMap["server_name"]<<std::endl;
+		std::map<std::string, std::string>::iterator it_end = myMap.end();
 		while (it != it_end)
 		{
 			std::cout<<it->first<< ", "<< it->second<<std::endl;
 			it++;
 		}
-		s_it++;i++;
-	}
+		//i++;
+	//}
 	
 	
 	//this->check();
