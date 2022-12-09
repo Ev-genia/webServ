@@ -6,17 +6,17 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:25:05 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/05 16:18:40 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/09 15:53:08 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/webserv.hpp"
 
-// void	exitError(std::string str)
-// {
-// 	std::cerr << str << std::endl;
-// 	exit(1);
-// }
+void	exitError(std::string str)
+{
+	std::cerr << str << std::endl;
+	exit(1);
+}
 
 
 
@@ -60,7 +60,9 @@ int main(int ac, char **av)
 	FD_ZERO(&fdWriteMaster);
 	FD_SET(socketFd, &fdWriteMaster);
 	// char *hello = "Hello world!";
-	char *hello = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
+	// char *hello = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!";
+	char *hello = "HTTP/1.1 200 OK\nContent-Type: text/plain\nTransfer-Encoding: chunked\n\n7\r\nMozilla\r\n11\r\nDeveloper Network\r\n0\r\n\r\n";
+
 	while (1)
 	{
 		std::cout << "\n+++++++ Waiting for new connection ++++++++\n" << std::endl;

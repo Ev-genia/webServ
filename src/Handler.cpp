@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Handler.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:24:49 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/07 16:57:15 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/09 16:23:16 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,32 @@ void	Handler::initFds()
 		exitError("Could not init Fds in Handler");
 }
 
+void	Handler::processChunk(Client client)
+{
+	std::string	head;
+	std::string	chunks;
+	std::string	subChunk;
+	std::string	body;
+	int			chunkSize;
+	size_t		i;
+
+	head = client.request.substr(0, client.request.find("\r\n\r\n"));
+	chunks = client.request.substr(client.request.find("\r\n\r\n") + 4, client.request.size() - 1);
+	subChunk = chunks.substr(0, 100);
+	body = "";
+	chunkSize = strtol(subChunk.c_str(), NULL, 10);
+	i = 0;
+	while (chunkSize)
+	{
+		i = chunks.find("\r\n", i) + 2;
+		body += chunks.substr(i, chunkSize);
+		i += chunkSize + 2;
+		subChunk = chunks.substr(i, 100);
+		chunkSize = strtol(subChunk.c_str(), NULL, 16);
+	}
+	client.request = head + "\r\n\r\n" + body + "\r\n\r\n";
+}
+
 void	Handler::process(Client client)
 {
 	int			poz;
@@ -54,7 +80,7 @@ void	Handler::process(Client client)
 	if (client.request.find("Transfer-Encoding: chunked") != std::string::npos &&
 		client.request.find("Transfer-Encoding: chunked") < client.request.find("\r\n\r\n"))
 		processChunk(client);
-	if (client.request != "")
+	elst if (client.request != "")
 	{
 		// Request			request(_requests[socket]);
 
@@ -74,6 +100,12 @@ void	Handler::process(Client client)
 				pozEnter = client.request.find("\n\r", pozContentL);
 				subStrLen = client.request.substr(pozContentL + 15, pozEnter - pozContentL);
 				contentLen = strtoul(subStrLen.c_str(), 0, 0);
+			}
+			if (client.request.find("PUT") != std::string::npos ||
+				client.request.find("POST") != std::string::npos)
+			{
+				if ((isBrowser && client.request.substr(poz + 4).size() >= contentLen) || 
+					client.request.substr(poz + 4).find("\r\n\r\n") != std::string::npos)
 			}
 		}
 	}
@@ -139,13 +171,16 @@ void	Handler::serverRun()
 					it->request += buffer;
 				}
 //where is a process chank?!
-				// else if (ret == 0)
-				// {}
+				else if (ret == 0)
+				{
+					process(it);
+					_clients.push_back(it);
+				}
 				else if (ret == -1)
 				{
 					FD_CLR(fdClient, &_fdSet);
 					FD_CLR(fdClient, &fdRead);
-					// delete *it;
+					//? delete *it;
 					_clients.erase(it);
 					it = _clients.begin();
 				}
@@ -153,5 +188,7 @@ void	Handler::serverRun()
 				break;
 			}
 		}
+		//проход по пишущим fd
+		
 	}
 }
