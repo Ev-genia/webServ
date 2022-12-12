@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:24:49 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/09 16:23:16 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/12 17:16:28 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,10 @@ void	Handler::process(Client client)
 
 		// if (request.getRet() != 200)
 		// 	request.setMethod("GET");
+		Request	request(client.request);
+
+		if (request.getRet() != 200)
+			request.setMethod("GET");
 
 		poz = client.request.find("\n\r\n\r");
 		if (poz != std::string::npos)
