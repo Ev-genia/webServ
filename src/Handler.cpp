@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:24:49 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/12 17:16:28 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/13 14:52:36 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	Handler::process(Client client)
 	if (client.request.find("Transfer-Encoding: chunked") != std::string::npos &&
 		client.request.find("Transfer-Encoding: chunked") < client.request.find("\r\n\r\n"))
 		processChunk(client);
-	elst if (client.request != "")
+	else if (client.request != "")
 	{
 		// Request			request(_requests[socket]);
 
@@ -91,27 +91,27 @@ void	Handler::process(Client client)
 		if (request.getRet() != 200)
 			request.setMethod("GET");
 
-		poz = client.request.find("\n\r\n\r");
-		if (poz != std::string::npos)
-		{
-			// body = client.request.find("Content-Length");
-			pozContentL = client.request.find("Content-Length");
-			// if (body != std::string::npos)
-			if (pozContentL != std::string::npos)
-			{
-				isBrowser = true;
-				// pozEnter = client.request.find("\n\r", body);
-				pozEnter = client.request.find("\n\r", pozContentL);
-				subStrLen = client.request.substr(pozContentL + 15, pozEnter - pozContentL);
-				contentLen = strtoul(subStrLen.c_str(), 0, 0);
-			}
-			if (client.request.find("PUT") != std::string::npos ||
-				client.request.find("POST") != std::string::npos)
-			{
-				if ((isBrowser && client.request.substr(poz + 4).size() >= contentLen) || 
-					client.request.substr(poz + 4).find("\r\n\r\n") != std::string::npos)
-			}
-		}
+		// poz = client.request.find("\n\r\n\r");
+		// if (poz != std::string::npos)
+		// {
+		// 	// body = client.request.find("Content-Length");
+		// 	pozContentL = client.request.find("Content-Length");
+		// 	// if (body != std::string::npos)
+		// 	if (pozContentL != std::string::npos)
+		// 	{
+		// 		isBrowser = true;
+		// 		// pozEnter = client.request.find("\n\r", body);
+		// 		pozEnter = client.request.find("\n\r", pozContentL);
+		// 		subStrLen = client.request.substr(pozContentL + 15, pozEnter - pozContentL);
+		// 		contentLen = strtoul(subStrLen.c_str(), 0, 0);
+		// 	}
+		// 	// if (client.request.find("PUT") != std::string::npos ||
+		// 	// 	client.request.find("POST") != std::string::npos)
+		// 	// {
+		// 	// 	if ((isBrowser && client.request.substr(poz + 4).size() >= contentLen) || 
+		// 	// 		client.request.substr(poz + 4).find("\r\n\r\n") != std::string::npos)
+		// 	// }
+		// }
 	}
 }
 
@@ -155,12 +155,14 @@ void	Handler::serverRun()
 				FD_SET(client.getFd(), &_fdSet);
 				_clients.push_back(client);
 				// serverCount = i;
-				if (_maxFd < i)
-					_maxFd = i;
+				// if (_maxFd < i)
+				// 	_maxFd = i;
+				if (client.getFd() > _maxFd)
+					_maxFd = client.getFd();
 			}
 		}
 		//проход по читающим fd
-		for (std::vector<Client>::iterator it = _clients.begin(); ret && it != _clients.end(); it++)
+		for (std::vector<Client>::iterator it = _clients.begin(); /*ret && */it != _clients.end(); it++)
 		{
 			int		fdClient = it->getFd();
 			char	buffer[RECV_SIZE] = {0};
@@ -178,7 +180,7 @@ void	Handler::serverRun()
 				else if (ret == 0)
 				{
 					process(it);
-					_clients.push_back(it);
+					// _clients.push_back(it);
 				}
 				else if (ret == -1)
 				{
@@ -188,11 +190,17 @@ void	Handler::serverRun()
 					_clients.erase(it);
 					it = _clients.begin();
 				}
-				ret = 0;
+				// ret = 0;
 				break;
 			}
 		}
 		//проход по пишущим fd
-		
+		for (std::vector<Client>::iterator it = _clients.begin(); it != _clients.end(); it++)
+		{
+			if (FD_ISSET(fdClient, &fdWrite))
+			{
+				ret = send();
+			}
+		}
 	}
 }
