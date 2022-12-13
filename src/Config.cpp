@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:23:10 by wcollen           #+#    #+#             */
-/*   Updated: 2022/12/09 15:31:05 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/13 10:15:42 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ std::string	Config::extractPathFromStrConfig(std::string src, int pos)
 		lenStr++;
 	return (src.substr(pos, lenStr - pos));
 }
-
 
 void		Config::parseServerConfig(bool &inServer, bool &inLocation, int &pos, int &servCount)
 {
@@ -183,14 +182,14 @@ std::pair<std::string, bool> wordInConfig;
 		this->parseServerConfig(inServer, inLocation, pos, servCount);
  		servCount++;
 	}
-	std::cout<<"servCount = "<<servCount<< std::endl;
+std::cout<<"servCount = "<<servCount<< std::endl;
 	int i = 0;
 	//while( i < servCount)
 	//{
 		std::map<std::string, std::string> myMap = _serverTable[0].getParams();
 			std::cout<<"Upss"<<std::endl;
 		std::map<std::string, std::string>::iterator it = myMap.begin();
-		std::cout<<myMap["server_name"]<<std::endl;
+		std::cout<<myMap.begin()->first<<std::endl;
 		std::map<std::string, std::string>::iterator it_end = myMap.end();
 		while (it != it_end)
 		{
