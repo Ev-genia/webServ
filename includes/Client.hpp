@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:50:10 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/07 16:37:14 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/13 15:28:40 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ public:
 	~Client();
 	int			getFd() const;
 	void		acceptClient();
-	std::string	getResponse();
-	std::string	getIpAddress();
+	std::string	getResponse() const;
+	std::string	getIpAddress() const;
 };
 
 

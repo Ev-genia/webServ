@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:24:11 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/12 17:10:46 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/13 15:26:27 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@
 # include "Client.hpp"
 # include "Location.hpp"
 # include "Request.hpp"
+# include "Response.hpp"
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:23:10 by wcollen           #+#    #+#             */
-/*   Updated: 2022/12/09 15:31:05 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/13 16:24:32 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ std::pair<std::string, bool> wordInConfig;
  		servCount++;
 	}
 	std::cout<<"servCount = "<<servCount<< std::endl;
-	int i = 0;
+	// int i = 0;
 	//while( i < servCount)
 	//{
 		std::map<std::string, std::string> myMap = _serverTable[0].getParams();

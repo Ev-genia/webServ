@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:23:51 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/07 11:05:51 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/13 16:15:30 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ class Handler
 {
 private:
 	std::vector<Server>*	_servers;
-	std::vector<Client>		_clients;
+	std::vector<Client *>	_clients;
 	fd_set					_fdSet;
 	// fd_set					_fdReadSave;
 	// fd_set					_fdRead;
@@ -36,8 +36,8 @@ public:
 	~Handler();
 	void	initFds();
 	void	serverRun();
-	void	process(Client);
-	void	processChunk(Client);
+	void	process(Client *);
+	void	processChunk(Client *);
 
 };
 
