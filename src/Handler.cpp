@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:24:49 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/13 17:00:36 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/14 11:27:34 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 Handler::Handler(std::vector<Server> * enterServers): _servers(enterServers)
 {
-	// _servers = enterServers;
 }
 
 Handler::~Handler()
@@ -24,16 +23,11 @@ Handler::~Handler()
 void	Handler::initFds()
 {
 	FD_ZERO(&_fdSet);
-	// FD_ZERO(&_fdReadSave);
-	// FD_ZERO(&_fdWriteSave);
-	// FD_ZERO(&_fdRead);
-	// FD_ZERO(&_fdWrite);
 	_maxFd = 0;
 	for (std::size_t i = 0; i < _servers->size(); i++)
 	{
 		(*_servers)[i].initSocket();
 		FD_SET((*_servers)[i].getSocketFd(), &_fdSet);
-		// FD_SET((*_servers)[i].getSocketFd(), &_fdReadSave);
 		if ((*_servers)[i].getSocketFd() > _maxFd)
 			_maxFd = (*_servers)[i].getSocketFd();
 	}
@@ -69,49 +63,15 @@ void	Handler::processChunk(Client *client)
 
 void	Handler::process(Client *client)
 {
-	// int			poz;
-	// int			pozEnter;
-	// int			pozContentL;
-	// int		body;
-	// bool		isBrowser = false;
-	// std::string	subStrLen;
-	// int			contentLen;
-
 	if (client->request.find("Transfer-Encoding: chunked") != std::string::npos &&
 		client->request.find("Transfer-Encoding: chunked") < client->request.find("\r\n\r\n"))
 		processChunk(client);
 	else if (client->request != "")
 	{
-		// Request			request(_requests[socket]);
-
-		// if (request.getRet() != 200)
-		// 	request.setMethod("GET");
 		Request	request(client->request);
 
 		if (request.getRet() != 200)
 			request.setMethod("GET");
-
-		// poz = client.request.find("\n\r\n\r");
-		// if (poz != std::string::npos)
-		// {
-		// 	// body = client.request.find("Content-Length");
-		// 	pozContentL = client.request.find("Content-Length");
-		// 	// if (body != std::string::npos)
-		// 	if (pozContentL != std::string::npos)
-		// 	{
-		// 		isBrowser = true;
-		// 		// pozEnter = client.request.find("\n\r", body);
-		// 		pozEnter = client.request.find("\n\r", pozContentL);
-		// 		subStrLen = client.request.substr(pozContentL + 15, pozEnter - pozContentL);
-		// 		contentLen = strtoul(subStrLen.c_str(), 0, 0);
-		// 	}
-		// 	// if (client.request.find("PUT") != std::string::npos ||
-		// 	// 	client.request.find("POST") != std::string::npos)
-		// 	// {
-		// 	// 	if ((isBrowser && client.request.substr(poz + 4).size() >= contentLen) || 
-		// 	// 		client.request.substr(poz + 4).find("\r\n\r\n") != std::string::npos)
-		// 	// }
-		// }
 	}
 }
 
@@ -128,24 +88,12 @@ void	Handler::serverRun()
 		// fd_set			fdWrite;
 		// int				ret;
 		// int				fdClient;
-		// int				serverCount;
 		// struct timeval	timeout;
 
-		// while (ret == 0)
-		// {
-			// timeout.tv_sec = 1;
-			// timeout.tv_usec = 0;
-			// memcpy(&fdRead, &_fdReadSave, sizeof(_fdReadSave));
-			// memcpy(&fdRead, &_fdSet, sizeof(_fdSet));
-			// FD_ZERO(&fdWrite);
-			// for (std::vector<int>::iterator it = _fds.begin(); it != _fds.end(); it++)
-			// {
-			// 	FD_SET(*it, &fdWrite);
-			// }
-			// ret = select(_maxFd + 1, &fdRead, &fdWrite, 0, 0);
-		// }
-		bzero(&fdRead, sizeof(_fdSet));
-		bzero(&fdWrite, sizeof(_fdSet));
+		// bzero(&fdRead, sizeof(_fdSet));
+		FD_ZERO(&fdRead);
+		// bzero(&fdWrite, sizeof(_fdSet));
+		FD_ZERO(&fdWrite);
 		memcpy(&fdRead, &_fdSet, sizeof(_fdSet));
 		memcpy(&fdWrite, &_fdSet, sizeof(_fdSet));
 		ret = select(_maxFd + 1, &fdRead, &fdWrite, 0, 0);
