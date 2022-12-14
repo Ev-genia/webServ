@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:23:10 by wcollen           #+#    #+#             */
-/*   Updated: 2022/12/13 10:15:42 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/14 15:15:51 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,25 +182,5 @@ std::pair<std::string, bool> wordInConfig;
 		this->parseServerConfig(inServer, inLocation, pos, servCount);
  		servCount++;
 	}
-std::cout<<"servCount = "<<servCount<< std::endl;
-	int i = 0;
-	//while( i < servCount)
-	//{
-		std::map<std::string, std::string> myMap = _serverTable[0].getParams();
-			std::cout<<"Upss"<<std::endl;
-		std::map<std::string, std::string>::iterator it = myMap.begin();
-		std::cout<<myMap.begin()->first<<std::endl;
-		std::map<std::string, std::string>::iterator it_end = myMap.end();
-		while (it != it_end)
-		{
-			std::cout<<it->first<< ", "<< it->second<<std::endl;
-			it++;
-		}
-		//i++;
-	//}
-	
-	
-	//this->check();
+	this->check();
 }
-
-

@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:22:42 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/07 17:02:41 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/14 15:02:39 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ public:
 	Server();
 	~Server();
 	bool								getAutoIndex() const;
-	std::map<std::string, std::string>	getParams() const;
+	std::map<std::string, std::string>	&getParams();
 	int									getSocketFd() const;
 	std::vector<Location>				getLocations() const;
 	void								initSocket();
