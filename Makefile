@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+         #
+#    By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/30 12:15:15 by mlarra            #+#    #+#              #
-#    Updated: 2022/12/13 10:13:29 by wcollen          ###   ########.fr        #
+#    Updated: 2022/12/13 16:28:36 by mlarra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,13 +14,16 @@ NAME		=	webserv
 
 DIR			=	./src/
 
-SRC			=	${addprefix ${DIR}, main.cpp\
-				Config.cpp\
-				Location.cpp\
-				Server.cpp\
-				utils.cpp}
-#				Client.cpp
-#				Handler.cpp
+SRC			=	${addprefix ${DIR}, Client.cpp\
+									Config.cpp\
+									Handler.cpp\
+									Location.cpp\
+									main.cpp\
+									Request.cpp\
+									Response.cpp\
+									Server.cpp\
+									utils.cpp\
+									}
 
 DIR_HEADERS	=	./includes/
 
@@ -28,7 +31,7 @@ HEADERS		=	${DIR_HEADERS}webserv.hpp
 
 OBJ			=	${SRC:%.cpp=%.o}
 
-FLAGS		=	-g #-Wall -Wextra -Werror -std=c++98
+FLAGS		=	-Wall -Wextra -Werror -std=c++98 #-g
 
 CC			=	c++
 
