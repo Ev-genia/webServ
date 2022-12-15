@@ -1,12 +1,12 @@
 #include "../includes/Location.hpp"
 
-Location::Location(): _path(), _autoidx(false), _locationStrMap(){}
+Location::Location(): _path(), _autoidx(false), _locationMap(){}
 
 Location::~Location(){};
 
-std::map<std::string, std::string> &Location::getLocationStrMap()
+std::map<std::string, std::string> &Location::getLocationMap()
 {
-	return this->_locationStrMap;
+	return this->_locationMap;
 }
 
 std::string &Location::getPath()

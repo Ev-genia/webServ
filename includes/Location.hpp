@@ -8,11 +8,11 @@ class Location
 private:
 	std::string 						_path;
 	bool								_autoidx;
-	std::map<std::string, std::string>	_locationStrMap;
+	std::map<std::string, std::string>	_locationMap;
 public:
 	Location();
 	~Location();
-	std::map<std::string, std::string>	&getLocationStrMap();
+	std::map<std::string, std::string>	&getLocationMap();
 	std::string							&getPath();
 	void								setPath(std::string path);
 	bool								&getAutoindex();

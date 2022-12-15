@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:23:10 by wcollen           #+#    #+#             */
-/*   Updated: 2022/12/14 17:32:36 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/15 11:28:38 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	Config::parseLocationConfig(bool &inLocation, int &pos, int &servCount, std
 		while (wordInConfig.second == true)
 		{
 			param = this->splitConfigParam(_contentString.substr(pos));
-			loc.getLocationStrMap().insert(param);
+			loc.getLocationMap().insert(param);
 			while (_contentString[pos] != '\n')
 				pos++;
 			while (isspace(_contentString[pos]))
@@ -183,4 +183,15 @@ std::pair<std::string, bool> wordInConfig;
  		servCount++;
 	}
 	this->check();
+}
+
+void	Config::check()
+{
+	size_t	srvrTblSize = _serverTable.size();
+	for (size_t i = 0; i < srvrTblSize; i++)
+	{
+		std::map<std::string, std::string> srvParamMap = _serverTable[i].getParams();
+		std::map<std::string, std::string>::iterator it_end = srvParamMap.end();
+	}
+
 }
