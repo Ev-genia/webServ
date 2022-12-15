@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:23:10 by wcollen           #+#    #+#             */
-/*   Updated: 2022/12/15 11:28:38 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/15 23:08:14 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ Config::Config(const char *fileName)
 
 Config::~Config() {}
 
-std::pair<std::string, bool> Config::isKeyWord(std::string src, std::string keyWords[], int num)
+strBoolPair Config::isKeyWord(std::string src, std::string keyWords[], int num)
 {
 	for (int i = 0; i < num; i++)
 	{
@@ -55,7 +55,7 @@ void	Config::trimConfigStr(std::string &str)
 		str.erase(str.back());
 }
 
-std::pair<std::string, std::string> Config::splitConfigParam(std::string src)
+strStrPair Config::splitConfigParam(std::string src)
 {
 	int space = src.find(" ");
 	std::string first = src.substr(0, space);
@@ -85,7 +85,7 @@ std::string	Config::extractPathFromStrConfig(std::string src, int pos)
 
 void		Config::parseServerConfig(bool &inServer, bool &inLocation, int &pos, int &servCount)
 {
-	std::pair<std::string, bool> wordInConfig;
+	strBoolPair wordInConfig;
 	Server s;
 
 	wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 11);
@@ -93,7 +93,7 @@ void		Config::parseServerConfig(bool &inServer, bool &inLocation, int &pos, int 
 	while(wordInConfig.second == true && wordInConfig.first != "server" &&
 		inLocation == false && inServer == true)
 	{
-		std::pair<std::string, std::string> param = this->splitConfigParam(_contentString.substr(pos));
+		strStrPair param = this->splitConfigParam(_contentString.substr(pos));
 		_serverTable[servCount].getParams().insert(param);
 		while (_contentString[pos] != '\n')
 			pos++;
@@ -105,9 +105,9 @@ void		Config::parseServerConfig(bool &inServer, bool &inLocation, int &pos, int 
 	}
 }
 
-void	Config::parseLocationConfig(bool &inLocation, int &pos, int &servCount, std::pair<std::string, bool> &wordInConfig)
+void	Config::parseLocationConfig(bool &inLocation, int &pos, int &servCount, strBoolPair &wordInConfig)
 {
-	std::pair<std::string, std::string> param;
+	strStrPair param;
 
 	while (wordInConfig.first == "location")
 	{
@@ -147,7 +147,6 @@ void	Config::parseLocationConfig(bool &inLocation, int &pos, int &servCount, std
 
 void	Config::parse()
 {
-std::pair<std::string, bool> wordInConfig;
 	bool inServer = false, inLocation = false;
 	int pos = 0;
 	int servCount = 0;
@@ -187,11 +186,19 @@ std::pair<std::string, bool> wordInConfig;
 
 void	Config::check()
 {
-	size_t	srvrTblSize = _serverTable.size();
-	for (size_t i = 0; i < srvrTblSize; i++)
-	{
-		std::map<std::string, std::string> srvParamMap = _serverTable[i].getParams();
-		std::map<std::string, std::string>::iterator it_end = srvParamMap.end();
-	}
+	// size_t	tableSize = _serverTable.size();
+	// for (size_t i = 0; i < tableSize - 1; i++)
+	// {
+		
+	// 	strStrMapIteraror it = _serverTable[i].getParams().find("listen");
+	// 	strStrMapIteraror itEnd = _serverTable[i].getParams().end();
+	// 	for (size_t j = i + 1; j < tableSize; j++)
+	// 	{
+	// 		strStrMapIteraror itNext = _serverTable[j].getParams().find("listen");
+	// 		strStrMapIteraror itNextEnd = _serverTable[j].getParams().end();
+	// 		if (it == itEnd || )
+	// 	}
+		
+	// }
 
 }
