@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 12:10:56 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/15 23:06:06 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/15 23:22:54 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "webserv.hpp"
 
-# define strStrMap std::map<std::string, std::string>
+typedef  std::map<std::string, std::string> strStrMap;
 
 class Location
 {

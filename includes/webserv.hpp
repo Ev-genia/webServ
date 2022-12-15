@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:24:11 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/15 17:40:57 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/15 23:19:50 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@
 # include "Request.hpp"
 # include "Response.hpp"
 
-# define strStrMap std::map<std::string, std::string>
-# define strStrPair std::pair<std::string, std::string>
-# define strStrMapIteraror std::map<std::string, std::string>::iterator
-# define strBoolPair std::pair<std::string, bool>
+typedef  std::map<std::string, std::string> strStrMap;
+typedef  std::pair<std::string, std::string> strStrPair;
+typedef  std::map<std::string, std::string>::iterator strStrMapIteraror;
+typedef  std::pair<std::string, bool> strBoolPair;
+
 #endif

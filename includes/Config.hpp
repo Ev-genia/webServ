@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:22:52 by wcollen           #+#    #+#             */
-/*   Updated: 2022/12/15 23:05:13 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/15 23:22:37 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@
 # include "webserv.hpp"
 
 # define BUFFER_SIZE 1024
-# define strBoolPair std::pair<std::string, bool>
-# define strStrPair std::pair<std::string, std::string>
+
+typedef  std::pair<std::string, std::string> strStrPair;
+typedef  std::pair<std::string, bool> strBoolPair;
+
 class Config
 {
 private:
