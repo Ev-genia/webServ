@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 11:39:55 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/14 15:03:09 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/17 00:53:22 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,12 @@ std::vector<Location> Server::getLocations() const
 {
 	return this->_locations;
 }
+
+std::vector<t_listen> &Server::getListens()
+{
+	return _listens;
+}
+
 
 void	Server::initSocket()
 {

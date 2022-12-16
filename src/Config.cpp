@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:23:10 by wcollen           #+#    #+#             */
-/*   Updated: 2022/12/15 23:08:14 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/17 01:21:22 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,36 @@ strStrPair Config::splitConfigParam(std::string src)
 	return (std::make_pair(first, second));
 }
 
+t_listen	Config::splitListenParam(std::string src)
+{
+	t_listen t;
+	size_t i = 0;
+	int dot = 0;
+	while (src[i])
+	{
+		if (isdigit(src[i]))
+			i++;
+		else if (src[i] == '.')
+		{
+			dot++;
+			if (dot > 3)
+				throw std::runtime_error("Invalid syntax in \"listen\": wrong host");
+			i++;	
+		}
+		else if (src[i] == ':' && i < src.size())
+		{
+			t.host = inet_addr(src.substr(0, i).c_str());
+			t.port = std::stoi(src.substr(i + 1, src.size()));
+			return t;
+		}
+		else
+			throw std::runtime_error("Invalid syntax in \"listen\": no host");
+	}
+	t.host = inet_addr("127.0.0.1");
+	t.port = std::stoi(src.substr(0, i));
+	return t;
+}
+
 std::vector<Server> *Config::getConfig()
 {
 	return &_serverTable;
@@ -94,7 +124,10 @@ void		Config::parseServerConfig(bool &inServer, bool &inLocation, int &pos, int 
 		inLocation == false && inServer == true)
 	{
 		strStrPair param = this->splitConfigParam(_contentString.substr(pos));
-		_serverTable[servCount].getParams().insert(param);
+		if (param.first == "listen")
+			_serverTable[servCount].getListens().push_back(splitListenParam(param.second));
+		else 
+			_serverTable[servCount].getParams().insert(param);
 		while (_contentString[pos] != '\n')
 			pos++;
 		while (isspace(_contentString[pos]))
