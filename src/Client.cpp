@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:49:54 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/13 16:24:00 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/16 12:46:40 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	Client::acceptClient()
 	_fd = accept(_serverFd, clientAddr, addrLenSockLen);
 	if (_fd < 0)
 		exitError("Accept");
+	fcntl(_fd, F_SETFL, O_NONBLOCK);
+	_ipAddress = inet_ntoa(_clientAddrIn.sin_addr);
 }
 
 std::string	Client::getResponse() const
