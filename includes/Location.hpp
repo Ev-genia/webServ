@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 12:10:56 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/15 12:10:57 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/15 23:22:54 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,21 @@
 
 # include "webserv.hpp"
 
+typedef  std::map<std::string, std::string> strStrMap;
+
 class Location
 {
 private:
-	std::string 						_path;
-	bool								_autoidx;
-	std::map<std::string, std::string>	_locationMap;
+	std::string 		_path;
+	bool				_autoidx;
+	strStrMap			_locationMap;
 public:
 	Location();
 	~Location();
-	std::map<std::string, std::string>	&getLocationMap();
-	std::string							&getPath();
-	void								setPath(std::string path);
-	bool								&getAutoindex();
+	strStrMap	&getLocationMap();
+	std::string	&getPath();
+	void		setPath(std::string path);
+	bool		&getAutoindex();
 };
 
 
