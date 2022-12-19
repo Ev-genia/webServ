@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 11:39:55 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/17 00:53:22 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/19 23:40:54 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,19 @@ void	Server::initSocket()
 		exitError("Listem");
 }
 
-void	Server::setAddr()
+void	Server::setAutoindex(bool index)
 {
+	this->_autoindex = index;
+}
+
+void	Server::setAddr()//TODO:Переделать _params на вектор listens
+{
+	
 	int	port = std::stoi(_params["listen"]);
 
 	_addrIn.sin_family = AF_INET;
 	_addrIn.sin_port = htons(port);
 	_addrIn.sin_addr.s_addr = htonl(INADDR_ANY);
 }
+
+

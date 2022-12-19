@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:23:10 by wcollen           #+#    #+#             */
-/*   Updated: 2022/12/17 01:21:22 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/19 23:41:43 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,19 +219,31 @@ void	Config::parse()
 
 void	Config::check()
 {
-	// size_t	tableSize = _serverTable.size();
-	// for (size_t i = 0; i < tableSize - 1; i++)
-	// {
-		
-	// 	strStrMapIteraror it = _serverTable[i].getParams().find("listen");
-	// 	strStrMapIteraror itEnd = _serverTable[i].getParams().end();
-	// 	for (size_t j = i + 1; j < tableSize; j++)
-	// 	{
-	// 		strStrMapIteraror itNext = _serverTable[j].getParams().find("listen");
-	// 		strStrMapIteraror itNextEnd = _serverTable[j].getParams().end();
-	// 		if (it == itEnd || )
-	// 	}
-		
-	// }
+	size_t	tableSize = _serverTable.size();
+	for (size_t i = 0; i < tableSize - 1; i++)
+	{
+		int j = 0;
+		std::vector<t_listen> ports = _serverTable[i].getListens();
+		while (j < ports.size() - 1)
+		{
+			if (ports[j].port == ports[j + 1].port)
+				throw std::runtime_error("The same ports on same server");
+			j++;
+		}
+		i++;
+	}
+	for (size_t i = 0; i < tableSize - 1; i++)
+	{
+		strStrMapIteraror it = _serverTable[i].getParams().find("autoindex");
+		strStrMapIteraror itEnd = _serverTable[i].getParams().end();
+		if (it != itEnd && it->second == "on")
+			_serverTable[i].setAutoindex(true);
+		// for (size_t j = i + 1; j < tableSize; j++)
+		// {
+		// 	strStrMapIteraror itNext = _serverTable[j].getParams().find("listen");
+		// 	strStrMapIteraror itNextEnd = _serverTable[j].getParams().end();
+		// 	if (it == itEnd || )
+		// }
+	}
 
 }

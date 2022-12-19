@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:22:42 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/16 17:35:51 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/19 23:38:46 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ public:
 	std::vector<Location>				getLocations() const;
 	void								initSocket();
 	void								setAddr();
+	void								setAutoindex(bool index);
 };
 
 
