@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:02 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/16 17:41:43 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/19 17:32:49 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,29 @@ std::string	Request::readValue(const std::string &src)
 	return (strip(dst, ' '));
 }
 
+std::vector<std::string>	Request::split(const std::string &str, char c)
+{
+	std::vector<std::string>	tokens;
+	std::istringstream			tokenStream(str);
+	std::string					token;
+
+	while (std::getline(tokenStream, token, c))
+		tokens.push_back(token);
+	return (tokens);
+}
+
+void	Request::setLang()
+{
+	std::string					header;
+	std::vector<std::string>	token;
+
+	header = _requestMap["Accept-Language"];
+	if (header != "")
+	{
+		token = split();
+	}
+}
+
 void	Request::parseRequest(const std::string &enterRequest)
 {
 	size_t		poz = 0;
@@ -221,6 +244,7 @@ void	Request::parseRequest(const std::string &enterRequest)
 		_envForCgi["Www-Authenticate"] = _requestMap["Www-Authenticate"];
 	
 	// this->setLang();
+
 	// this->setBody(str.substr(i, std::string::npos));
 	// this->findQuery();
 	
