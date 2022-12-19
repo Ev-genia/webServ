@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:20 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/16 16:56:46 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/19 17:25:59 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ private:
 	std::string							readKey(const std::string &);
 	std::string							readValue(const std::string &);
 	std::string							&strip(std::string &, char);
+	void								setLang();
+	std::vector<std::string>			split(const std::string &, char);
 
 public:
 	Request(const std::string);

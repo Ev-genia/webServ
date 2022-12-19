@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:24:11 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/16 12:44:56 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/19 21:06:21 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <vector>
 // # include <sys/time.h>
 # include <arpa/inet.h>
+# include <istream>
+
 
 # include "Server.hpp"
 # include "utils.hpp"
