@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:02 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/20 17:28:46 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/20 17:38:41 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	Request::resetRequestMap()
 	_requestMap["Connection"] = "Keep-Alive";
 }
 
-Request::Request(const std::string str): _method(""), _version(""), _path(""), _ret(200)
+Request::Request(const std::string str): _method(""), _version(""), _path(""), _body(""), _ret(200)
 {
 	resetRequestMap();
 	_envForCgi.clear();
@@ -235,7 +235,13 @@ std::vector<std::string>	Request::split(const std::string &str, char c)
 
 void	Request::setBody(const std::string &line)
 {
+	char	ends[] = {'\n', '\r'};
 
+	_body.assign(line);
+	for (int i = 0; i < 4; i++)
+	{
+		
+	}
 }
 
 void	Request::parseRequest(const std::string &enterRequest)
