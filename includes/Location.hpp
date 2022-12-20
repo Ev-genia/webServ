@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 12:10:56 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/15 23:22:54 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/20 11:33:32 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ public:
 	~Location();
 	strStrMap	&getLocationMap();
 	std::string	&getPath();
-	void		setPath(std::string path);
 	bool		&getAutoindex();
+	void		setPath(std::string path);
+	void		setAutoindex(bool index);
 };
 
 

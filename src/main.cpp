@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:25:05 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/16 14:42:54 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/20 16:27:55 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,16 @@
 
 int	main(int ac, char **av)
 {
-	if (ac != 2)
-		exitError("Wrong numbers of arguments");
+	const char  *fileName;
 
-	Config	config(av[1]);
+	if (ac > 2)
+		exitError("Wrong numbers of arguments");
+	if (ac == 1)
+		fileName = "config.conf";
+	else
+		fileName = av[1];
+
+	Config	config(fileName);
 	config.parse();
 	//Handler	handler(config.getConfig());
 	//handler.initFds();
