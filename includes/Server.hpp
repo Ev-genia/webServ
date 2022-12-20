@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:22:42 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/19 23:38:46 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/20 15:26:22 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,20 @@ private:
 	std::map<std::string, std::string>	_params;
 	std::vector<Location>				_locations;
 	struct sockaddr_in					_addrIn;
-	std::vector<t_listen>				_listens;
+	t_listen							_listen;
 	// int									_reuse;
 public:
 	Server();
 	~Server();
 	bool								getAutoIndex() const;
 	std::map<std::string, std::string>	&getParams();
-	std::vector<t_listen>				&getListens();
+	t_listen							&getListen();
 	int									getSocketFd() const;
 	std::vector<Location>				getLocations() const;
 	void								initSocket();
 	void								setAddr();
 	void								setAutoindex(bool index);
+	void								setListen(t_listen value);
 };
 
 

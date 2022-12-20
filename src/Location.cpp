@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/15 12:11:17 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/15 17:39:13 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/20 11:08:02 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ std::string &Location::getPath()
 void		Location::setPath(std::string path)
 {
 	this->_path = path;
+}
+
+void		Location::setAutoindex(bool index)
+{
+	this->_autoidx = index;
 }
 
 bool	&Location::getAutoindex()

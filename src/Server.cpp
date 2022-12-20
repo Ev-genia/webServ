@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 11:39:55 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/19 23:40:54 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/20 17:12:01 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ std::vector<Location> Server::getLocations() const
 	return this->_locations;
 }
 
-std::vector<t_listen> &Server::getListens()
+t_listen		&Server::getListen()
 {
-	return _listens;
+	return _listen;
 }
 
 
@@ -68,12 +68,15 @@ void	Server::setAutoindex(bool index)
 
 void	Server::setAddr()//TODO:Переделать _params на вектор listens
 {
-	
-	int	port = std::stoi(_params["listen"]);
-
+	memset((char *)&_addrIn, 0, sizeof(_addrIn));
 	_addrIn.sin_family = AF_INET;
-	_addrIn.sin_port = htons(port);
-	_addrIn.sin_addr.s_addr = htonl(INADDR_ANY);
+	_addrIn.sin_port = htons(_listen.port);
+	_addrIn.sin_addr.s_addr = htonl(_listen.host);
+}
+
+void	Server::setListen(t_listen value)
+{
+	this->_listen = value;
 }
 
 
