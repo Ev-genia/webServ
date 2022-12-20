@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:02 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/19 17:32:49 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/20 17:28:46 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,16 +209,33 @@ std::vector<std::string>	Request::split(const std::string &str, char c)
 	return (tokens);
 }
 
-void	Request::setLang()
-{
-	std::string					header;
-	std::vector<std::string>	token;
+// void	Request::setLang()
+// {
+// 	std::string					header;
+// 	std::vector<std::string>	token;
+// 	size_t						i;
 
-	header = _requestMap["Accept-Language"];
-	if (header != "")
-	{
-		token = split();
-	}
+// 	header = _requestMap["Accept-Language"];
+// 	if (header != "")
+// 	{
+// 		token = split(header, ',');
+// 		for (std::vector<std::string>::iterator it = token.begin(); it != token.end(); it++)
+// 		{
+// 			float		weight = 0.0;
+// 			std::string	lang;
+
+// 			lang = (*it).substr(0, (*it).find_first_of('-'));
+// 			strip(lang, ' ');
+// 			i = lang.find_last_of(';');
+// 			if (i != std::string::npos)
+// 				weight = atof();
+// 		}
+// 	}
+// }
+
+void	Request::setBody(const std::string &line)
+{
+
 }
 
 void	Request::parseRequest(const std::string &enterRequest)
@@ -244,7 +261,7 @@ void	Request::parseRequest(const std::string &enterRequest)
 		_envForCgi["Www-Authenticate"] = _requestMap["Www-Authenticate"];
 	
 	// this->setLang();
-
+	setBody(enterRequest.substr(poz, std::string::npos));
 	// this->setBody(str.substr(i, std::string::npos));
 	// this->findQuery();
 	
@@ -263,4 +280,9 @@ int	Request::getRet() const
 void	Request::setMethod(const std::string enterMethod)
 {
 	_method = enterMethod;
+}
+
+std::map<std::string, std::string>	&Request::getRequestMap()
+{
+	return _requestMap;
 }
