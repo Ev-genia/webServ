@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:49:54 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/16 12:46:40 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/21 12:54:37 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,8 @@ void	Client::acceptClient()
 {
 	int	addrLen;
 
-	struct sockaddr *clientAddr = reinterpret_cast<struct sockaddr *>(&_clientAddrIn);
-	addrLen = sizeof(*clientAddr);
-	socklen_t	*addrLenSockLen = reinterpret_cast<socklen_t *>(addrLen);
-	_fd = accept(_serverFd, clientAddr, addrLenSockLen);
+	addrLen = sizeof(sockaddr_in);
+	_fd = accept(_serverFd,(struct sockaddr *)&_clientAddrIn, (socklen_t *)&addrLen);
 	if (_fd < 0)
 		exitError("Accept");
 	fcntl(_fd, F_SETFL, O_NONBLOCK);
