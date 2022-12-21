@@ -6,13 +6,13 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:49:54 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/21 12:54:37 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/21 16:22:46 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Client.hpp"
 
-Client::Client(int enterServerFd): _fd(-1), _serverFd(enterServerFd), _response("")
+Client::Client(int enterServerFd, int servIndex): _fd(-1), _serverFd(enterServerFd), _response(""), _servIndex(servIndex)
 {
 	memset(&_clientAddrIn, 0, sizeof(_clientAddrIn));
 	// memset(&_timeout, 0, sizeof(_timeout));
@@ -41,7 +41,12 @@ void	Client::acceptClient()
 	_ipAddress = inet_ntoa(_clientAddrIn.sin_addr);
 }
 
-std::string	Client::getResponse() const
+const std::string	&Client::getResponse() const
 {
 	return (_response);
+}
+
+const std::string	&Client::getIpAddress() const
+{
+	return (_ipAddress);
 }
