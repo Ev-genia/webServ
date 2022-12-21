@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:35:02 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/07 17:01:44 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/21 11:10:12 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,4 +17,37 @@ void	exitError(std::string str)
 	perror(str.c_str());
 	// std::cerr << " error exit" << std::endl;
 	exit(1);
+}
+
+
+std::string	&strip(std::string &str, char c)
+{
+	size_t	i;
+
+	if (!str.size())
+		return (str);
+	i = str.size();
+	while (i && str[i - 1] == c)
+		i--;
+	str.resize(i);
+	for (i = 0; str[i] == c; i++);
+	str = str.substr(i, std::string::npos);
+	return (str);
+}
+
+void	pop(std::string &str)
+{
+	if (str.size())
+		str.resize(str.size() - 1);
+}
+
+std::vector<std::string>	split(const std::string &str, char c)
+{
+	std::vector<std::string>	tokens;
+	std::istringstream			tokenStream(str);
+	std::string					token;
+
+	while (std::getline(tokenStream, token, c))
+		tokens.push_back(token);
+	return (tokens);
 }

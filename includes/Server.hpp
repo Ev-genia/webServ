@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:22:42 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/20 15:26:22 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/21 12:09:51 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ private:
 	std::vector<Location>				_locations;
 	struct sockaddr_in					_addrIn;
 	t_listen							_listen;
-	// int									_reuse;
+	int									_reuse;
 public:
 	Server();
 	~Server();

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 11:39:55 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/20 17:12:01 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/21 12:55:00 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,15 @@ t_listen		&Server::getListen()
 void	Server::initSocket()
 {
 	setAddr();
-	struct sockaddr *addr = reinterpret_cast<struct sockaddr *>(&_addrIn);
 	_socketFd = socket(_addrIn.sin_family, SOCK_STREAM, 0);
 	if (_socketFd == -1)
 		exitError("Socket");
-	// setsockopt(_socketFd, SOL_SOCKET, SO_REUSEADDR, &_reuse, sizeof(int));
-	if (bind(_socketFd, addr, sizeof(*addr)) == -1)
+	_reuse = 1;
+	setsockopt(_socketFd, SOL_SOCKET, SO_REUSEADDR, &_reuse, sizeof(int));
+	if (bind(_socketFd, (struct sockaddr *)&_addrIn, sizeof(_addrIn)) == -1)
 		exitError("Bind");
 	if (listen(_socketFd, 32) == -1)
-		exitError("Listem");
+		exitError("Listen");
 }
 
 void	Server::setAutoindex(bool index)

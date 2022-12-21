@@ -6,13 +6,13 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:02 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/20 17:28:46 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/21 11:59:15 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Request.hpp"
 
-void	Request::resetRequestMap()
+void	Request::initRequestMap()
 {
 	_requestMap.clear();
 	_requestMap["Accept-Charsets"] = "";
@@ -37,9 +37,9 @@ void	Request::resetRequestMap()
 	_requestMap["Connection"] = "Keep-Alive";
 }
 
-Request::Request(const std::string str): _method(""), _version(""), _path(""), _ret(200)
+Request::Request(const std::string str): _method(""), _version(""), _path(""), _body(""), _query(""), _ret(200)
 {
-	resetRequestMap();
+	initRequestMap();
 	_envForCgi.clear();
 	parseRequest(str);
 	if (_ret != 200)
@@ -49,14 +49,6 @@ Request::Request(const std::string str): _method(""), _version(""), _path(""), _
 /*
 GET / HTTP/1.1\nHost: developer.mozilla.org\nAccept-Language: fr\r\n\r\n<body>
 */
-
-// std::string	&Request::pop(std::string &str)
-void	Request::pop(std::string &str)
-{
-	if (str.size())
-		str.resize(str.size() - 1);
-	// return (str);
-}
 
 std::string	Request::nextLine(const std::string &str, size_t &i)
 {
@@ -161,21 +153,6 @@ void	Request::readFirstLine(const std::string &str)
 	readPath(line, i);
 }
 
-std::string	&Request::strip(std::string &str, char c)
-{
-	size_t	i;
-
-	if (!str.size())
-		return (str);
-	i = str.size();
-	while (i && str[i - 1] == c)
-		i--;
-	str.resize(i);
-	for (i = 0; str[i] == c; i++);
-	str = str.substr(i, std::string::npos);
-	return (str);
-}
-
 std::string	Request::readKey(const std::string &src)
 {
 	std::string	dst;
@@ -196,17 +173,6 @@ std::string	Request::readValue(const std::string &src)
 	if (i != std::string::npos)
 		dst.append(src, i, std::string::npos);
 	return (strip(dst, ' '));
-}
-
-std::vector<std::string>	Request::split(const std::string &str, char c)
-{
-	std::vector<std::string>	tokens;
-	std::istringstream			tokenStream(str);
-	std::string					token;
-
-	while (std::getline(tokenStream, token, c))
-		tokens.push_back(token);
-	return (tokens);
 }
 
 // void	Request::setLang()
@@ -235,7 +201,28 @@ std::vector<std::string>	Request::split(const std::string &str, char c)
 
 void	Request::setBody(const std::string &line)
 {
+	char	ends[] = {'\n', '\r'};
 
+	_body.assign(line);
+	for (int i = 0; i < 4; i++)
+	{
+		if (_body.size() > 0 && _body[_body.size() - 1] == ends[i % 2])
+			pop(_body);
+		else
+			break;
+	}
+}
+
+void	Request::findQuery()
+{
+	size_t	i;
+
+	i = _path.find_first_of('?');
+	if (i != std::string::npos)
+	{
+		_query.assign(_path, i + 1, std::string::npos);
+		_path = _path.substr(0, i);
+	}
 }
 
 void	Request::parseRequest(const std::string &enterRequest)
@@ -260,16 +247,48 @@ void	Request::parseRequest(const std::string &enterRequest)
 	if (_requestMap["Www-Authenticate"] != "")
 		_envForCgi["Www-Authenticate"] = _requestMap["Www-Authenticate"];
 	
-	// this->setLang();
+	// setLang();
 	setBody(enterRequest.substr(poz, std::string::npos));
-	// this->setBody(str.substr(i, std::string::npos));
-	// this->findQuery();
-	
-	_ret = 200;
+	findQuery();
 }
 
 Request::~Request()
 {
+}
+
+const std::string	&Request::getMethod() const
+{
+	return (_method);
+}
+
+const std::string	&Request::getVersion() const
+{
+	return (_version);
+}
+
+const std::string	&Request::getPath() const
+{
+	return (_path);
+}
+
+const std::map<std::string, std::string>	&Request::getRequestMap() const
+{
+	return (_requestMap);
+}
+
+const std::string	&Request::getBody() const
+{
+	return (_body);
+}
+
+const std::string	&Request::getQuery() const
+{
+	return (_query);
+}
+
+const std::map<std::string, std::string>	&Request::getEnvForCgi() const
+{
+	return (_envForCgi);
 }
 
 int	Request::getRet() const
@@ -280,9 +299,4 @@ int	Request::getRet() const
 void	Request::setMethod(const std::string enterMethod)
 {
 	_method = enterMethod;
-}
-
-std::map<std::string, std::string>	&Request::getRequestMap()
-{
-	return _requestMap;
 }

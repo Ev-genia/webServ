@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+         #
+#    By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/30 12:15:15 by mlarra            #+#    #+#              #
-#    Updated: 2022/12/16 14:41:49 by wcollen          ###   ########.fr        #
+#    Updated: 2022/12/21 12:03:30 by mlarra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,15 +16,16 @@ DIR			=	./src/
 
 SRC			=	${addprefix ${DIR}, Client.cpp\
 									Config.cpp\
+									Handler.cpp\
 									Location.cpp\
 									main.cpp\
-									Response.cpp\
+									Request.cpp\
 									Server.cpp\
 									utils.cpp\
 									}
 
-#									Handler.cpp\
-#									Request.cpp
+#									Response.cpp\
+
 DIR_HEADERS	=	./includes/
 
 HEADERS		=	${DIR_HEADERS}webserv.hpp

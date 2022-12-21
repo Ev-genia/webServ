@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:25:05 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/20 16:27:55 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/21 12:05:58 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(int ac, char **av)
 
 	Config	config(fileName);
 	config.parse();
-	//Handler	handler(config.getConfig());
-	//handler.initFds();
-	//handler.serverRun();
+	Handler	handler(config.getConfig());
+	handler.initFds();
+	handler.serverRun();
 }
