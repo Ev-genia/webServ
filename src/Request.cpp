@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:02 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/21 11:59:15 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/21 17:27:56 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,32 +92,37 @@ void	Request::checkMethod()
 
 void	Request::readVersion(const std::string &line, size_t i)
 {
-	i = line.find_first_of(' ', i);
+	i = line.find_first_not_of(' ', i);
 	if (i == std::string::npos)
 	{
 		_ret = 400;
 		std::cerr << "Error in http request: No http version" << std::endl;
 		return ;
 	}
+std::cout << "Request::readVersion|line[i]: " << &line[i] << std::endl;
+std::cout << "Request::readVersion| i: " << i << std::endl;
 	if (line[i] == 'H' && line[i + 1] == 'T' && line[i + 2] == 'T'
 			&& line[i + 3] == 'P' && line[i + 4] == '/')
 	{
 		_version.assign(line, i + 5, 3);
+std::cout << "Request::readVersion|HTTP version: " << _version << std::endl;
 	}
-	if (_version != "1.1")
+	if (_version != "1.0" && _version != "1.1")
 	{
 		_ret = 400;
 		std::cerr << "Error in http request: Bad http version (" << _version << ")" << std::endl;
 		return ;
 	}
+std::cout << "Request::readVersion|_version: " << _version << std::endl;
 	checkMethod();
 }
 
 void	Request::readPath(const std::string &line, size_t i)
 {
 	size_t	j;
-
-	j = line.find_first_of(' ', i);
+// std::cout << "Request::readPath|line(enter): " << line << std::endl;
+	j = line.find_first_not_of(' ', i);
+// std::cout << "Request::readPath| j: " << j << std::endl;
 	if (j == std::string::npos)
 	{
 		_ret = 400;
@@ -125,6 +130,7 @@ void	Request::readPath(const std::string &line, size_t i)
 		return ;
 	}
 	i = line.find_first_of(' ', j);
+// std::cout << "Request::readPath| i: " << i << std::endl;
 	if (i == std::string::npos)
 	{
 		_ret = 400;
@@ -132,6 +138,7 @@ void	Request::readPath(const std::string &line, size_t i)
 		return ;
 	}
 	_path.assign(line, j, i - j);
+std::cout << "Request::readPath|_path: " << _path << std::endl;
 	readVersion(line, i);
 }
 
@@ -150,6 +157,8 @@ void	Request::readFirstLine(const std::string &str)
 		return ;
 	}
 	_method.assign(line, 0, i);
+std::cout << "Request::readFirstLine|_metod: " << _method << std::endl;
+// std::cout << "Request::readFirstLine| i: " << i << std::endl;
 	readPath(line, i);
 }
 
@@ -233,6 +242,8 @@ void	Request::parseRequest(const std::string &enterRequest)
 	std::string	value;
 	
 	line = nextLine(enterRequest, poz);
+std::cout << "-----------------------------------" << std::endl;
+std::cout << "Request::parseRequest|line: " << line << std::endl;
 	readFirstLine(line);
 	while (line != "\r" && line != "" && _ret != 400)
 	{

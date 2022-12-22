@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:49:54 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/21 16:22:46 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/21 16:53:16 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 Client::Client(int enterServerFd, int servIndex): _fd(-1), _serverFd(enterServerFd), _response(""), _servIndex(servIndex)
 {
+	(void)_servIndex;
 	memset(&_clientAddrIn, 0, sizeof(_clientAddrIn));
 	// memset(&_timeout, 0, sizeof(_timeout));
 	// gettimeofday(&_timeout, 0);
@@ -27,6 +28,11 @@ Client::~Client()
 int	Client::getFd() const
 {
 	return (_fd);
+}
+
+int	Client::getServerFd() const
+{
+	return (_serverFd);
 }
 
 void	Client::acceptClient()
