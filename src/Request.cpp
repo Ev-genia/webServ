@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:02 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/21 17:27:56 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/23 23:38:09 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	Request::initRequestMap()
 	_requestMap["Connection"] = "Keep-Alive";
 }
 
-Request::Request(const std::string str): _method(""), _version(""), _path(""), _body(""), _query(""), _ret(200)
+Request::Request(const std::string str): _method(""), _version(""), _uri(""), _body(""), _query(""), _ret(200)
 {
 	initRequestMap();
 	_envForCgi.clear();
@@ -117,7 +117,7 @@ std::cout << "Request::readVersion|_version: " << _version << std::endl;
 	checkMethod();
 }
 
-void	Request::readPath(const std::string &line, size_t i)
+void	Request::readUri(const std::string &line, size_t i)
 {
 	size_t	j;
 // std::cout << "Request::readPath|line(enter): " << line << std::endl;
@@ -137,8 +137,8 @@ void	Request::readPath(const std::string &line, size_t i)
 		std::cerr << "Error in http request: No http version" << std::endl;
 		return ;
 	}
-	_path.assign(line, j, i - j);
-std::cout << "Request::readPath|_path: " << _path << std::endl;
+	_uri.assign(line, j, i - j);
+std::cout << "Request::readUri|_uri: " << _uri << std::endl;
 	readVersion(line, i);
 }
 
@@ -159,7 +159,7 @@ void	Request::readFirstLine(const std::string &str)
 	_method.assign(line, 0, i);
 std::cout << "Request::readFirstLine|_metod: " << _method << std::endl;
 // std::cout << "Request::readFirstLine| i: " << i << std::endl;
-	readPath(line, i);
+	readUri(line, i);
 }
 
 std::string	Request::readKey(const std::string &src)
@@ -226,11 +226,11 @@ void	Request::findQuery()
 {
 	size_t	i;
 
-	i = _path.find_first_of('?');
+	i = _uri.find_first_of('?');
 	if (i != std::string::npos)
 	{
-		_query.assign(_path, i + 1, std::string::npos);
-		_path = _path.substr(0, i);
+		_query.assign(_uri, i + 1, std::string::npos);
+		_uri = _uri.substr(0, i);
 	}
 }
 
@@ -277,9 +277,9 @@ const std::string	&Request::getVersion() const
 	return (_version);
 }
 
-const std::string	&Request::getPath() const
+const std::string	&Request::getUri() const
 {
-	return (_path);
+	return (_uri);
 }
 
 const std::map<std::string, std::string>	&Request::getRequestMap() const

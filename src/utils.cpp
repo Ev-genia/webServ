@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:35:02 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/21 11:10:12 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/23 23:30:16 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	exitError(std::string str)
 	// std::cerr << " error exit" << std::endl;
 	exit(1);
 }
-
 
 std::string	&strip(std::string &str, char c)
 {
