@@ -6,22 +6,22 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 16:26:02 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/28 15:55:34 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/28 17:59:11 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/CgiHandler.hpp"
 
-CgiHandler::CgiHandler(Request &request): _body(request.getBody())
+CgiHandler::CgiHandler(Request &request, ResponseConfig &respConfig): _body(request.getBody())
 {
-	initEnv(request);
+	initEnv(request, respConfig);
 }
 CgiHandler::~CgiHandler()
 {
 	return ;
 }
 
-void	CgiHandler::initEnv(Request &request)
+void	CgiHandler::initEnv(Request &request, ResponseConfig &respConf)
 {
 	std::map<std::string, std::string>	headers;
 
@@ -46,7 +46,7 @@ void	CgiHandler::initEnv(Request &request)
 		_env["SERVER_NAME"] = headers["Hostname"];
 	else
 		_env["SERVER_NAME"] = _env["REMOTEaddr"];
-	// _env["SERVER_PORT"] = 
+	_env["SERVER_PORT"] = respConf.getServer().getListen().port;
 	_env["SERVER_PROTOCOL"] = "HTTP/1.1";
 	_env["SERVER_SOFTWARE"] = "Webserv/1.0";
 	// _env.insert();

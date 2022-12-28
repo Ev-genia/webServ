@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Handler.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:24:49 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/21 17:33:56 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/28 17:47:53 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	Handler::serverRun()
 
 				if (FD_ISSET(serverFd, &fdRead))
 				{
-					Client *client = new Client(serverFd, i);
+					Client *client = new Client(serverFd, (*_servers)[i]);//, i);
 					client->acceptClient();
 					FD_SET(client->getFd(), &_fdSet);
 					_clients.push_back(client);
