@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 16:26:02 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/23 23:50:49 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/28 15:55:34 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 CgiHandler::CgiHandler(Request &request): _body(request.getBody())
 {
 	initEnv(request);
+}
+CgiHandler::~CgiHandler()
+{
+	return ;
 }
 
 void	CgiHandler::initEnv(Request &request)
@@ -46,4 +50,94 @@ void	CgiHandler::initEnv(Request &request)
 	_env["SERVER_PROTOCOL"] = "HTTP/1.1";
 	_env["SERVER_SOFTWARE"] = "Webserv/1.0";
 	// _env.insert();
+}
+
+char	**CgiHandler::convertEnvToCStrArr() const
+{
+	char	**env;
+	int		j;
+
+	env = new char*[_env.size() + 1];
+	j = 0;
+	for (std::map<std::string, std::string>::const_iterator it = _env.begin(); it != _env.end(); it++)
+	{
+		std::string	elem = it->first + "=" + it->second;
+		env[j] = new char[elem.size() + 1];
+		env[j] = strcpy(env[j], (const char *)elem.c_str());
+		j++;
+	}
+	return (env);
+}
+
+std::string	CgiHandler::executeCgi(const std::string &nameScript)
+{
+	char		**env;
+	int			saveStdIn;
+	int			saveStdOut;
+	pid_t		pid;
+	std::string	bodyReturn;
+
+	try
+	{
+		env = convertEnvToCStrArr();
+	}
+	catch(const std::bad_alloc& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
+	saveStdIn = dup(STDIN_FILENO);
+	saveStdOut = dup(STDOUT_FILENO);
+	FILE	*fileIn = tmpfile();
+	FILE	*fileOut = tmpfile();
+	int		fdIn = fileno(fileIn);
+	int		fdOut = fileno(fileOut);
+	int		ret = 1;
+	write(fdIn, _body.c_str(), _body.size());
+	lseek(fdIn, 0, SEEK_SET);
+	pid = fork();
+	if (pid == -1)
+	{
+		std::cerr << "Fork error" << std::endl;
+		return ("Status: 500\r\n\r\n");
+	}
+	else if (pid == 0)
+	{
+		// это указатель, элементы char которого не могут быть изменены, но сам указатель может
+		char * const	*nll;
+
+		nll = NULL;
+		dup2(fdIn, STDIN_FILENO);
+		dup2(fdOut, STDOUT_FILENO);
+		execve(nameScript.c_str(), nll, env);
+		std::cerr << "Execve error" << std::endl;
+		write(STDOUT_FILENO, "Status: 500\r\n\r\n", 15);
+	}
+	else
+	{
+		char	buff[CGI_BUFF_SIZE];// = {0};
+
+		waitpid(-1, NULL, 0);
+		lseek(fdOut, 0, SEEK_SET);
+		ret = 1;
+		while (ret > 0)
+		{
+			memset(buff, 0, CGI_BUFF_SIZE);
+			ret = read(fdOut, buff, CGI_BUFF_SIZE - 1);
+			bodyReturn += buff;
+		}
+	}
+	dup2(saveStdIn, STDIN_FILENO);
+	dup2(saveStdOut, STDOUT_FILENO);
+	fclose(fileIn);
+	fclose(fileOut);
+	close(fdIn);
+	close(fdOut);
+	close(saveStdIn);
+	close(saveStdOut);
+	for (int i = 0; env[i]; i++)
+		delete[] env[i];
+	delete[] env;
+	if (pid == 0)
+		exit(0);
+	return (bodyReturn);
 }

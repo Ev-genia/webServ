@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:20 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/23 23:36:40 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/28 15:41:58 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define REQUEST_HPP
 
 # include "webserv.hpp"
-
-
 
 class Request
 {

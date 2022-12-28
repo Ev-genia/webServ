@@ -6,7 +6,7 @@
 #    By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/30 12:15:15 by mlarra            #+#    #+#              #
-#    Updated: 2022/12/21 12:03:30 by mlarra           ###   ########.fr        #
+#    Updated: 2022/12/28 15:57:29 by mlarra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ NAME		=	webserv
 
 DIR			=	./src/
 
-SRC			=	${addprefix ${DIR}, Client.cpp\
+SRC			=	${addprefix ${DIR}, CgiHandler.cpp\
+									Client.cpp\
 									Config.cpp\
 									Handler.cpp\
 									Location.cpp\
