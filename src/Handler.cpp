@@ -73,7 +73,7 @@ void	Handler::process(Client *client)//, Config & conf)
 	else if (client->request != "")
 	{
 		Request	request(client->request);
-
+// std::cout << "Handler::process|request.getMethod(): " << request.getMethod() << std::endl;
 		if (request.getRet() != 200)
 			request.setMethod("GET");
 		
@@ -95,15 +95,9 @@ void	Handler::serverRun()
 
 	while (true)
 	{
-		// fd_set			fdRead;
-		// fd_set			fdWrite;
-		// int				ret;
-		// int				fdClient;
 		// struct timeval	timeout;
 
-		// bzero(&fdRead, sizeof(_fdSet));
 		FD_ZERO(&fdRead);
-		// bzero(&fdWrite, sizeof(_fdSet));
 		FD_ZERO(&fdWrite);
 		memcpy(&fdRead, &_fdSet, sizeof(_fdSet));
 		memcpy(&fdWrite, &_fdSet, sizeof(_fdSet));
@@ -130,9 +124,7 @@ void	Handler::serverRun()
 			//проход по читающим fd
 			for (std::vector<Client *>::iterator it = _clients.begin(); /*ret && */it != _clients.end(); it++)
 			{
-				// int		fdClient = it->getFd();
 				char	buffer[RECV_SIZE] = {0};
-				// int		ret;
 
 				fdClient = (*it)->getFd();
 				if (FD_ISSET(fdClient, &fdRead))
@@ -147,7 +139,6 @@ void	Handler::serverRun()
 					else if (ret == 0)
 					{
 						process(*it);
-						// _clients.push_back(it);
 					}
 					else if (ret == -1)
 					{
@@ -157,7 +148,6 @@ void	Handler::serverRun()
 						_clients.erase(it);
 						it = _clients.begin();//?
 					}
-					// ret = 0;
 					break;
 				}
 			}
@@ -173,7 +163,6 @@ void	Handler::serverRun()
 					{
 						close(fdClient);
 						FD_CLR(fdClient, &_fdSet);
-						// client.erase(it);
 						_clients.erase(it);
 						break;
 					}
@@ -189,14 +178,15 @@ void	Handler::serverRun()
 				close((*it)->getFd());
 				//надо ли удалять реквесты и прочие строковые переменные клиента?
 			}
+			for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); it++)
+			{
+				delete(*it);
+				//надо ли удалять реквесты и прочие строковые переменные клиента?
+			}
 			_clients.clear();
 			FD_ZERO(&_fdSet);
-			// for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); it++)
-			// std::vector<Server>	servers = *_servers;
 			for (std::vector<Server>::iterator it = (*_servers).begin(); it != (*_servers).end(); it++)
-			{
 				FD_SET(it->getSocketFd(), &_fdSet);
-			}
 		}
 	}
 }

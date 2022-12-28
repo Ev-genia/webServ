@@ -6,14 +6,14 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:23:51 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/13 16:15:30 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/28 15:42:58 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HANDLER_HPP
 # define HANDLER_HPP
 
-# define RECV_SIZE 2048
+// # define RECV_SIZE 2048
 # include "webserv.hpp"
 
 class Server;

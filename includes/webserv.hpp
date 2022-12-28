@@ -6,12 +6,15 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:24:11 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/21 16:50:26 by wcollen          ###   ########.fr       */
+/*   Updated: 2022/12/28 15:43:48 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WEBSERV_HPP
 # define WEBSERV_HPP
+
+# define RECV_SIZE 2048
+# define CGI_BUFF_SIZE 2048
 
 # include <iostream>
 // # include <istream>
