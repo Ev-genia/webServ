@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 16:26:02 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/28 17:59:11 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/30 13:44:14 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ void	CgiHandler::initEnv(Request &request, ResponseConfig &respConf)
 		_env["AUTH_TYPE"] = headers["Auth-Scheme"];
 	_env["REDIRECT_STATUS"] = "200";
 	_env["GATEWAY_INTERFACE"] = "CGI/1.1";
-	// _env["SCRIPT_NAME"] = 
-	// _env["SCRIPT_FILENAME"] = 
+	_env["SCRIPT_NAME"] = respConf.getPath();
+	_env["SCRIPT_FILENAME"] = respConf.getPath();
 	_env["REQUEST_METHOD"] = request.getMethod();
 	_env["CONTENT_LENGHT"] = std::to_string(_body.length());
 	_env["CONTENT_TYPE"] = headers["Content-type"];
 	_env["PATH_INFO"] = request.getUri();
 	_env["PATH_TRANSLATED"] = request.getUri();
 	_env["QUERY_STRING"] = request.getQuery();
-	// _env["REMOTEaddr"] = 
+	_env["REMOTEaddr"] = to_string(respConf.getServer().getListen().host);//Удаленный IP-адрес, с которого пользователь делает запрос.
 	_env["REMOTE_IDENT"] = headers["Authorization"];
 	_env["REMOTE_USER"] = headers["Authorization"];
 	_env["REQUEST_URI"] = request.getUri() + request.getQuery();
