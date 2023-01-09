@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:29:05 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/30 13:46:10 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/01/09 14:33:41 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ public:
 	~ResponseConfig();
 	Server				&getServer() const;
 	const std::string	&getPath() const;
+	std::string			removeSlashes(const std::string &);
 };
 
 
