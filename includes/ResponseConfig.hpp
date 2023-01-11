@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ResponseConfig.hpp                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/28 16:29:05 by mlarra            #+#    #+#             */
+/*   Updated: 2023/01/09 14:33:41 by mlarra           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef REPONSECONFIG_HPP
 # define RESPONSECONFIG_HPP
 
@@ -14,10 +26,15 @@ private:
 
 	std::vector<std::string>			_extension_cgi;
 	std::string							_exec_cgi;
+	Server			&_server;
+	Request			&_request;
 
 public:
-	ResponseConfig(Config &config, Request &request);
+	ResponseConfig(Server &server, Request &request);
 	~ResponseConfig();
+	Server				&getServer() const;
+	const std::string	&getPath() const;
+	std::string			removeSlashes(const std::string &);
 
 	std::vector<std::string>	makeCgiVector();
 };

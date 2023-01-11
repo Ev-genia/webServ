@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:35:02 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/23 23:30:16 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/30 13:14:11 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,12 @@ std::vector<std::string>	split(const std::string &str, char c)
 	while (std::getline(tokenStream, token, c))
 		tokens.push_back(token);
 	return (tokens);
+}
+
+std::string	to_string(size_t enter)
+{
+	std::stringstream	str;
+
+	str << enter;
+	return (str.str());
 }

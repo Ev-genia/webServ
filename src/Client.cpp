@@ -6,15 +6,16 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:49:54 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/21 16:53:16 by mlarra           ###   ########.fr       */
+/*   Updated: 2022/12/28 17:50:17 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Client.hpp"
 
-Client::Client(int enterServerFd, int servIndex): _fd(-1), _serverFd(enterServerFd), _response(""), _servIndex(servIndex)
+// Client::Client(int enterServerFd, int servIndex): _fd(-1), _serverFd(enterServerFd), _response(""), _servIndex(servIndex)
+Client::Client(int enterServerFd, Server & enterServer): _fd(-1), _serverFd(enterServerFd), _response(""), _serverRef(enterServer)//, _servIndex(servIndex)
 {
-	(void)_servIndex;
+	// (void)_servIndex;
 	memset(&_clientAddrIn, 0, sizeof(_clientAddrIn));
 	// memset(&_timeout, 0, sizeof(_timeout));
 	// gettimeofday(&_timeout, 0);
@@ -55,4 +56,9 @@ const std::string	&Client::getResponse() const
 const std::string	&Client::getIpAddress() const
 {
 	return (_ipAddress);
+}
+
+const Server	&Client::getServerRef() const
+{
+	return (_serverRef);
 }
