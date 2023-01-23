@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ResponseConfig.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:23:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/09 14:46:38 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/01/13 15:48:54 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,12 @@
 ResponseConfig::ResponseConfig(Server &server, Request &request): _server(server), _request(request)
 {
 	std::string	ret;
-
+	//this->body_size = server.getLocations()//в каком Location сервера взять body_size???
+	_error_page = server.getParams()["error_page"];
 	_path = removeSlashes(ret);
+	_method_allowed = server.getParams()["method_allowed"];
+	_autoindex = server.getParams()["autoindex"];
+
 }
 
 ResponseConfig::~ResponseConfig()

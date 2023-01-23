@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ResponseConfig.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:29:05 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/09 14:33:41 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/01/13 15:46:37 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ private:
 	std::string		_error_page;// ????
 	unsigned long	body_size; // max size for the client body, defaults to 8 000??
 	std::string		_lang;
+	std::string		_method_allowed;
+	std::string		_autoindex;
 
 	std::vector<std::string>			_extension_cgi;
 	std::string							_exec_cgi;
