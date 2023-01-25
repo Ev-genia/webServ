@@ -6,11 +6,11 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:29:05 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/25 14:07:30 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/01/25 14:10:34 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef REPONSECONFIG_HPP
+#ifndef RESPONSECONFIG_HPP
 # define RESPONSECONFIG_HPP
 
 # include "webserv.hpp"
