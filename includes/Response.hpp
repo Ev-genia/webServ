@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:25:53 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/20 17:36:16 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/01/25 15:07:51 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 # include "webserv.hpp"
 
 typedef  std::map<std::string, std::string> strStrMap;
+
+class Server;
 
 class Response
 {
