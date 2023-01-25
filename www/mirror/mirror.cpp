@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 21:24:45 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/04 22:06:36 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/01/25 10:57:20 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ int	main(int ac, char **av)
 		rez += " ";
 		i++;
 	}
-	std::cout << "rez: " << rez << std::endl;
+std::cout << "rezult: " << rez << std::endl;
 	return (0);
 }

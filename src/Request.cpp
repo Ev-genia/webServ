@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:02 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/23 23:38:09 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/01/25 11:11:45 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,30 @@ void	Request::initRequestMap()
 	_requestMap["Connection"] = "Keep-Alive";
 }
 
-Request::Request(const std::string str): _method(""), _version(""), _uri(""), _body(""), _query(""), _ret(200)
+Request::Request()
+{}
+
+Request::Request(const std::string &str): _method(""), _version(""), _uri(""), _body(""), _query(""), _ret(200)
 {
 	initRequestMap();
 	_envForCgi.clear();
 	parseRequest(str);
 	if (_ret != 200)
 		std::cerr << "Error init request" << std::endl;
+}
+
+Request	&Request::operator=(const Request &rhs)
+{
+	_method = rhs._method;
+	_version = rhs._version;
+	_uri = rhs._uri;
+	_requestMap = rhs.getRequestMap();
+	_body = rhs._body;
+	_query = rhs._query;
+	_envForCgi = rhs.getEnvForCgi();
+	_ret = rhs._ret;
+
+	return (*this);
 }
 
 /*

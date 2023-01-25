@@ -6,11 +6,11 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:29:05 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/09 14:33:41 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/01/24 16:16:56 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef REPONSECONFIG_HPP
+#ifndef RESPONSECONFIG_HPP
 # define RESPONSECONFIG_HPP
 
 # include "webserv.hpp"
