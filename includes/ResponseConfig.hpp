@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ResponseConfig.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:29:05 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/13 15:46:37 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/01/25 15:19:39 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define RESPONSECONFIG_HPP
 
 # include "webserv.hpp"
+
+class Server;
+class Request;
 
 class ResponseConfig
 {

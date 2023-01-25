@@ -6,7 +6,7 @@
 #    By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/30 12:15:15 by mlarra            #+#    #+#              #
-#    Updated: 2022/12/28 15:57:29 by mlarra           ###   ########.fr        #
+#    Updated: 2023/01/25 15:20:59 by mlarra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ SRC			=	${addprefix ${DIR}, CgiHandler.cpp\
 									Location.cpp\
 									main.cpp\
 									Request.cpp\
+									ResponseConfig.cpp\
 									Server.cpp\
 									utils.cpp\
 									}

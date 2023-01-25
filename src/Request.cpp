@@ -6,11 +6,14 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:02 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/25 11:11:45 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/01/25 15:17:30 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Request.hpp"
+
+Request::Request()
+{}
 
 void	Request::initRequestMap()
 {
@@ -36,9 +39,6 @@ void	Request::initRequestMap()
 	_requestMap["Www-Authenticate"] = "";
 	_requestMap["Connection"] = "Keep-Alive";
 }
-
-Request::Request()
-{}
 
 Request::Request(const std::string &str): _method(""), _version(""), _uri(""), _body(""), _query(""), _ret(200)
 {

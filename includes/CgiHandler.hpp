@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 16:25:58 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/28 16:40:51 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/01/25 15:09:36 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define CGIHANDLER_HPP
 
 # include "webserv.hpp"
+
+class Request;
+class ResponseConfig;
 
 class CgiHandler
 {

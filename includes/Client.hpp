@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:50:10 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/28 17:50:11 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/01/25 15:05:56 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define CLIENT_HPP
 
 # include "webserv.hpp"
+
+class Server;
 
 class Client
 {
