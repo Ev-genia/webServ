@@ -24,7 +24,7 @@ private:
 	std::string		_contentLocation;
 	std::string		_path;
 	std::string		_error_page;// ????
-	unsigned long	body_size; // max size for the client body, defaults to 8 000??
+	unsigned long	_body_size; // max size for the client body, defaults to 8 000??
 	std::string		_lang;
 	std::string		_method_allowed;
 	std::string		_autoindex;
