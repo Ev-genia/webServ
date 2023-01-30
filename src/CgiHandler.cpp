@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 16:26:02 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/25 15:05:17 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/01/27 22:23:07 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	CgiHandler::initEnv(Request &request, ResponseConfig &respConf)
 	_env["PATH_TRANSLATED"] = request.getUri();
 	_env["QUERY_STRING"] = request.getQuery();
 	_env["REMOTEaddr"] = to_string(respConf.getServer().getListen().host);//Удаленный IP-адрес, с которого пользователь делает запрос.
-	_env["REMOTE_IDENT"] = headers["Authorization"];
-	_env["REMOTE_USER"] = headers["Authorization"];
+	// _env["REMOTE_IDENT"] = headers["Authorization"];
+	// _env["REMOTE_USER"] = headers["Authorization"];
 	_env["REQUEST_URI"] = request.getUri() + request.getQuery();
 	if (headers.find("Hostname") != headers.end())
 		_env["SERVER_NAME"] = headers["Hostname"];

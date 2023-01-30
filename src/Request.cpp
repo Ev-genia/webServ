@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:02 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/25 15:17:30 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/01/30 11:11:09 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,13 +116,13 @@ void	Request::readVersion(const std::string &line, size_t i)
 		std::cerr << "Error in http request: No http version" << std::endl;
 		return ;
 	}
-std::cout << "Request::readVersion|line[i]: " << &line[i] << std::endl;
-std::cout << "Request::readVersion| i: " << i << std::endl;
+// std::cout << "Request::readVersion|line[i]: " << &line[i] << std::endl;
+// std::cout << "Request::readVersion| i: " << i << std::endl;
 	if (line[i] == 'H' && line[i + 1] == 'T' && line[i + 2] == 'T'
 			&& line[i + 3] == 'P' && line[i + 4] == '/')
 	{
 		_version.assign(line, i + 5, 3);
-std::cout << "Request::readVersion|HTTP version: " << _version << std::endl;
+// std::cout << "Request::readVersion|HTTP version: " << _version << std::endl;
 	}
 	if (_version != "1.0" && _version != "1.1")
 	{
@@ -249,6 +249,13 @@ void	Request::findQuery()
 		_query.assign(_uri, i + 1, std::string::npos);
 		_uri = _uri.substr(0, i);
 	}
+std::cout << "Request::findQuery| _uri: " << _uri << std::endl;
+std::cout << "Request::findQuery| _query: " << _query << std::endl;
+}
+
+void	Request::createCgi()
+{
+	
 }
 
 void	Request::parseRequest(const std::string &enterRequest)
@@ -278,6 +285,8 @@ std::cout << "Request::parseRequest|line: " << line << std::endl;
 	// setLang();
 	setBody(enterRequest.substr(poz, std::string::npos));
 	findQuery();
+	if (_uri.find("cgi_bin") != std::string::npos)
+		createCgi();
 }
 
 Request::~Request()

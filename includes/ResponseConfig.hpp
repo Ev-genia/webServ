@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ResponseConfig.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:29:05 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/25 17:25:07 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/01/25 22:00:07 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ private:
 	std::string		__contentLocation; //???????????????? что с этим делать?
 
 	std::vector<std::string>			_extension_cgi;
-	std::string							_exec_cgi;
+	// std::string							_exec_cgi;
 	Server			&_server;
 	Request			&_request;
 
