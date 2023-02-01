@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:25:53 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 11:38:08 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/01/31 23:22:21 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,20 @@ private:
 	void		methodGet(Request &, RequestConfig &);
 	void		methodPost(Request &, RequestConfig &);
 	void		methodDelete(Request &, RequestConfig &);
+	private:
+	std::string					_response;
+	std::string					_path;
+	int							_code;
+	std::string					_type;
+	bool						_isAutoIndex;
+	t_listen					_hostPort;
+	std::map<int, std::string>	_errorMap; // ??????????
 public:
-	Response(strStrMap requestMap, Server &server, Client *client);
+	Response();
 	~Response();
+
+	void			call(Request &request, ResponseConfig &responseConf);
+
 
 	static std::map<std::string, void (Response::*)(Request &, RequestConfig &)>	initMetods();
 };
