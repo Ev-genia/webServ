@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:35:02 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 16:28:04 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/01 17:45:18 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ std::string	to_string(size_t enter)
 	return (str.str());
 }
 
-int		pathIsFile(const std::string& path)
+int	pathIsFile(const std::string& path)
 {
 	struct stat s;
 	if (stat(path.c_str(), &s) == 0 )
@@ -73,4 +73,9 @@ int		pathIsFile(const std::string& path)
 	}
 	else
 		return 0;
+}
+
+std::string	getPage(const char *path, std::string const &host, int port)
+{
+
 }

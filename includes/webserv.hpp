@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:24:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 16:27:05 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/01 17:42:48 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include <set>
 // # include <sys/time.h>
 # include <sys/stat.h>
+# include <fstream>
 
 # include "Server.hpp"
 # include "utils.hpp"
@@ -43,7 +44,6 @@
 # include "ResponseConfig.hpp"
 # include "ResponseHeader.hpp"
 # include "CgiHandler.hpp"
-
 
 typedef  std::map<std::string, std::string> strStrMap;
 typedef  std::pair<std::string, std::string> strStrPair;

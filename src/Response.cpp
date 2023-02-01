@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:26:03 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 16:28:08 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/01 17:48:20 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,22 @@ int	Response::readContent()
 			_response = readHtml(_errorMap[403]);
 			return (403);
 		}
-
-
+		strStream << fileStream.rdbuf();
+		_response = strStream.str();
+		fileStream.close();
 	}
+	else if (_isAutoIndex)
+	{
+		strStream << getPage(_path.c_str(), to_string(_hostPort.host), _hostPort.port);
+		_response = strStream.str();
+		_type = "text/html";
+	}
+	else
+	{
+		_response = readHtml(_errorMap[404]);
+		return (404);
+	}
+	return (200);
 }
 
 void	Response::methodGet(Request &request, ResponseConfig &responseConf)
