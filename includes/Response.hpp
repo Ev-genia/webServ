@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:25:53 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/31 23:22:21 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/01 12:04:17 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ private:
 	bool						_isAutoIndex;
 	t_listen					_hostPort;
 	std::map<int, std::string>	_errorMap; // ??????????
+	static std::map<std::string, void (Response::*)(Request &, ResponseConfig &)>	_method;
 public:
 	Response();
 	~Response();

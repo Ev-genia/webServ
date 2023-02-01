@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:24:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 10:26:22 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/01 11:31:49 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,11 @@
 # include "Client.hpp"
 # include "Location.hpp"
 # include "Request.hpp"
-// # include "Response.hpp"
+# include "Response.hpp"
 # include "ResponseConfig.hpp"
+# include "ResponseHeader.hpp"
 # include "CgiHandler.hpp"
+
 
 typedef  std::map<std::string, std::string> strStrMap;
 typedef  std::pair<std::string, std::string> strStrPair;

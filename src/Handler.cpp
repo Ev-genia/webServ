@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Handler.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:24:49 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/31 15:43:13 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/01 12:02:28 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,7 @@ void	Handler::processChunk(Client *client)
 
 void	Handler::process(Client *client)//, Config & conf)
 {
-	// RequestConfig	requestConf;
-	// Response		response;
+	 Response		response;
 	// std::string		recvd = "";
 
 	if (client->request.find("Transfer-Encoding: chunked") != std::string::npos &&
@@ -77,9 +76,9 @@ void	Handler::process(Client *client)//, Config & conf)
 		if (request.getRet() != 200)
 			request.setMethod("GET");
 		
-		// requestConf = conf.getConfigForRequest(this->_listen,  request.getPath(), request.getHeaders().at("Host"), request.getMethod(), request);
+		ResponseConfig responseConf(client->getServerRef(),  request);
 
-		// response.call(request, requestConf);
+		response.call(request, responseConf);
 
 		// client->setResponse(response.getResponse());
 

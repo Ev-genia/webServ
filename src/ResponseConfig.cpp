@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:23:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 10:43:36 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/01 12:23:39 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,4 +109,9 @@ const t_listen	&ResponseConfig::getHostPort() const {
 
  std::set<std::string>		ResponseConfig::getAllowedMethods() const {
 	return _method_allowed;
+}
+
+unsigned long		ResponseConfig::getBodySize() const
+{
+	return _body_size;
 }
