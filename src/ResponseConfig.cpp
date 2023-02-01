@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:23:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/25 17:22:52 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/01 10:43:36 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,28 @@ ResponseConfig::ResponseConfig(Server &server, Request &request): _server(server
 	std::string	ret;
 	std::vector<Location> locations = server.getLocations();
 	std::vector<Location>::iterator it;
+	std::map<std::string, std::string> serverParams = server.getParams();
+	_error_page = serverParams["error_page"];
+//_path = removeSlashes(ret);
+	_root = serverParams["root"];
+	_method_allowed = makeSet(makeVector(serverParams["method_allowed"], ' '));
 
-	_error_page = server.getParams()["error_page"];
-	_path = removeSlashes(ret);
-	_method_allowed = server.getParams()["method_allowed"];
-	_autoindex = server.getParams()["autoindex"];
+	if (serverParams.find("autoindex") != serverParams.end() && serverParams["autoindex"] == "on")
+		_autoindex = true;
+	else
+		_autoindex = false;
 
 	for (it = locations.begin(); it < locations.end(); it++)
 	{
-		if (it->getPath() == request.getUri())
+		if (request.getUri().find(it->getPath()) != std::string::npos)//есть ли в uri эта часть it->getPath, а не полносе совпадение
 		{
 			std::map <std::string, std::string> locationMap = it->getLocationMap();
 			_body_size =  strtoul(locationMap["body_size"].c_str(), 0, 10);
 			//если зашли в location, то метод берем отсюда, если нет, останется из конфига сервера
-			_method_allowed = locationMap["method_allowed"];
+			_method_allowed = makeSet(makeVector(locationMap["method_allowed"], ' '));
 			_exec_cgi = locationMap["exec_cgi"];
-			_extension_cgi = makeCgiVector(locationMap["extension_cgi"], ' ');
+			_extension_cgi = makeVector(locationMap["extension_cgi"], ' ');
+			_root = locationMap["root"];
 		}
 	}
 }
@@ -72,7 +78,7 @@ std::string	ResponseConfig::removeSlashes(const std::string &str)
 	return (ret);
 }
 
-std::vector<std::string> ResponseConfig::makeCgiVector(std::string extensionStr, const char delim)
+std::vector<std::string> ResponseConfig::makeVector(std::string extensionStr, const char delim)
 {
 	std::vector<std::string>	result;
 	size_t start;
@@ -86,4 +92,21 @@ std::vector<std::string> ResponseConfig::makeCgiVector(std::string extensionStr,
 	return result;
 }
 
+std::set<std::string>		ResponseConfig::makeSet(std::vector<std::string> vect)
+{
+	for (std::vector<std::string>::iterator i = vect.begin(); i != vect.end(); i++)
+		this->_method_allowed.insert(*i);
+}
 
+bool const	&ResponseConfig::getAutoIndex() const
+{
+	return _autoindex;
+}
+
+const t_listen	&ResponseConfig::getHostPort() const {
+	return this->_hostPort;
+}
+
+ std::set<std::string>		ResponseConfig::getAllowedMethods() const {
+	return _method_allowed;
+}

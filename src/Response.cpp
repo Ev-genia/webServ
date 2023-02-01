@@ -3,17 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   Response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:26:03 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/25 15:17:34 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/01 01:03:29 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Response.hpp"
 
-Response::Response(strStrMap requestMap, Server &server, Client *client)
-	:_requestMap(requestMap), _server(server), _client(client){}
+Response::Response(){}
 
 Response::~Response(){}
+
+void	Response::call(Request &request, ResponseConfig &responseConf)
+{
+	//_errorMap = responseConf.getErrorPage();
+	_isAutoIndex = responseConf.getAutoIndex();
+	_code = request.getRet();
+	_hostPort.host = responseConf.getHostPort().host;
+	_hostPort.port = responseConf.getHostPort().port;
+	//_path = requestConf.getPath();
+
+std::vector<std::string>::iterator it = responseConf.getAllowedMethods().begin();
+	for(; it != responseConf.getAllowedMethods().end(); it++)
+	{	if ((*it) == request.getMethod())
+			_code = 405;
+	}
+}
 
