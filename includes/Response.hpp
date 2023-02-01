@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:25:53 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 12:04:17 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/01 16:16:27 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ private:
 	void		methodGet(Request &, ResponseConfig &);
 	void		methodPost(Request &, ResponseConfig &);
 	void		methodDelete(Request &, ResponseConfig &);
+
+	int			readContent();
 
 	static std::map<std::string, void (Response::*)(Request &, ResponseConfig &)>	_method;
 public:

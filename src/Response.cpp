@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:26:03 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 16:01:14 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/01 16:31:12 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,26 @@ std::map<std::string, void (Response::*)(Request &, ResponseConfig &)>	Response:
 	methodsMap["DELETE"] = &Response::methodDelete;
 
 	return (methodsMap);
+}
+
+int	Response::readContent()
+{
+	std::ifstream		fileStream;
+	std::stringstream	strStream;
+
+	_response = "";
+
+	if (pathIsFile(_path))
+	{
+		fileStream.open(_path.c_str(), std::ifstream::in);
+		if (fileStream.is_open() == false)
+		{
+			_response = readHtml(_errorMap[403]);
+			return (403);
+		}
+
+		
+	}
 }
 
 void	Response::methodGet(Request &request, ResponseConfig &responseConf)
