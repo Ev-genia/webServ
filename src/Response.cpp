@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:26:03 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 16:31:12 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/01 16:28:08 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	Response::call(Request &request, ResponseConfig &responseConf)
 	{
 		ResponseHeader	head;
 
-		// _response = head.notAllowed(responseConf.getAllowedMethods(), responseConf.getContentLocation(),
-		// 		 _code, responseConf.getLang()) + "\r\n";
+		_response = head.notAllowed(responseConf.getAllowedMethods(), responseConf.getContentLocation(),
+				 _code) + "\r\n";
 		return ;
 	}
 	(this->*Response::_method[request.getMethod()])(request, responseConf);
@@ -67,7 +67,7 @@ int	Response::readContent()
 			return (403);
 		}
 
-		
+
 	}
 }
 
@@ -102,5 +102,5 @@ void	Response::methodGet(Request &request, ResponseConfig &responseConf)
 		_response = readHtml(_errorMap[_code]);
 	// if (_code == 500)
 	// 	_response = this->readHtml(_errorMap[_code]);
-	_response = head.getHeader(_response.size(), _path, _codde, _type, responseConf.getContentLication()) + "\r\n" + _response;
+	_response = head.getHeader(_response.size(), _path, _code, _type, responseConf.getContentLication()) + "\r\n" + _response;
 }

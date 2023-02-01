@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:24:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 11:31:49 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/01 16:27:05 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # include <vector>
 # include <set>
 // # include <sys/time.h>
+# include <sys/stat.h>
 
 # include "Server.hpp"
 # include "utils.hpp"
