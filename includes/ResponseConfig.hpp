@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ResponseConfig.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:29:05 by mlarra            #+#    #+#             */
 /*   Updated: 2023/02/01 10:43:31 by wcollen          ###   ########.fr       */

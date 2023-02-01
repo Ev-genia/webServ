@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:50:10 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/25 15:05:56 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/01/31 14:11:28 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ public:
 	const std::string	&getResponse() const;
 	const std::string	&getIpAddress() const;
 	const Server		&getServerRef() const;
+	void				setResponse(std::string);
 };
 
 

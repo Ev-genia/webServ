@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:20 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/25 11:11:48 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/01/27 22:59:20 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ private:
 	// void								setLang();
 	void								setBody(const std::string &);
 	void								findQuery();
+	void								createCgi();
 	Request();
 	// Request(const Request &);
 

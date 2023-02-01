@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head> 
+</head>
+
+<body>
+		<!-- <form class="form" onSubmit="process('123')"> -->
+		<!-- <form class="form"> -->
+		<form id="form">
+			<legend><h3>Enter text</h3></legend>
+			<!-- <input type="text" placeholder="Text" name="name"> -->
+			<input type="text" placeholder="Text" name="nameValue">
+			<input type="submit" id="button" value="Push me">
+			<!-- <button typy='submit'>Take rezult</button> -->
+			<!-- <button type="submit" id="submit" onclick="process('ok');">Push me</button> -->
+			<!-- <button type="button" id="submit" onclick="process('ok');">Push me</button> -->
+			<!-- <button type="submit" id="submit" onclick="process();">Push me</button> -->
+			<script>
+				const form = document.getElementById('form');
+				    
+				    form.addEventListener('submit', (e) => {
+				      e.preventDefault();
+				      
+				      const formData = new FormData(form);
+				      const name = formData.get('nameValue');
+				      
+				      console.log(name);
+				    })
+			</script>
+		</form>
+		<script src="page-product_02.js"></script>
+</body>
+</html>

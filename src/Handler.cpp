@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:24:49 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/25 15:17:16 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/01/31 15:43:13 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ void	Handler::process(Client *client)//, Config & conf)
 		// requestConf = conf.getConfigForRequest(this->_listen,  request.getPath(), request.getHeaders().at("Host"), request.getMethod(), request);
 
 		// response.call(request, requestConf);
+
+		// client->setResponse(response.getResponse());
 
 		// _requests.erase(socket);
 		// _requests.insert(std::make_pair(socket, response.getResponse()));
@@ -158,6 +160,7 @@ void	Handler::serverRun()
 
 				if (FD_ISSET(fdClient, &fdWrite))
 				{
+std::cout << "(*it)->getResponse().c_str(): " << std::endl;
 					ret = send(fdClient, (*it)->getResponse().c_str(), (*it)->getResponse().size(), 0);
 					if (ret == -1)
 					{
