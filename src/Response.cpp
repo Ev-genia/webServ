@@ -25,11 +25,19 @@ void	Response::call(Request &request, ResponseConfig &responseConf)
 	_hostPort.port = responseConf.getHostPort().port;
 	//_path = requestConf.getPath();
 
-std::vector<std::string>::iterator it = responseConf.getAllowedMethods().begin();
-	for(; it != responseConf.getAllowedMethods().end(); it++)
-	{	if ((*it) == request.getMethod())
-			_code = 405;
+	if (responseConf.getAllowedMethods().find(request.getMethod()) == responseConf.getAllowedMethods().end())
+		_code = 405;
+	else if (responseConf.getBodySize() < request.getBody().size())
+		_code = 413;
+	if (_code == 405 || _code == 413)
+	{
+		ResponseHeader	head;
+
+		// _response = head.notAllowed(responseConf.getAllowedMethods(), responseConf.getContentLocation(),
+		// 		 _code, responseConf.getLang()) + "\r\n";
+		return ;
 	}
+	(this->*Response::_method[request.getMethod()])(request, responseConf);
 }
 
 std::map<std::string, void (Response::*)(Request &, ResponseConfig &)>	Response::initMetods()

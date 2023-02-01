@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:49:54 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/31 14:12:25 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/01 12:10:16 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ const std::string	&Client::getIpAddress() const
 	return (_ipAddress);
 }
 
-const Server	&Client::getServerRef() const
+Server				&Client::getServerRef() const
 {
 	return (_serverRef);
 }

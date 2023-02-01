@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Response.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:25:53 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 12:09:18 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/01 12:04:17 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,6 @@ class Server;
 class Response
 {
 private:
-	std::string	_response;
-	strStrMap	_requestMap;
-	Server		_server;
-	Client 		*_client;
-
 	std::string					_response;
 	std::string					_path;
 	int							_code;
@@ -38,6 +33,7 @@ private:
 	void		methodPost(Request &, ResponseConfig &);
 	void		methodDelete(Request &, ResponseConfig &);
 
+	static std::map<std::string, void (Response::*)(Request &, ResponseConfig &)>	_method;
 public:
 	Response();
 	~Response();

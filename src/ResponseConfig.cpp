@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ResponseConfig.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:23:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 12:13:42 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/01 12:23:39 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,3 +116,8 @@ std::string&	ResponseConfig::getCgiExec()
 	return (_exec_cgi);
 }
 
+
+unsigned long		ResponseConfig::getBodySize() const
+{
+	return _body_size;
+}
