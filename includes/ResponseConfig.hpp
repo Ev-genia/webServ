@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:29:05 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 10:43:31 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/01 12:13:50 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ public:
 	const std::string					&getPath() const;
 	const bool							&getAutoIndex() const;
 	const t_listen						&getHostPort() const;
+	std::string							&getCgiExec();
 	std::string							removeSlashes(const std::string &);
-	std::set<std::string>			getAllowedMethods() const;
+	std::set<std::string>				getAllowedMethods() const;
 	std::vector<std::string>			makeVector(std::string extensionString, const char delim);
 	std::set<std::string>				makeSet(std::vector<std::string>);
 };

@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:02 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/30 11:11:09 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/01 12:16:48 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,8 +285,8 @@ std::cout << "Request::parseRequest|line: " << line << std::endl;
 	// setLang();
 	setBody(enterRequest.substr(poz, std::string::npos));
 	findQuery();
-	if (_uri.find("cgi_bin") != std::string::npos)
-		createCgi();
+	// if (_uri.find("cgi_bin") != std::string::npos)
+	// 	createCgi();
 }
 
 Request::~Request()
