@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:23:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 12:23:39 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/01 16:29:12 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ ResponseConfig::ResponseConfig(Server &server, Request &request): _server(server
 	_error_page = serverParams["error_page"];
 //_path = removeSlashes(ret);
 	_root = serverParams["root"];
+	_exec_cgi = "";
 	_method_allowed = makeSet(makeVector(serverParams["method_allowed"], ' '));
 
 	if (serverParams.find("autoindex") != serverParams.end() && serverParams["autoindex"] == "on")
@@ -39,8 +40,27 @@ ResponseConfig::ResponseConfig(Server &server, Request &request): _server(server
 			_exec_cgi = locationMap["exec_cgi"];
 			_extension_cgi = makeVector(locationMap["extension_cgi"], ' ');
 			_root = locationMap["root"];
+			_locationPath = it->getPath();
+
+			if (*(--_locationPath.end()) == '/')
+				_locationPath.resize(_locationPath.size() - 1);
+
+			break;
 		}
 	}
+	std::string temp;
+	if (_locationPath[0] != '*')
+	{
+		temp = _root + request.getUri().substr(_locationPath.length());
+		_contentLocation = removeSlashes(request.getUri().substr(_locationPath.length()));
+	}
+	else
+	{
+		temp = _root + request.getUri();
+		_contentLocation = removeSlashes(request.getUri());
+	}
+	_path = removeSlashes(temp);
+	
 }
 
 ResponseConfig::~ResponseConfig()
@@ -51,9 +71,9 @@ Server	&ResponseConfig::getServer() const
 	return (_server);
 }
 
-const std::string	&ResponseConfig::getPath() const
+const std::string	&ResponseConfig::getLocationPath() const
 {
-	return (_path);
+	return (_locationPath);
 }
 
 std::string	ResponseConfig::removeSlashes(const std::string &str)
@@ -83,12 +103,15 @@ std::vector<std::string> ResponseConfig::makeVector(std::string extensionStr, co
 	std::vector<std::string>	result;
 	size_t start;
     size_t end = 0;
- 
-    while ((start = extensionStr.find_first_not_of(delim, end)) != std::string::npos)
-    {
-        end = extensionStr.find(delim, start);
-        result.push_back(extensionStr.substr(start, end - start));
-    }
+
+	//if (extensionStr != NULL)
+	//{
+		while ((start = extensionStr.find_first_not_of(delim, end)) != std::string::npos)
+		{
+			end = extensionStr.find(delim, start);
+			result.push_back(extensionStr.substr(start, end - start));
+		}
+//	}
 	return result;
 }
 
@@ -114,4 +137,14 @@ const t_listen	&ResponseConfig::getHostPort() const {
 unsigned long		ResponseConfig::getBodySize() const
 {
 	return _body_size;
+}
+
+const std::string		&ResponseConfig::getPath() const
+{
+	return _path;
+}
+
+const std::string		&ResponseConfig::getContentLocation() const
+{
+	return _contentLocation;
 }

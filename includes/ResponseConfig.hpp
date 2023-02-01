@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:29:05 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 12:23:29 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/01 16:29:23 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ class ResponseConfig
 {
 private:
 	std::string						_contentLocation; //???????????????? что с этим делать?
-	std::string						_path;
+	std::string						_locationPath;
+	std::string						_path; //полный путь к исполняемому файлу  cgi 
 	std::string						_error_page;
 	unsigned long					_body_size; // max size for the client body, defaults to 8 000??
 	std::string						_lang;
@@ -39,12 +40,14 @@ public:
 	ResponseConfig(Server &server, Request &request);
 	~ResponseConfig();
 	Server								&getServer() const;
+	const std::string					&getLocationPath() const;
 	const std::string					&getPath() const;
 	const bool							&getAutoIndex() const;
 	const t_listen						&getHostPort() const;
 	std::string							removeSlashes(const std::string &);
 	std::set<std::string>				getAllowedMethods() const;
 	unsigned long						getBodySize() const;
+	const std::string					&getContentLocation() const;
 	std::vector<std::string>			makeVector(std::string extensionString, const char delim);
 	std::set<std::string>				makeSet(std::vector<std::string>);
 };
