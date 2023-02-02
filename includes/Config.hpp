@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:22:52 by wcollen           #+#    #+#             */
-/*   Updated: 2022/12/20 16:25:18 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/02 13:48:24 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 typedef  std::pair<std::string, std::string> strStrPair;
 typedef  std::pair<std::string, bool> strBoolPair;
 
-struct s_listen;
+// struct s_listen;
+
 class Config
 {
 private:

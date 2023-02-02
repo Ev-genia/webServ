@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:25:53 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 12:13:48 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/02 14:30:40 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ private:
 	int							_code;
 	std::string					_type;
 	bool						_isAutoIndex;
-	t_listen					_hostPort;
+	struct s_listen				&_hostPort;
 	std::map<int, std::string>	_errorMap; // ??????????
 
 	void		methodGet(Request &, ResponseConfig &);
@@ -44,7 +44,6 @@ public:
 	~Response();
 
 	void			call(Request &request, ResponseConfig &responseConf);
-
 
 	static std::map<std::string, void (Response::*)(Request &, ResponseConfig &)>	initMetods();
 };

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Handler.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:24:49 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 12:02:28 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/02 14:07:54 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ void	Handler::serverRun()
 
 				if (FD_ISSET(fdClient, &fdWrite))
 				{
-std::cout << "(*it)->getResponse().c_str(): " << std::endl;
+// std::cout << "(*it)->getResponse().c_str(): " << std::endl;
 					ret = send(fdClient, (*it)->getResponse().c_str(), (*it)->getResponse().size(), 0);
 					if (ret == -1)
 					{

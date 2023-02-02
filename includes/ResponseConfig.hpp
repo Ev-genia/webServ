@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ResponseConfig.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:29:05 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 16:29:23 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/02 14:14:28 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ private:
 	std::string						_exec_cgi;
 	std::string						_root;
 	std::vector<std::string>		_extension_cgi;
-	t_listen						_hostPort;
+	struct s_listen					&_hostPort;
 	Server			&_server;
 	Request			&_request;
 
@@ -43,7 +43,7 @@ public:
 	const std::string					&getLocationPath() const;
 	const std::string					&getPath() const;
 	const bool							&getAutoIndex() const;
-	const t_listen						&getHostPort() const;
+	const s_listen						&getHostPort() const;
 	std::string							&getCgiExec();
 	std::string							removeSlashes(const std::string &);
 	std::set<std::string>				getAllowedMethods() const;

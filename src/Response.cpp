@@ -6,13 +6,14 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:26:03 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 12:09:57 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/02 14:33:10 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Response.hpp"
 
-Response::Response(){}
+// Response::Response(): _hostPort()
+// {}
 
 Response::~Response(){}
 
@@ -45,8 +46,8 @@ std::map<std::string, void (Response::*)(Request &, ResponseConfig &)>	Response:
 	std::map<std::string, void (Response::*)(Request &, ResponseConfig &)>	methodsMap;
 
 	methodsMap["GET"] = &Response::methodGet;
-	methodsMap["POST"] = &Response::methodPost;
-	methodsMap["DELETE"] = &Response::methodDelete;
+	// methodsMap["POST"] = &Response::methodPost;
+	// methodsMap["DELETE"] = &Response::methodDelete;
 
 	return (methodsMap);
 }
@@ -56,7 +57,7 @@ std::string	Response::readHtml(const std::string &enterPath)
 	std::ofstream		fileStream;
 	std::stringstream	strStream;
 
-	if (pathIsFile)
+	if (pathIsFile(enterPath))
 	{
 		fileStream.open(enterPath.c_str(), std::ifstream::in);
 		if (fileStream.is_open() == false)

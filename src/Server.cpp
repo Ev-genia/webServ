@@ -6,17 +6,17 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 11:39:55 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/25 15:17:43 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/02 14:09:08 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Server.hpp"
 
-Server::Server(): _locations()
-{
-	_socketFd = -1;
-	_autoindex = false;
-}
+// Server::Server(): _locations()
+// {
+// 	_socketFd = -1;
+// 	_autoindex = false;
+// }
 
 Server::~Server()
 {}

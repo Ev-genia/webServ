@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ResponseHeader.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:11:54 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 13:29:09 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/02 14:36:30 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ public:
 	void			setServer(void);
 	void			setTransferEncoding(void);
 	void			setWwwAuthenticate(int code);
+	
+	std::string		getHeader(size_t size, const std::string& path, int code, std::string type, const std::string& contentLocation, const std::string& lang);
+	std::string		getStatusMessage(int code);
 
 	std::string		writeHeader(void);
 	void			setValues(size_t size, const std::string& path, int code, std::string type, const std::string& contentLocation);

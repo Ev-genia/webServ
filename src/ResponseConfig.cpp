@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ResponseConfig.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:23:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 16:29:12 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/02 14:14:18 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ResponseConfig.hpp"
 
-ResponseConfig::ResponseConfig(Server &server, Request &request): _server(server), _request(request)
+ResponseConfig::ResponseConfig(Server &server, Request &request): _hostPort(server.getListen()), _server(server), _request(request)
 {
 	std::string	ret;
 	std::vector<Location> locations = server.getLocations();
@@ -31,7 +31,7 @@ ResponseConfig::ResponseConfig(Server &server, Request &request): _server(server
 
 	for (it = locations.begin(); it < locations.end(); it++)
 	{
-		if (request.getUri().find(it->getPath()) != std::string::npos)//есть ли в uri эта часть it->getPath, а не полносе совпадение
+		if (_request.getUri().find(it->getPath()) != std::string::npos)//есть ли в uri эта часть it->getPath, а не полносе совпадение
 		{
 			std::map <std::string, std::string> locationMap = it->getLocationMap();
 			_body_size =  strtoul(locationMap["body_size"].c_str(), 0, 10);
@@ -51,16 +51,16 @@ ResponseConfig::ResponseConfig(Server &server, Request &request): _server(server
 	std::string temp;
 	if (_locationPath[0] != '*')
 	{
-		temp = _root + request.getUri().substr(_locationPath.length());
-		_contentLocation = removeSlashes(request.getUri().substr(_locationPath.length()));
+		temp = _root + _request.getUri().substr(_locationPath.length());
+		_contentLocation = removeSlashes(_request.getUri().substr(_locationPath.length()));
 	}
 	else
 	{
-		temp = _root + request.getUri();
-		_contentLocation = removeSlashes(request.getUri());
+		temp = _root + _request.getUri();
+		_contentLocation = removeSlashes(_request.getUri());
 	}
 	_path = removeSlashes(temp);
-	
+	// _hostPort = server.getListen();
 }
 
 ResponseConfig::~ResponseConfig()
@@ -119,6 +119,7 @@ std::set<std::string>		ResponseConfig::makeSet(std::vector<std::string> vect)
 {
 	for (std::vector<std::string>::iterator i = vect.begin(); i != vect.end(); i++)
 		this->_method_allowed.insert(*i);
+	return (_method_allowed);
 }
 
 bool const	&ResponseConfig::getAutoIndex() const
