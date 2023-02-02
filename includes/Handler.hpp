@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:23:51 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/28 17:47:27 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/02 16:51:41 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 class Server;
 class Client;
+// class Response;
 
 class Handler
 {

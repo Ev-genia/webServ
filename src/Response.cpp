@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   Response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:26:03 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 16:38:20 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/02 17:47:29 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Response.hpp"
 
-// Response::Response(): _hostPort()
-// {}
+Response::Response()
+{}
 
 Response::~Response(){}
 
@@ -22,8 +22,9 @@ void	Response::call(Request &request, ResponseConfig &responseConf)
 	//_errorMap = responseConf.getErrorPage();
 	_isAutoIndex = responseConf.getAutoIndex();
 	_code = request.getRet();
-	_hostPort.host = responseConf.getHostPort().host;
-	_hostPort.port = responseConf.getHostPort().port;
+	_hostPort->host = responseConf.getHostPort().host;
+	_hostPort->port = responseConf.getHostPort().port;
+	// *_hostPort = responseConf.getHostPort();
 	//_path = requestConf.getPath();
 
 	if (responseConf.getAllowedMethods().find(request.getMethod()) == responseConf.getAllowedMethods().end())
@@ -40,6 +41,8 @@ void	Response::call(Request &request, ResponseConfig &responseConf)
 	}
 	(this->*Response::_method[request.getMethod()])(request, responseConf);
 }
+
+std::map<std::string, void (Response::*)(Request &, ResponseConfig &)>	Response::_method = Response::initMetods();
 
 std::map<std::string, void (Response::*)(Request &, ResponseConfig &)>	Response::initMetods()
 {
@@ -92,7 +95,7 @@ int	Response::readContent()
 	}
 	else if (_isAutoIndex)
 	{
-		strStream << getPage(_path.c_str(), to_string(_hostPort.host), _hostPort.port);
+		strStream << getPage(_path.c_str(), to_string(_hostPort->host), _hostPort->port);
 		_response = strStream.str();
 		_type = "text/html";
 	}
@@ -136,4 +139,9 @@ void	Response::methodGet(Request &request, ResponseConfig &responseConf)
 	// if (_code == 500)
 	// 	_response = this->readHtml(_errorMap[_code]);
 	_response = head.getHeader(_response.size(), _path, _code, _type, responseConf.getContentLocation()) + "\r\n" + _response;
+}
+
+std::string	Response::getResponse()
+{
+	return (_response);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ResponseConfig.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:29:05 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 16:16:34 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/02 17:46:23 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ public:
 	const std::string					&getLocationPath() const;
 	const std::string					&getPath() const;
 	const bool							&getAutoIndex() const;
-	const s_listen						&getHostPort() const;
+	struct s_listen						&getHostPort() const;
 	std::string							&getCgiExec();
 	std::set<std::string>				getAllowedMethods() const;
 	unsigned long						getBodySize() const;

@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:23:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 16:22:55 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/02 17:46:14 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ bool const	&ResponseConfig::getAutoIndex() const
 	return _autoindex;
 }
 
-const t_listen	&ResponseConfig::getHostPort() const {
+struct s_listen	&ResponseConfig::getHostPort() const {
 	return this->_hostPort;
 }
 

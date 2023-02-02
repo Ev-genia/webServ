@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:25:53 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 14:30:40 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/02 17:19:22 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,27 @@ private:
 	int							_code;
 	std::string					_type;
 	bool						_isAutoIndex;
-	struct s_listen				&_hostPort;
+	struct s_listen				*_hostPort;
 	std::map<int, std::string>	_errorMap; // ??????????
 
-	void		methodGet(Request &, ResponseConfig &);
-	// void		methodPost(Request &, ResponseConfig &);
-	// void		methodDelete(Request &, ResponseConfig &);
 
-	int			readContent();
-	std::string	readHtml(const std::string &);
+
+
 
 	static std::map<std::string, void (Response::*)(Request &, ResponseConfig &)>	_method;
+	static std::map<std::string, void (Response::*)(Request &, ResponseConfig &)>	initMetods();
+
 public:
 	Response();
 	~Response();
 
-	void			call(Request &request, ResponseConfig &responseConf);
-
-	static std::map<std::string, void (Response::*)(Request &, ResponseConfig &)>	initMetods();
+	void		call(Request &request, ResponseConfig &responseConf);
+	int			readContent();
+	std::string	readHtml(const std::string &);
+	void		methodGet(Request &, ResponseConfig &);
+// void		methodPost(Request &, ResponseConfig &);
+// void		methodDelete(Request &, ResponseConfig &);
+	std::string	getResponse();
 };
 
 #endif

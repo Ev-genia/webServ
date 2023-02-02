@@ -6,7 +6,7 @@
 #    By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/30 12:15:15 by mlarra            #+#    #+#              #
-#    Updated: 2023/02/02 13:57:42 by mlarra           ###   ########.fr        #
+#    Updated: 2023/02/02 17:12:11 by mlarra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,10 +22,10 @@ SRC			=	${addprefix ${DIR}, CgiHandler.cpp\
 									main.cpp\
 									Request.cpp\
 									ResponseConfig.cpp\
-									Server.cpp\
-									utils.cpp\
 									Response.cpp\
 									ResponseHeader.cpp\
+									Server.cpp\
+									utils.cpp\
 									}
 						
 
@@ -35,7 +35,7 @@ HEADERS		=	${DIR_HEADERS}webserv.hpp
 
 OBJ			=	${SRC:%.cpp=%.o}
 
-FLAGS		=	-Wall -Wextra -Werror -std=c++98 #-g
+FLAGS		=	-Wall -Wextra -Werror -std=c++98 -g
 
 CC			=	c++
 

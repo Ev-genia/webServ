@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:24:49 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 14:07:54 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/02 17:33:58 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	Handler::processChunk(Client *client)
 
 void	Handler::process(Client *client)//, Config & conf)
 {
-	 Response		response;
+	// Response		response;
 	// std::string		recvd = "";
 
 	if (client->request.find("Transfer-Encoding: chunked") != std::string::npos &&
@@ -75,12 +75,16 @@ void	Handler::process(Client *client)//, Config & conf)
 // std::cout << "Handler::process|request.getMethod(): " << request.getMethod() << std::endl;
 		if (request.getRet() != 200)
 			request.setMethod("GET");
-		
+std::cout << "end request" << std::endl;
 		ResponseConfig responseConf(client->getServerRef(),  request);
+		
+		Response		response;
+std::cout << "response start" << std::endl;
 
 		response.call(request, responseConf);
+std::cout << "response call end" << std::endl;
 
-		// client->setResponse(response.getResponse());
+		client->setResponse(response.getResponse());
 
 		// _requests.erase(socket);
 		// _requests.insert(std::make_pair(socket, response.getResponse()));
