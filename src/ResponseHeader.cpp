@@ -72,14 +72,13 @@ std::string		ResponseHeader::getStatusMessage(int code)
 
 ResponseHeader::~ResponseHeader(){}
 
-//responseConf.getAllowedMethods(), responseConf.getContentLocation(), _code
 std::string	ResponseHeader::notAllowed(std::set<std::string> methods, const std::string& path, int code)
 {
 	std::string header;
 
 	resetValues();
 	setValues(0, path, code, "", path);
-//	setAllow(methods);
+	setAllow(methods);
 
 	if (code == 405)
 		header = "HTTP/1.1 405 Method Not Allowed\r\n";
@@ -93,10 +92,10 @@ std::string	ResponseHeader::notAllowed(std::set<std::string> methods, const std:
 
 void			ResponseHeader::setValues(size_t size, const std::string& path, int code, std::string type, const std::string& contentLocation)
 {
-	// setAllow();
+	setAllow();
 
 	_contentLength = to_string(size);
-	_contentLocation = path;
+	_contentLocation = contentLocation;
 	setContentType(type, path);
 	setDate();
 	setLastModified(path);
@@ -123,6 +122,19 @@ void			ResponseHeader::resetValues(void)
 	_wwwAuthenticate = "";
 	
 	initErrorMap();
+}
+
+void			ResponseHeader::setAllow(std::set<std::string> methods)
+{
+	std::set<std::string>::iterator it = methods.begin();
+
+	while (it != methods.end())
+	{
+		_allow += *(it++);
+
+		if (it != methods.end())
+			_allow += ", ";
+	}
 }
 
 void			ResponseHeader::setAllow(const std::string& allow)

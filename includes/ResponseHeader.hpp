@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:11:54 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 16:30:24 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/02 16:35:47 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ public:
 	ResponseHeader();
 	~ResponseHeader();
 
-	//void			setAllow(std::set<std::string> methods);
+	void			setAllow(std::set<std::string> methods);
 
 	void			setAllow(const std::string& allow = "");
 	void			setContentType(std::string type, std::string path);
