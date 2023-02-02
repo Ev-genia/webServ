@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:35:02 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 15:18:15 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/02 15:26:20 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,18 @@ std::string	to_string(size_t enter)
 
 int	pathIsFile(const std::string& path)
 {
-	struct stat s;
+	struct stat	s;
 	if (stat(path.c_str(), &s) == 0 )
 	{
 		if (s.st_mode & S_IFDIR)
-			return 0;
+			return (0);
 		else if (s.st_mode & S_IFREG)
-			return 1;
+			return (1);
 		else
-			return 0;
+			return (0);
 	}
 	else
-		return 0;
+		return (0);
 }
 std::string	getLink(std::string const &dirEntry, std::string const &dirName, std::string const &host, int port)
 {

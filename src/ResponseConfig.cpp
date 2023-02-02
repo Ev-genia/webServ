@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:23:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 14:14:18 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/02 16:22:55 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ ResponseConfig::ResponseConfig(Server &server, Request &request): _hostPort(serv
 	std::vector<Location> locations = server.getLocations();
 	std::vector<Location>::iterator it;
 	std::map<std::string, std::string> serverParams = server.getParams();
-	_error_page = serverParams["error_page"];
+	// _error_page = serverParams["error_page"];
+	initErrorPages();
 //_path = removeSlashes(ret);
 	_root = serverParams["root"];
 	_exec_cgi = "";
@@ -65,6 +66,22 @@ ResponseConfig::ResponseConfig(Server &server, Request &request): _hostPort(serv
 
 ResponseConfig::~ResponseConfig()
 {}
+
+void	ResponseConfig::initErrorPages()
+{
+	_errorPage[204] = "www/errors/204.html";
+	_errorPage[400] = "www/errors/400.html";
+	_errorPage[403] = "www/errors/403.html";
+	_errorPage[404] = "www/errors/404.html";
+	_errorPage[405] = "www/errors/405.html";
+	_errorPage[406] = "www/errors/406.html";
+	_errorPage[409] = "www/errors/409.html";
+	_errorPage[413] = "www/errors/413.html";
+	_errorPage[415] = "www/errors/415.html";
+	_errorPage[500] = "www/errors/500.html";
+	_errorPage[501] = "www/errors/501.html";
+	_errorPage[505] = "www/errors/505.html";
+}
 
 Server	&ResponseConfig::getServer() const
 {
@@ -154,4 +171,9 @@ const std::string		&ResponseConfig::getPath() const
 const std::string		&ResponseConfig::getContentLocation() const
 {
 	return _contentLocation;
+}
+
+const std::map<int, std::string>	&ResponseConfig::getErrorPage() const
+{
+	return (_errorPage);
 }

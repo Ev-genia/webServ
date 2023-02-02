@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:29:05 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 14:14:28 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/02 16:16:34 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ private:
 	std::string						_contentLocation; //???????????????? что с этим делать?
 	std::string						_locationPath;
 	std::string						_path; //полный путь к исполняемому файлу  cgi 
-	std::string						_error_page;
+	std::map<int, std::string>		_errorPage;
 	unsigned long					_body_size; // max size for the client body, defaults to 8 000??
 	std::string						_lang;
 	std::set<std::string>			_method_allowed;
@@ -33,8 +33,9 @@ private:
 	std::string						_root;
 	std::vector<std::string>		_extension_cgi;
 	struct s_listen					&_hostPort;
-	Server			&_server;
-	Request			&_request;
+	Server							&_server;
+	Request							&_request;
+	void							initErrorPages();
 
 public:
 	ResponseConfig(Server &server, Request &request);
@@ -45,10 +46,11 @@ public:
 	const bool							&getAutoIndex() const;
 	const s_listen						&getHostPort() const;
 	std::string							&getCgiExec();
-	std::string							removeSlashes(const std::string &);
 	std::set<std::string>				getAllowedMethods() const;
 	unsigned long						getBodySize() const;
 	const std::string					&getContentLocation() const;
+	const std::map<int, std::string>	&getErrorPage() const;
+	std::string							removeSlashes(const std::string &);
 	std::vector<std::string>			makeVector(std::string extensionString, const char delim);
 	std::set<std::string>				makeSet(std::vector<std::string>);
 };
