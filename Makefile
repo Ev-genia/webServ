@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+         #
+#    By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/30 12:15:15 by mlarra            #+#    #+#              #
-#    Updated: 2023/01/25 22:00:57 by mlarra           ###   ########.fr        #
+#    Updated: 2023/02/01 16:33:05 by wcollen          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,9 +24,10 @@ SRC			=	${addprefix ${DIR}, CgiHandler.cpp\
 									ResponseConfig.cpp\
 									Server.cpp\
 									utils.cpp\
+									Response.cpp\
+									ResponseHeader.cpp\
 									}
-
-#									Response.cpp\
+						
 
 DIR_HEADERS	=	./includes/
 
