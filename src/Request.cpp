@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:02 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 12:16:48 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/02 16:06:00 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ Request::Request()
 void	Request::initRequestMap()
 {
 	_requestMap.clear();
-	_requestMap["Accept-Charsets"] = "";
-	_requestMap["Accept-Language"] = "";
+	// _requestMap["Accept-Charsets"] = "";
+	// _requestMap["Accept-Language"] = "";
 	_requestMap["Allow"] = "";
-	_requestMap["Auth-Scheme"] = "";
+	// _requestMap["Auth-Scheme"] = "";
 	_requestMap["Authorization"] = "";
 	_requestMap["Content-Language"] = "";
 	_requestMap["Content-Length"] = "";
