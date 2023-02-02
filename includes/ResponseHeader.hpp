@@ -6,7 +6,7 @@
 /*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:11:54 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 16:26:10 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/02 16:30:24 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ public:
 	void			setRetryAfter(int code, int sec);
 	void			setWwwAuthenticate(int code);
 	
-	std::string		getHeader(size_t size, const std::string& path, int code, std::string type, const std::string& contentLocation, const std::string& lang);
+	std::string		getHeader(size_t size, const std::string& path, int code, std::string type, const std::string& contentLocation);
 	std::string		getStatusMessage(int code);
 
 	std::string		writeHeader(void);
