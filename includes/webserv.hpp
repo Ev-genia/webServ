@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:24:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 14:17:29 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/02 15:23:03 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # include <map>
 # include <vector>
 # include <set>
-// # include <sys/time.h>
+ # include <sys/time.h>
 # include <sys/stat.h>
 # include <fstream>
 # include <dirent.h>

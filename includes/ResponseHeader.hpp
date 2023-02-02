@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ResponseHeader.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/02 12:11:54 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 14:36:30 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/02 16:26:10 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,11 @@ public:
 	//void			setAllow(std::set<std::string> methods);
 
 	void			setAllow(const std::string& allow = "");
-	void			setContentLength(size_t size);
-	void			setContentLocation(const std::string& path, int code);
 	void			setContentType(std::string type, std::string path);
 	void			setDate(void);
 	void			setLastModified(const std::string& path);
 	void			setLocation(int code, const std::string& redirect);
 	void			setRetryAfter(int code, int sec);
-	void			setServer(void);
-	void			setTransferEncoding(void);
 	void			setWwwAuthenticate(int code);
 	
 	std::string		getHeader(size_t size, const std::string& path, int code, std::string type, const std::string& contentLocation, const std::string& lang);
