@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:26:03 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 17:48:20 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/02 12:09:57 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,25 @@ std::map<std::string, void (Response::*)(Request &, ResponseConfig &)>	Response:
 	methodsMap["DELETE"] = &Response::methodDelete;
 
 	return (methodsMap);
+}
+
+std::string	Response::readHtml(const std::string &enterPath)
+{
+	std::ofstream		fileStream;
+	std::stringstream	strStream;
+
+	if (pathIsFile)
+	{
+		fileStream.open(enterPath.c_str(), std::ifstream::in);
+		if (fileStream.is_open() == false)
+			return ("<!DOCTYPE html>\n<html><title>40404</title><body>There was an error finding your error page</body></html>\n");
+		strStream << fileStream.rdbuf();
+		fileStream.close();
+		_type = "text/html";
+		return (strStream.str());
+	}
+	else
+		return ("<!DOCTYPE html>\n<html><title>40404</title><body>There was an error finding your error page</body></html>\n");
 }
 
 int	Response::readContent()

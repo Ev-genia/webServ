@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:24:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 17:42:48 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/02 12:17:47 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,13 @@
 # include "ResponseConfig.hpp"
 # include "ResponseHeader.hpp"
 # include "CgiHandler.hpp"
+
+//server's host and port
+typedef struct s_listen
+{
+	int				port;
+	in_addr_t		host;
+}					t_listen;
 
 typedef  std::map<std::string, std::string> strStrMap;
 typedef  std::pair<std::string, std::string> strStrPair;

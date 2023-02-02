@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:25:53 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 16:16:27 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/02 12:13:48 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 typedef  std::map<std::string, std::string> strStrMap;
 
 class Server;
+class ResponseConfig;
+class Request;
 
 class Response
 {
@@ -30,10 +32,11 @@ private:
 	std::map<int, std::string>	_errorMap; // ??????????
 
 	void		methodGet(Request &, ResponseConfig &);
-	void		methodPost(Request &, ResponseConfig &);
-	void		methodDelete(Request &, ResponseConfig &);
+	// void		methodPost(Request &, ResponseConfig &);
+	// void		methodDelete(Request &, ResponseConfig &);
 
 	int			readContent();
+	std::string	readHtml(const std::string &);
 
 	static std::map<std::string, void (Response::*)(Request &, ResponseConfig &)>	_method;
 public:
