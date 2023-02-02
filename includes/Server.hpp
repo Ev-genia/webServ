@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:22:42 by mlarra            #+#    #+#             */
-/*   Updated: 2022/12/21 12:09:51 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/02 12:17:32 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@
 class Location;
 class Client;
 
-//server's host and port
-typedef struct s_listen
-{
-	int				port;
-	in_addr_t		host;
-}					t_listen;
+// //server's host and port
+// typedef struct s_listen
+// {
+// 	int				port;
+// 	in_addr_t		host;
+// }					t_listen;
 
 class Server
 {

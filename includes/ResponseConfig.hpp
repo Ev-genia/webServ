@@ -44,6 +44,7 @@ public:
 	const std::string					&getPath() const;
 	const bool							&getAutoIndex() const;
 	const t_listen						&getHostPort() const;
+	std::string							&getCgiExec();
 	std::string							removeSlashes(const std::string &);
 	std::set<std::string>				getAllowedMethods() const;
 	unsigned long						getBodySize() const;

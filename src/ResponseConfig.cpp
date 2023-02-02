@@ -134,6 +134,12 @@ const t_listen	&ResponseConfig::getHostPort() const {
 	return _method_allowed;
 }
 
+std::string&	ResponseConfig::getCgiExec()
+{
+	return (_exec_cgi);
+}
+
+
 unsigned long		ResponseConfig::getBodySize() const
 {
 	return _body_size;
