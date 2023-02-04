@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:02 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 16:06:00 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/03 17:44:14 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void	Request::readVersion(const std::string &line, size_t i)
 		std::cerr << "Error in http request: Bad http version (" << _version << ")" << std::endl;
 		return ;
 	}
-std::cout << "Request::readVersion|_version: " << _version << std::endl;
+// std::cout << "Request::readVersion|_version: " << _version << std::endl;
 	checkMethod();
 }
 
@@ -155,7 +155,7 @@ void	Request::readUri(const std::string &line, size_t i)
 		return ;
 	}
 	_uri.assign(line, j, i - j);
-std::cout << "Request::readUri|_uri: " << _uri << std::endl;
+// std::cout << "Request::readUri|_uri: " << _uri << std::endl;
 	readVersion(line, i);
 }
 
@@ -174,7 +174,7 @@ void	Request::readFirstLine(const std::string &str)
 		return ;
 	}
 	_method.assign(line, 0, i);
-std::cout << "Request::readFirstLine|_metod: " << _method << std::endl;
+// std::cout << "Request::readFirstLine|_metod: " << _method << std::endl;
 // std::cout << "Request::readFirstLine| i: " << i << std::endl;
 	readUri(line, i);
 }
@@ -249,8 +249,8 @@ void	Request::findQuery()
 		_query.assign(_uri, i + 1, std::string::npos);
 		_uri = _uri.substr(0, i);
 	}
-std::cout << "Request::findQuery| _uri: " << _uri << std::endl;
-std::cout << "Request::findQuery| _query: " << _query << std::endl;
+// std::cout << "Request::findQuery| _uri: " << _uri << std::endl;
+// std::cout << "Request::findQuery| _query: " << _query << std::endl;
 }
 
 void	Request::createCgi()

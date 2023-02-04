@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:35:08 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 15:11:03 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/03 15:39:29 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ int							pathIsFile(const std::string& path);
 // static std::string			getPage(const char *, std::string const &, int);
 std::string					getPage(const char *, std::string const &, int);
 std::string					getLink(std::string const &, std::string const &, std::string const &, int );
+int							checkEnd(const std::string& str, const std::string& end);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:35:02 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 15:26:20 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/03 17:39:11 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ std::string	getPage(const char *enterPath, std::string const &host, int port)
 {
 	std::string	dirName(enterPath);
 	DIR			*dir = opendir(enterPath);
-	std::string	page = "<!DOCTYPE html>\n<html>\n<head>\n<title>" + dirName + "</title>\n</head>\n<body>\n<h1>INDEX</h1>\n<p>\n";
+	std::string	page = "<!DOCTYPE html>\n<html>\n<head>\n<title>" + dirName + "</title>\n</head>\n<body>\n<h2>INDEX</h2>\n<p>\n";
 	if (dir == NULL)
 	{
 		std::cerr << "Error: could not open [" << enterPath << "]" << std::endl;
@@ -101,4 +101,19 @@ std::string	getPage(const char *enterPath, std::string const &host, int port)
 	page += "</p>\n</body>\n</html>\n";
 	closedir(dir);
 	return (page);
+}
+
+int	checkEnd(const std::string& str, const std::string& end)
+{
+	size_t	i = str.size();
+	size_t	j = end.size();
+
+	while (j > 0)
+	{
+		i--;
+		j--;
+		if (i < 0 || str[i] != end[j])
+			return (1);
+	}
+	return (0);
 }

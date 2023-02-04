@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:26:03 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 17:47:29 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/03 17:29:01 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,12 @@ void	Response::call(Request &request, ResponseConfig &responseConf)
 	//_errorMap = responseConf.getErrorPage();
 	_isAutoIndex = responseConf.getAutoIndex();
 	_code = request.getRet();
-	_hostPort->host = responseConf.getHostPort().host;
-	_hostPort->port = responseConf.getHostPort().port;
-	// *_hostPort = responseConf.getHostPort();
-	//_path = requestConf.getPath();
+	// _hostPort->host = responseConf.getHostPort().host;
+	// _hostPort->port = responseConf.getHostPort().port;
+// std::cout << "Response::call|responseConf.getHostPort().host: " << responseConf.getHostPort().host << std::endl;
+// std::cout << "Response::call|responseConf.getHostPort().port: " << responseConf.getHostPort().port << std::endl;
+	_hostPort = responseConf.getHostPort();
+	_path = responseConf.getPath();
 
 	if (responseConf.getAllowedMethods().find(request.getMethod()) == responseConf.getAllowedMethods().end())
 		_code = 405;
@@ -39,6 +41,7 @@ void	Response::call(Request &request, ResponseConfig &responseConf)
 				 _code) + "\r\n";
 		return ;
 	}
+std::cout << "Response::call| _response: " << _response << std::endl;
 	(this->*Response::_method[request.getMethod()])(request, responseConf);
 }
 

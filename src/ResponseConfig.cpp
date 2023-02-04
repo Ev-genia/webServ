@@ -6,14 +6,15 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:23:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 17:46:14 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/03 17:20:35 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ResponseConfig.hpp"
 
-ResponseConfig::ResponseConfig(Server &server, Request &request): _hostPort(server.getListen()), _server(server), _request(request)
+ResponseConfig::ResponseConfig(Server &server, Request &request): /*_hostPort(server.getListen()), */_server(server), _request(request)
 {
+// t_listen	tmp = server.getListen();
 	std::string	ret;
 	std::vector<Location> locations = server.getLocations();
 	std::vector<Location>::iterator it;
@@ -61,7 +62,7 @@ ResponseConfig::ResponseConfig(Server &server, Request &request): _hostPort(serv
 		_contentLocation = removeSlashes(_request.getUri());
 	}
 	_path = removeSlashes(temp);
-	// _hostPort = server.getListen();
+	_hostPort = &(server.getListen());
 }
 
 ResponseConfig::~ResponseConfig()
@@ -144,11 +145,12 @@ bool const	&ResponseConfig::getAutoIndex() const
 	return _autoindex;
 }
 
-struct s_listen	&ResponseConfig::getHostPort() const {
-	return this->_hostPort;
+struct s_listen	*ResponseConfig::getHostPort()
+{
+	return (_hostPort);
 }
 
- std::set<std::string>		ResponseConfig::getAllowedMethods() const {
+std::set<std::string>		ResponseConfig::getAllowedMethods() const {
 	return _method_allowed;
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:50:10 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/01 12:10:01 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/03 15:36:40 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ class Server;
 class Client
 {
 private:
-	int					_fd;
+	int					_fd;//файловый дескриптор клиента
 	int					_serverFd;
 	struct sockaddr_in	_clientAddrIn;
 	std::string			_ipAddress;
@@ -29,7 +29,7 @@ private:
 	// struct timeval		_timeout;
 	Server				&_serverRef;
 public:
-	std::string	request;
+	std::string			request;
 	Client(int, Server &);//int);
 	~Client();
 	int					getFd() const;
@@ -39,6 +39,7 @@ public:
 	const std::string	&getIpAddress() const;
 	Server				&getServerRef() const;
 	void				setResponse(std::string);
+	int					recv();//long);
 };
 
 

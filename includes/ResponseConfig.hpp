@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:29:05 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 17:46:23 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/03 17:19:04 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ private:
 	std::string						_exec_cgi;
 	std::string						_root;
 	std::vector<std::string>		_extension_cgi;
-	struct s_listen					&_hostPort;
+	struct s_listen					*_hostPort;
 	Server							&_server;
 	Request							&_request;
 	void							initErrorPages();
@@ -44,7 +44,7 @@ public:
 	const std::string					&getLocationPath() const;
 	const std::string					&getPath() const;
 	const bool							&getAutoIndex() const;
-	struct s_listen						&getHostPort() const;
+	struct s_listen						*getHostPort();
 	std::string							&getCgiExec();
 	std::set<std::string>				getAllowedMethods() const;
 	unsigned long						getBodySize() const;
