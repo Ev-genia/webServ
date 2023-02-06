@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:24:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 15:23:03 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/06 12:44:19 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # include <sys/stat.h>
 # include <fstream>
 # include <dirent.h>
+# include <sys/types.h>
 
 # include "Server.hpp"
 # include "utils.hpp"

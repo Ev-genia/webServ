@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:23:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/03 17:20:35 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/06 12:30:48 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ ResponseConfig::ResponseConfig(Server &server, Request &request): /*_hostPort(se
 	std::vector<Location> locations = server.getLocations();
 	std::vector<Location>::iterator it;
 	std::map<std::string, std::string> serverParams = server.getParams();
-	// _error_page = serverParams["error_page"];
 	initErrorPages();
 //_path = removeSlashes(ret);
 	_root = serverParams["root"];
@@ -30,11 +29,12 @@ ResponseConfig::ResponseConfig(Server &server, Request &request): /*_hostPort(se
 		_autoindex = true;
 	else
 		_autoindex = false;
-
-	for (it = locations.begin(); it < locations.end(); it++)
+	_locationPath = "";
+	for (it = locations.begin(); it != locations.end(); it++)
 	{
-		if (_request.getUri().find(it->getPath()) != std::string::npos)//есть ли в uri эта часть it->getPath, а не полносе совпадение
+		if (_request.getUri().find(it->getPath()) != std::string::npos)//есть ли в uri эта часть it->getPath, а не полное совпадение
 		{
+// std::cout << "_request.getUri(): " << _request.getUri() << ", it->getPath(): " << it->getPath() << std::endl;
 			std::map <std::string, std::string> locationMap = it->getLocationMap();
 			_body_size =  strtoul(locationMap["body_size"].c_str(), 0, 10);
 			//если зашли в location, то метод берем отсюда, если нет, останется из конфига сервера
@@ -51,17 +51,26 @@ ResponseConfig::ResponseConfig(Server &server, Request &request): /*_hostPort(se
 		}
 	}
 	std::string temp;
-	if (_locationPath[0] != '*')
+	if (_locationPath[0] != '*' && _locationPath != "")
 	{
-		temp = _root + _request.getUri().substr(_locationPath.length());
+		if (_request.getUri().find(_root) != std::string::npos)
+			temp = _request.getUri();
+		else
+			temp = _root + _request.getUri().substr(_locationPath.length());
 		_contentLocation = removeSlashes(_request.getUri().substr(_locationPath.length()));
+	// std::cout << "root: " << _root << ", _request.getUri().substr(_locationPath.length()): " << _request.getUri().substr(_locationPath.length()) << std:: endl;
 	}
 	else
 	{
-		temp = _root + _request.getUri();
+		if (_request.getUri().find(_root) != std::string::npos)
+			temp = _request.getUri();
+		else
+			temp = _root + _request.getUri();
 		_contentLocation = removeSlashes(_request.getUri());
+	
 	}
 	_path = removeSlashes(temp);
+std::cout << "ResponseConfig::ResponseConfig| _path: " << _path << std::endl;
 	_hostPort = &(server.getListen());
 }
 

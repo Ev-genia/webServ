@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:26:03 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/03 17:29:01 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/06 15:29:29 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	Response::call(Request &request, ResponseConfig &responseConf)
 // std::cout << "Response::call|responseConf.getHostPort().port: " << responseConf.getHostPort().port << std::endl;
 	_hostPort = responseConf.getHostPort();
 	_path = responseConf.getPath();
+// std::cout << "Response::call| _path: " << _path << std::endl;
 
 	if (responseConf.getAllowedMethods().find(request.getMethod()) == responseConf.getAllowedMethods().end())
 		_code = 405;
@@ -41,7 +42,7 @@ void	Response::call(Request &request, ResponseConfig &responseConf)
 				 _code) + "\r\n";
 		return ;
 	}
-std::cout << "Response::call| _response: " << _response << std::endl;
+// std::cout << "Response::call| _response: " << _response << std::endl;
 	(this->*Response::_method[request.getMethod()])(request, responseConf);
 }
 
@@ -77,7 +78,7 @@ std::string	Response::readHtml(const std::string &enterPath)
 		return ("<!DOCTYPE html>\n<html><title>40404</title><body>There was an error finding your error page</body></html>\n");
 }
 
-int	Response::readContent()
+int	Response::readContent(Request &request)
 {
 	std::ifstream		fileStream;
 	std::stringstream	strStream;
@@ -98,7 +99,8 @@ int	Response::readContent()
 	}
 	else if (_isAutoIndex)
 	{
-		strStream << getPage(_path.c_str(), to_string(_hostPort->host), _hostPort->port);
+std::cout << "Response::readContent| _path: " << _path << std::endl;
+		strStream << getPage(_path.c_str(), to_string(_hostPort->host), _hostPort->port, request);
 		_response = strStream.str();
 		_type = "text/html";
 	}
@@ -136,12 +138,16 @@ void	Response::methodGet(Request &request, ResponseConfig &responseConf)
 		_response = _response.substr(i, j - i);
 	}
 	else if (_code == 200)
-		_code = readContent();
+	{
+// std::cout << "Response::methodGet| _path: " << _path << std::endl;
+		_code = readContent(request);
+	}
 	else
 		_response = readHtml(_errorMap[_code]);
 	// if (_code == 500)
 	// 	_response = this->readHtml(_errorMap[_code]);
 	_response = head.getHeader(_response.size(), _path, _code, _type, responseConf.getContentLocation()) + "\r\n" + _response;
+std::cout << "Response::methodGet| _response: " << _response << std::endl;
 }
 
 std::string	Response::getResponse()

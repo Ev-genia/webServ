@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:35:02 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/03 17:39:11 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/06 15:33:58 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,32 +74,43 @@ int	pathIsFile(const std::string& path)
 	else
 		return (0);
 }
-std::string	getLink(std::string const &dirEntry, std::string const &dirName, std::string const &host, int port)
+std::string	getLink(std::string const &dirEntry, std::string const &dirName, std::string const &host, int port, Request &request)
 {
 	std::stringstream	ss;
 
-	ss << "\t\t<p><a href=\"http://" + host + ":" << port << dirName + "/" + dirEntry + "\">" + dirEntry + "</a></p>\n";
+	// ss << "\t\t<p><a href=\"http://" + host + ":" << port << dirName + "/" + dirEntry + "\">" + dirEntry + "</a></p>\n";
+	ss << "\t\t<p><a href=\"." + host + ":" << port << dirName + "/" + dirEntry + "\">" + dirEntry + "</a></p>\n";
 	return (ss.str());
 }
 
-std::string	getPage(const char *enterPath, std::string const &host, int port)
+std::string	getPage(const char *enterPath, std::string const &host, int port, Request &request)
 {
-	std::string	dirName(enterPath);
-	DIR			*dir = opendir(enterPath);
+	std::string		dirName(enterPath);
+	DIR				*dir = opendir(enterPath);
+	struct dirent	*dirEntry;
+	// DIR			*dir = opendir("./");
 	std::string	page = "<!DOCTYPE html>\n<html>\n<head>\n<title>" + dirName + "</title>\n</head>\n<body>\n<h2>INDEX</h2>\n<p>\n";
-	if (dir == NULL)
+	// if (dir == NULL)
+	// {
+	// 	std::cerr << "Error: could not open [" << enterPath << "]" << std::endl;
+	// 	return "";
+	// }
+	// if (dirName[0] != '/')
+	// 	dirName = "/" + dirName;
+	// for (struct dirent *dirEntry = readdir(dir); dirEntry; dirEntry = readdir(dir))
+	// struct dirent *dirEntry = readdir(dir);
+	// dirEntry = readdir(dir);
+	while ((dirEntry = readdir(dir)) != NULL)
 	{
-		std::cerr << "Error: could not open [" << enterPath << "]" << std::endl;
-		return "";
+		if (dirEntry->d_name[0] == '.')
+			continue;
+		// page += getLink(std::string(dirEntry->d_name), dirName, host, port, request);
+		page += "\t\t<p><a href=\"." + request.getUri() + /*"/" + */dirEntry->d_name + "\">" + dirEntry->d_name + "</a></p>\n";
+		// dirEntry = readdir(dir);
 	}
-	if (dirName[0] != '/')
-		dirName = "/" + dirName;
-	for (struct dirent *dirEntry = readdir(dir); dirEntry; dirEntry = readdir(dir))
-	{
-		page += getLink(std::string(dirEntry->d_name), dirName, host, port);
-	}
-	page += "</p>\n</body>\n</html>\n";
 	closedir(dir);
+	page += "</p>\n</body>\n</html>\n";
+	// closedir(dir);
 	return (page);
 }
 

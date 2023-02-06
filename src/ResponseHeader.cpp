@@ -144,12 +144,15 @@ void			ResponseHeader::setAllow(const std::string& allow)
 
 void			ResponseHeader::setContentType(std::string type, std::string path)
 {
+std::cout << "ResponseHeader::setContentType| type1: " << type << std::endl;
 	if (type != "")
 	{
 		_contentType = type;
 		return ;
 	}
 	type = path.substr(path.rfind(".") + 1, path.size() - path.rfind("."));
+std::cout << "ResponseHeader::setContentType| type2: " << type << std::endl;
+
 	if (type == "html")
 		_contentType = "text/html";
 	else if (type == "css")
