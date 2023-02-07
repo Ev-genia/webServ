@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:23:10 by wcollen           #+#    #+#             */
-/*   Updated: 2023/02/07 18:18:15 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/07 22:32:11 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ Config::Config(const char *fileName)
 {
 	int	fd = 0;
 	char buf[BUFFER_SIZE] = {0};
-	std::string words[12] = {"listen", "location", "server_name", "body_size",
+	std::string words[WORDS_COUNT] = {"listen", "location", "server_name", "body_size",
 							 "error_page", "root", "index", "autoindex",
-							 "method", "exec_cgi", "extension_cgi", "redir"};
-	for (int i = 0; i < 12; i++)
+							 "method", "exec_cgi", "extension_cgi", "redirection"};
+	for (int i = 0; i < WORDS_COUNT; i++)
 		_keyWords[i] = words[i];
 	_serverTable.reserve(2);
 	if ((fd = open(fileName, O_RDONLY)) == -1)
@@ -123,7 +123,7 @@ void		Config::parseServerConfig(bool &inServer, bool &inLocation, int &pos, int 
 	strBoolPair wordInConfig;
 	Server s;
 
-	wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 12);
+	wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, WORDS_COUNT);
 	_serverTable.push_back(s);
 	while(wordInConfig.second == true && wordInConfig.first != "server" &&
 		inLocation == false && inServer == true)
@@ -139,7 +139,7 @@ void		Config::parseServerConfig(bool &inServer, bool &inLocation, int &pos, int 
 			pos++;
 		while (isspace(_contentString[pos]))
 			pos++;
-		wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 12);
+		wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, WORDS_COUNT);
 		if (wordInConfig.first == "location" && inServer == true)	
 			this->parseLocationConfig(inLocation, pos, servCount, wordInConfig);
 	}
@@ -160,7 +160,7 @@ void	Config::parseLocationConfig(bool &inLocation, int &pos, int &servCount, str
 		pos += loc.getPath().size();
 		while (_contentString[pos] == '{' || isspace(_contentString[pos]))
 			pos++;
-		wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 12);
+		wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, WORDS_COUNT);
 
 		while (wordInConfig.second == true)
 		{
@@ -170,7 +170,7 @@ void	Config::parseLocationConfig(bool &inLocation, int &pos, int &servCount, str
 				pos++;
 			while (isspace(_contentString[pos]))
 				pos++;
-			wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 12);
+			wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, WORDS_COUNT);
 		}
 		_serverTable[servCount].getLocations().push_back(loc);
 		while (inLocation && (isspace(_contentString[pos]) || _contentString[pos] == '}'))
@@ -181,7 +181,7 @@ void	Config::parseLocationConfig(bool &inLocation, int &pos, int &servCount, str
 		}
 		while (isspace(_contentString[pos]))
 			pos++;
-		wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 12);
+		wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, WORDS_COUNT);
 	}
 }
 

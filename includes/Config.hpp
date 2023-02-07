@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:22:52 by wcollen           #+#    #+#             */
-/*   Updated: 2023/02/07 18:16:41 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/07 22:31:12 by wcollen          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "webserv.hpp"
 
 # define BUFFER_SIZE 2024
+# define WORDS_COUNT 12
 
 typedef  std::pair<std::string, std::string> strStrPair;
 typedef  std::pair<std::string, bool> strBoolPair;
@@ -25,7 +26,7 @@ typedef  std::pair<std::string, bool> strBoolPair;
 class Config
 {
 private:
-	std::string			_keyWords[12];
+	std::string			_keyWords[WORDS_COUNT];
 	std::string			_contentString;
 	std::vector<Server>	_serverTable;
 	
