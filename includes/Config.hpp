@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:22:52 by wcollen           #+#    #+#             */
-/*   Updated: 2023/02/02 13:48:24 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/07 18:16:41 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "webserv.hpp"
 
-# define BUFFER_SIZE 1024
+# define BUFFER_SIZE 2024
 
 typedef  std::pair<std::string, std::string> strStrPair;
 typedef  std::pair<std::string, bool> strBoolPair;
@@ -25,7 +25,7 @@ typedef  std::pair<std::string, bool> strBoolPair;
 class Config
 {
 private:
-	std::string			_keyWords[11];
+	std::string			_keyWords[12];
 	std::string			_contentString;
 	std::vector<Server>	_serverTable;
 	

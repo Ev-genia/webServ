@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:23:10 by wcollen           #+#    #+#             */
-/*   Updated: 2023/01/25 15:17:11 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/07 18:18:15 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,21 @@ Config::Config(const char *fileName)
 {
 	int	fd = 0;
 	char buf[BUFFER_SIZE] = {0};
-	std::string words[11] = {"listen", "location", "server_name", "body_size",
+	std::string words[12] = {"listen", "location", "server_name", "body_size",
 							 "error_page", "root", "index", "autoindex",
-							 "method", "exec_cgi", "extension_cgi"};
-	for (int i = 0; i < 11; i++)
+							 "method", "exec_cgi", "extension_cgi", "redir"};
+	for (int i = 0; i < 12; i++)
 		_keyWords[i] = words[i];
 	_serverTable.reserve(2);
 	if ((fd = open(fileName, O_RDONLY)) == -1)
 		throw std::runtime_error("Config file not found");
+	bzero(buf,BUFFER_SIZE);
+	_contentString.clear();
 	while (read(fd, buf, BUFFER_SIZE))
+	{
 		_contentString += buf;
+		bzero(buf,BUFFER_SIZE);
+	}
 	close(fd);
 	std::size_t start = 0;
 	std::size_t end = 0;
@@ -118,7 +123,7 @@ void		Config::parseServerConfig(bool &inServer, bool &inLocation, int &pos, int 
 	strBoolPair wordInConfig;
 	Server s;
 
-	wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 11);
+	wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 12);
 	_serverTable.push_back(s);
 	while(wordInConfig.second == true && wordInConfig.first != "server" &&
 		inLocation == false && inServer == true)
@@ -134,7 +139,7 @@ void		Config::parseServerConfig(bool &inServer, bool &inLocation, int &pos, int 
 			pos++;
 		while (isspace(_contentString[pos]))
 			pos++;
-		wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 11);
+		wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 12);
 		if (wordInConfig.first == "location" && inServer == true)	
 			this->parseLocationConfig(inLocation, pos, servCount, wordInConfig);
 	}
@@ -155,7 +160,7 @@ void	Config::parseLocationConfig(bool &inLocation, int &pos, int &servCount, str
 		pos += loc.getPath().size();
 		while (_contentString[pos] == '{' || isspace(_contentString[pos]))
 			pos++;
-		wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 11);
+		wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 12);
 
 		while (wordInConfig.second == true)
 		{
@@ -165,7 +170,7 @@ void	Config::parseLocationConfig(bool &inLocation, int &pos, int &servCount, str
 				pos++;
 			while (isspace(_contentString[pos]))
 				pos++;
-			wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 11);
+			wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 12);
 		}
 		_serverTable[servCount].getLocations().push_back(loc);
 		while (inLocation && (isspace(_contentString[pos]) || _contentString[pos] == '}'))
@@ -176,7 +181,7 @@ void	Config::parseLocationConfig(bool &inLocation, int &pos, int &servCount, str
 		}
 		while (isspace(_contentString[pos]))
 			pos++;
-		wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 11);
+		wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, 12);
 	}
 }
 
@@ -185,10 +190,9 @@ void	Config::parse()
 	bool inServer = false, inLocation = false;
 	int pos = 0;
 	int servCount = 0;
-	
 	if (std::count(_contentString.begin(), _contentString.end(), '{') - 
-	     std::count(_contentString.begin(), _contentString.end(), '}') != 0)
-		 	throw std::runtime_error("Config file error");
+		std::count(_contentString.begin(), _contentString.end(), '}') != 0)
+			throw std::runtime_error("Config file error1");
 	while(_contentString[pos])
 	{
 		if(_contentString[pos] == '}')
@@ -209,7 +213,7 @@ void	Config::parse()
 			inServer = true;
 		}
 		else
-			throw std::runtime_error("Config file error");
+			throw std::runtime_error("Config file error2");
 		
 		while (isspace(_contentString[pos]))
 			pos++;

@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:25:53 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/06 15:12:33 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/07 15:53:55 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ public:
 	int			readContent(Request &request);
 	std::string	readHtml(const std::string &);
 	void		methodGet(Request &, ResponseConfig &);
-// void		methodPost(Request &, ResponseConfig &);
+	void		methodPost(Request &, ResponseConfig &);
 // void		methodDelete(Request &, ResponseConfig &);
 	std::string	getResponse();
 };

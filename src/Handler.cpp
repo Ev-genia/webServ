@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:24:49 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/06 15:18:38 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/07 16:51:26 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,14 @@ Handler::~Handler()
 
 void	Handler::initFds()
 {
-	FD_ZERO(&_fdSet);
+	// FD_ZERO(&_fdSet);
+	FD_ZERO(&_fdReadSave);
+	FD_ZERO(&_fdWriteSave);
 	_maxFd = 0;
 	for (std::size_t i = 0; i < _servers->size(); i++)
 	{
 		(*_servers)[i].initSocket();
-		FD_SET((*_servers)[i].getSocketFd(), &_fdSet);
+		FD_SET((*_servers)[i].getSocketFd(), &_fdReadSave);
 		if ((*_servers)[i].getSocketFd() > _maxFd)
 			_maxFd = (*_servers)[i].getSocketFd();
 	}
@@ -82,10 +84,11 @@ std::cout << "end request" << std::endl;
 std::cout << "response start" << std::endl;
 
 		response.call(request, responseConf);
-std::cout << "response call end" << std::endl;
+// std::cout << "response call end" << std::endl;
 
 		client->setResponse(response.getResponse());
-
+std::cout << "Handler::process| response.getResponse(): " << response.getResponse() << std::endl;
+std::cout << "client->setResponse end" << std::endl;
 		// _requests.erase(socket);
 		// _requests.insert(std::make_pair(socket, response.getResponse()));
 	}
@@ -93,127 +96,98 @@ std::cout << "response call end" << std::endl;
 
 void	Handler::serverRun()
 {
-	// fd_set			fdRead;
-	// fd_set			fdWrite;
-	// int				ret;
+	int				ret;
+	char			*buffer = (char *)malloc(10000001);
 	int				fdClient;
+	// struct timeval	timeout;
 
 	while (true)
 	{
-		int				ret = 0;
-		fd_set			fdRead;
-		fd_set			fdWrite;
-		struct timeval	timeout;
+		_fdRead = _fdReadSave;
+		_fdWrite = _fdWriteSave;
+		select(_maxFd + 1, &_fdRead, &_fdWrite, 0, 0);
+		//проход по серверам
+		for (std::size_t i = 0; /*ret &&*/ i < _servers->size(); i++)
+		{
+			int	serverFd = (*_servers)[i].getSocketFd();
 
-		while (ret == 0)
-		{
-			timeout.tv_sec  = 1;
-			timeout.tv_usec = 0;
-			FD_ZERO(&fdRead);
-			FD_ZERO(&fdWrite);
-			memcpy(&fdRead, &_fdSet, sizeof(_fdSet));
-			memcpy(&fdWrite, &_fdSet, sizeof(_fdSet));
-			ret = select(_maxFd + 1, &fdRead, &fdWrite, 0, &timeout);
-		}
-		// if (ret == -1)
-		// 	exitError("Select");
-		if (ret > 0)
-		{
-			//проход по серверам
-			for (std::size_t i = 0; /*ret &&*/ i < _servers->size(); i++)
+			if (FD_ISSET(serverFd, &_fdRead))
 			{
-				int	serverFd = (*_servers)[i].getSocketFd();
-
-				if (FD_ISSET(serverFd, &fdRead))
-				{
-					Client *client = new Client(serverFd, (*_servers)[i]);//, i);
-					client->acceptClient();
-					FD_SET(client->getFd(), &_fdSet);
-					_clients.push_back(client);
-					if (client->getFd() > _maxFd)
-						_maxFd = client->getFd();
-					// ret = 0;
-					break;
-				}
+				Client *client = new Client(serverFd, (*_servers)[i]);//, i);
+				client->acceptClient();
+				FD_SET(client->getFd(), &_fdReadSave);
+				_clients.push_back(client);
+				if (client->getFd() > _maxFd)
+					_maxFd = client->getFd();
 			}
+		}
 //проход по читающим fd
-			for (std::vector<Client *>::iterator it = _clients.begin(); /*ret &&*/ it != _clients.end(); it++)
+		for (std::vector<Client *>::iterator it = _clients.begin(); /*ret &&*/ it != _clients.end(); it++)
+		{
+			fdClient = (*it)->getFd();
+			if (FD_ISSET(fdClient, &_fdRead))
 			{
-
-				// /*
-				// char	buffer[RECV_SIZE] = {0};
-
-				fdClient = (*it)->getFd();
-				// fdClient = (*it)->getServerFd();//fdServer - socket
-				if (FD_ISSET(fdClient, &fdRead))
+				if (ret > 0)
 				{
-					ret = (*it)->recv();//fdClient, buffer, RECV_SIZE - 1, 0);
-	// 				if (ret > 0)
-	// 				{
-	// 					buffer[ret] = 0;
-	// 					(*it)->request += buffer;
-	// 				}
-	// //where is a process chank?!
-	// 				else if (ret == 0)
-					if (ret == 0)
-					{
-						process(*it);
-					}
-					else if (ret == -1)
-					{
-						// FD_CLR(fdClient, &_fdSet);
-						FD_SET(fdClient, &fdWrite);
-						FD_CLR(fdClient, &fdRead);
-						// delete *it;
-						_clients.erase(it);
-						// it = _clients.begin();//?
-					}
-					// ret = 0;
+					ret = recv(fdClient, buffer, RECV_SIZE - 1, 0);
+					buffer[ret] = 0;
+					(*it)->request += buffer;
+					memset(buffer, 0, RECV_SIZE);
+				}
+				else if (ret == 0)
+				{
+					FD_CLR(fdClient, &_fdReadSave);
+					FD_CLR(fdClient, &_fdWriteSave);
+					delete (*it);
+					_clients.erase(it);
 					break;
 				}
-				// */
+				if ((*it)->request.find("\r\n\r\n") != std::string::npos)
+				{
+					FD_SET(fdClient, &_fdWriteSave);
+					FD_CLR(fdClient, &_fdReadSave);
+				}
+				else
+					break;
+				process(*it);
 			}
 
 //проход по пишущим fd
-			for (std::vector<Client *>::iterator it = _clients.begin(); /*ret &&*/ it != _clients.end(); it++)
+			if (FD_ISSET(fdClient, &_fdWrite))
 			{
-				fdClient = (*it)->getFd();
-
-				if (FD_ISSET(fdClient, &fdWrite))
+				ret = send(fdClient, (*it)->getResponse().c_str(), (*it)->getResponse().size(), 0);
+				if (ret <= 0)
 				{
-// std::cout << "Handler::serverRun|(*it)->getResponse().c_str(): " << std::endl;
-					ret = send(fdClient, (*it)->getResponse().c_str(), (*it)->getResponse().size(), 0);
-					if (ret == -1)
-					{
-						close(fdClient);
-						FD_CLR(fdClient, &fdWrite);
-						FD_CLR(fdClient, &fdRead);
-						// delete *it;
-						_clients.erase(it);
-					}
-					// ret = 0;
+					FD_CLR(fdClient, &_fdWriteSave);
+					FD_CLR(fdClient, &_fdReadSave);
+					delete *it;
+					_clients.erase(it);
+					break;
+				}
+				if ((unsigned long)ret < (*it)->getResponse().length())
+				{
+					(*it)->setResponse((*it)->getResponse().substr(ret));
+				}
+				else
+				{
+					FD_CLR(fdClient, &_fdWriteSave);
+					(*it)->setResponse("");
+					delete *it;
+					_clients.erase(it);
 					break;
 				}
 			}
-		//check timeout
-		}
-		else
-		{
-std::cerr << "Problem with select" << std::endl;
-			for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); it++)
-			{
-				close((*it)->getFd());
-				//надо ли удалять реквесты и прочие строковые переменные клиента?
-			}
-			for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); it++)
-			{
-				delete(*it);
-				//надо ли удалять реквесты и прочие строковые переменные клиента?
-			}
-			_clients.clear();
-			FD_ZERO(&_fdSet);
-			for (std::vector<Server>::iterator it = (*_servers).begin(); it != (*_servers).end(); it++)
-				FD_SET(it->getSocketFd(), &_fdSet);
+			//check timeout
+			// memset(&timeout, 0, sizeof(timeout));
+			// gettimeofday(&timeout, 0);
+			// if ((FD_ISSET(fdClient, &_fdRead)) && (*it)->getTime() - timeout.tv_sec > 10)
+			// {
+			// 	FD_CLR(fdClient, &_fdReadSave);
+			// 	FD_CLR(fdClient, &_fdWriteSave);
+			// 	delete *it;
+			// 	_clients.erase(it);
+			// 	break;
+			// }
 		}
 	}
 }

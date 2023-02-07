@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:50:10 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/03 15:36:40 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/07 12:24:28 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ private:
 	std::string			_ipAddress;
 	std::string			_response;
 	// int					_servIndex;
-	// struct timeval		_timeout;
+	struct timeval		_timeout;
 	Server				&_serverRef;
 public:
 	std::string			request;
@@ -39,7 +39,8 @@ public:
 	const std::string	&getIpAddress() const;
 	Server				&getServerRef() const;
 	void				setResponse(std::string);
-	int					recv();//long);
+	int					getTime();
+
 };
 
 

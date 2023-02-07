@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:23:51 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 16:51:41 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/06 17:41:15 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ class Handler
 private:
 	std::vector<Server>*	_servers;
 	std::vector<Client *>	_clients;
-	fd_set					_fdSet;
-	// fd_set					_fdReadSave;
-	// fd_set					_fdRead;
-	// fd_set					_fdWriteSave;
-	// fd_set					_fdWrite;
+	// fd_set					_fdSet;
+	fd_set					_fdReadSave;
+	fd_set					_fdRead;
+	fd_set					_fdWriteSave;
+	fd_set					_fdWrite;
 	// std::vector<int>		_fds;
 	int						_maxFd;
 public:

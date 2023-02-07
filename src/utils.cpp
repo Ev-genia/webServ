@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:35:02 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/06 15:33:58 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/07 14:05:39 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ std::string	to_string(size_t enter)
 int	pathIsFile(const std::string& path)
 {
 	struct stat	s;
-	if (stat(path.c_str(), &s) == 0 )
+	if (stat(path.c_str(), &s) == 0)
 	{
 		if (s.st_mode & S_IFDIR)
 			return (0);
@@ -74,11 +74,22 @@ int	pathIsFile(const std::string& path)
 	else
 		return (0);
 }
+
+int	pathIsDir(const std::string& path)
+{
+	struct stat	s;
+	if (stat(path.c_str(), &s) == 0)
+	{
+		if (s.st_mode & S_IFDIR)
+			return (1);
+	}
+	return (0);
+}
+
 std::string	getLink(std::string const &dirEntry, std::string const &dirName, std::string const &host, int port, Request &request)
 {
 	std::stringstream	ss;
 
-	// ss << "\t\t<p><a href=\"http://" + host + ":" << port << dirName + "/" + dirEntry + "\">" + dirEntry + "</a></p>\n";
 	ss << "\t\t<p><a href=\"." + host + ":" << port << dirName + "/" + dirEntry + "\">" + dirEntry + "</a></p>\n";
 	return (ss.str());
 }
@@ -88,29 +99,23 @@ std::string	getPage(const char *enterPath, std::string const &host, int port, Re
 	std::string		dirName(enterPath);
 	DIR				*dir = opendir(enterPath);
 	struct dirent	*dirEntry;
-	// DIR			*dir = opendir("./");
-	std::string	page = "<!DOCTYPE html>\n<html>\n<head>\n<title>" + dirName + "</title>\n</head>\n<body>\n<h2>INDEX</h2>\n<p>\n";
-	// if (dir == NULL)
-	// {
-	// 	std::cerr << "Error: could not open [" << enterPath << "]" << std::endl;
-	// 	return "";
-	// }
-	// if (dirName[0] != '/')
-	// 	dirName = "/" + dirName;
-	// for (struct dirent *dirEntry = readdir(dir); dirEntry; dirEntry = readdir(dir))
-	// struct dirent *dirEntry = readdir(dir);
-	// dirEntry = readdir(dir);
+	std::string	page = "<!DOCTYPE html>\n<html>\n<head>\n<title>" + dirName + "</title>\n</head>\n<body>\n<h2>AUTOINDEX ON</h2>\n<p>\n";
+
+	dirEntry = readdir(dir);
+	
+
+
 	while ((dirEntry = readdir(dir)) != NULL)
 	{
 		if (dirEntry->d_name[0] == '.')
 			continue;
-		// page += getLink(std::string(dirEntry->d_name), dirName, host, port, request);
-		page += "\t\t<p><a href=\"." + request.getUri() + /*"/" + */dirEntry->d_name + "\">" + dirEntry->d_name + "</a></p>\n";
-		// dirEntry = readdir(dir);
+		if (request.getUri()[request.getUri().length() - 1] != '/')
+			page += "\t\t<p><a href=\"." + request.getUri() + "/" + dirEntry->d_name + "\">" + dirEntry->d_name + "</a></p>\n";
+		else
+			page += "\t\t<p><a href=\"." + request.getUri() + /*"/" + */dirEntry->d_name + "\">" + dirEntry->d_name + "</a></p>\n";
 	}
 	closedir(dir);
 	page += "</p>\n</body>\n</html>\n";
-	// closedir(dir);
 	return (page);
 }
 

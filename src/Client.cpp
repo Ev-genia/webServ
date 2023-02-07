@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:49:54 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/03 15:46:18 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/07 12:24:26 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ Client::Client(int enterServerFd, Server & enterServer): _fd(-1), _serverFd(ente
 {
 	// (void)_servIndex;
 	memset(&_clientAddrIn, 0, sizeof(_clientAddrIn));
-	// memset(&_timeout, 0, sizeof(_timeout));
-	// gettimeofday(&_timeout, 0);
+	memset(&_timeout, 0, sizeof(_timeout));
+	gettimeofday(&_timeout, 0);
 	this->request = "";
 // _response = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\r\n\r\nHello world!";
 	
@@ -70,45 +70,7 @@ void	Client::setResponse(std::string enterResponse)
 	_response = enterResponse;
 }
 
-int			Client::recv()//long fdClient)
+int	Client::getTime()
 {
-	char	buffer[RECV_SIZE] = {0};
-	int		ret;
-
-	ret = ::recv(_fd, buffer, RECV_SIZE - 1, 0);
-
-	if (ret == 0 || ret == -1)
-	{
-		close(_fd);
-		if (!ret)
-			std::cout << "\rConnection was closed by client.\n" << std::endl;
-		else
-			std::cout << "\rRead error, closing connection.\n" << std::endl;
-		return (-1);
-	}
-
-	request += std::string(buffer);
-
-	size_t	i = request.find("\r\n\r\n");
-	if (i != std::string::npos)
-	{
-		if (request.find("Content-Length: ") == std::string::npos)
-		{
-			if (request.find("Transfer-Encoding: chunked") != std::string::npos)
-			{
-				if (checkEnd(request, "0\r\n\r\n") == 0)
-					return (0);
-				else
-					return (1);
-			}
-			else
-				return (0);
-		}
-		size_t	len = std::atoi(request.substr(request.find("Content-Length: ") + 16, 10).c_str());
-		if (request.size() >= len + i + 4)//may be request.lenght()?
-			return (0);
-		else
-			return (1);
-	}
-	return (1);
+	return (_timeout.tv_sec);
 }
