@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:23:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/06 12:30:48 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/08 12:09:47 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 ResponseConfig::ResponseConfig(Server &server, Request &request): /*_hostPort(server.getListen()), */_server(server), _request(request)
 {
-// t_listen	tmp = server.getListen();
 	std::string	ret;
 	std::vector<Location> locations = server.getLocations();
 	std::vector<Location>::iterator it;
@@ -32,6 +31,7 @@ ResponseConfig::ResponseConfig(Server &server, Request &request): /*_hostPort(se
 	_locationPath = "";
 	for (it = locations.begin(); it != locations.end(); it++)
 	{
+// std::cout << "_request.getUri(): " << _request.getUri() << ", it->getPath(): " << it->getPath() << std::endl;
 		if (_request.getUri().find(it->getPath()) != std::string::npos)//есть ли в uri эта часть it->getPath, а не полное совпадение
 		{
 // std::cout << "_request.getUri(): " << _request.getUri() << ", it->getPath(): " << it->getPath() << std::endl;

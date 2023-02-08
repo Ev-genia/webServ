@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:24:49 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/08 01:23:16 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/08 15:10:04 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	Handler::processChunk(Client *client)
 
 void	Handler::process(Client *client)
 {
-
+std::cout << "Handler::process| request: " << client->request << std::endl;
 	if (client->request.find("Transfer-Encoding: chunked") != std::string::npos &&
 		client->request.find("Transfer-Encoding: chunked") < client->request.find("\r\n\r\n"))
 		processChunk(client);
@@ -73,9 +73,11 @@ void	Handler::process(Client *client)
 		Request	request(client->request);
 		if (request.getRet() != 200)
 			request.setMethod("GET");
-std::cout << "end request" << std::endl;
-		ResponseConfig responseConf(client->getServerRef(),  request);
-		
+std::cout << "Handler::process| end request" << std::endl;
+// std::cout << "Handler::process| location for this client: " << (client->getServerRef()).getLocations().size() << std::endl;
+
+		ResponseConfig responseConf(client->getServerRef(), request);
+
 		Response		response;
 std::cout << "response start" << std::endl;
 
@@ -121,11 +123,15 @@ void	Handler::serverRun()
 			fdClient = (*it)->getFd();
 			if (FD_ISSET(fdClient, &_fdRead))
 			{
-				if ((ret = recv(fdClient, buffer, RECV_SIZE - 1, 0)) > 0)
+				ret = recv(fdClient, buffer, RECV_SIZE, 0);
+std::cout << "Handler::serverRun| ret: " << ret << std::endl;
+				if (ret > 0)
 				{
 					buffer[ret] = 0;
 					(*it)->request += buffer;
+std::cout << "Handler::serverRun| buffer: " << buffer << std::endl;
 					memset(buffer, 0, RECV_SIZE);
+					// continue;
 				}
 				else if (ret == 0)
 				{
@@ -138,12 +144,14 @@ void	Handler::serverRun()
 				size_t	pos = 0;
 				size_t	bodySize = 0;
 				bool	isContentLength = false;
-				if ((*it)->request.find("\r\n\r\n") != std::string::npos)
+				if ((pos = (*it)->request.find("\r\n\r\n")) != std::string::npos)// &&
+					// ((*it)->request.substr(0, 5).find("GET") != std::string::npos))
 				{
 					if ((bodySize = (*it)->request.find("Content-Length")) != std::string::npos)
 					{
 						isContentLength = true;
 						bodySize = strtoul((*it)->request.substr(bodySize + 15, (*it)->request.find("\r\n", bodySize) - bodySize).c_str(), 0, 0);
+std::cout << "Handler::serverRun| bodySize: " << bodySize << std::endl;
 					}
 					if ((*it)->request.substr(0, 5).find("POST") != std::string::npos)
 					{

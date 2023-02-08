@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:22:52 by wcollen           #+#    #+#             */
-/*   Updated: 2023/02/07 22:45:21 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/08 11:46:55 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ private:
 	std::vector<Server>	_serverTable;
 	
 	strBoolPair		isKeyWord(std::string src, std::string keyWords[], int num);
-	strStrPair 		splitConfigParam(std::string src);
-	struct s_listen 		splitListenParam(std::string src);
+	strStrPair		splitConfigParam(std::string src);
+	struct s_listen	splitListenParam(std::string src);
 	void			trimConfigStr(std::string &str);
 	std::string		extractPathFromStrConfig(std::string src, int pos);
 	void			parseServerConfig(bool &inServer, bool &inLocation, int &pos, int &serverCount);
@@ -43,7 +43,6 @@ public:
 	
 	void					check();
 	std::vector	<Server>	*getConfig();
-	
 };
 
 #endif

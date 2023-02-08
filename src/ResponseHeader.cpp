@@ -13,8 +13,10 @@ std::string		ResponseHeader::getHeader(size_t size, const std::string& path, int
 	setValues(size, path, code, type, contentLocation);
 
 	header = "HTTP/1.1 " + to_string(code) + " " + getStatusMessage(code) + "\r\n";
+std::cout << "ResponseHeader::ResponseHeader()| header1:" << header << std::endl;
 	header += writeHeader();
-
+std::cout << "ResponseHeader::ResponseHeader()| heder2" << header  << std::endl;
+std::cout << "ResponseHeader::ResponseHeader()| end func" << std::endl;
 	return (header);
 }
 
@@ -30,6 +32,7 @@ void			ResponseHeader::initErrorMap()
 	_errors[405] = "Method Not Allowed";
 	_errors[413] = "Payload Too Large";
 	_errors[500] = "Internal Server Error";
+	_errors[501] = "The HTTP Not Implemented";
 }
 
 std::string		ResponseHeader::writeHeader(void)
@@ -60,6 +63,8 @@ std::string		ResponseHeader::writeHeader(void)
 		header += "Transfer-Encoding: " + _transferEncoding + "\r\n";
 	if (_wwwAuthenticate != "")
 		header += "WWW-Authenticate: " + _wwwAuthenticate + "\r\n";
+std::cout << "ResponseHeader::writeHeader| end func" << std::endl;
+std::cout << "ResponseHeader::writeHeader| header: " << header << std::endl;
 	return (header);
 }
 
@@ -104,6 +109,7 @@ void			ResponseHeader::setValues(size_t size, const std::string& path, int code,
 	_server = "chicki-ricki webserv/1.0.0 (Unix)";
 	_transferEncoding = "identity";
 	setWwwAuthenticate(code);
+std::cout << "ResponseHeader::setValues| end func" << std::endl;
 }
 
 void			ResponseHeader::resetValues(void)
@@ -144,14 +150,13 @@ void			ResponseHeader::setAllow(const std::string& allow)
 
 void			ResponseHeader::setContentType(std::string type, std::string path)
 {
-std::cout << "ResponseHeader::setContentType| type1: " << type << std::endl;
 	if (type != "")
 	{
 		_contentType = type;
 		return ;
 	}
 	type = path.substr(path.rfind(".") + 1, path.size() - path.rfind("."));
-std::cout << "ResponseHeader::setContentType| type2: " << type << std::endl;
+std::cout << "ResponseHeader::setContentType| type: " << type << std::endl;
 
 	if (type == "html")
 		_contentType = "text/html";
@@ -167,6 +172,7 @@ std::cout << "ResponseHeader::setContentType| type2: " << type << std::endl;
 		_contentType = "image/bmp";
 	else
 		_contentType = "text/plain";
+std::cout << "ResponseHeader::setContentType| end func "<< std::endl;
 }
 
 void			ResponseHeader::setDate(void)

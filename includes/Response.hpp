@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:25:53 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/08 02:23:47 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/08 10:34:25 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,6 @@ private:
 	bool						_isAutoIndex;
 	struct s_listen				*_hostPort;
 	std::map<int, std::string>	_errorMap; // ??????????
-	// std::string					_boundary;
-	// std::string					_endBoundary;
-	// std::string					_fullBuffer;
-	// bool						_endBody;
 
 	static std::map<std::string, void (Response::*)(Request &, ResponseConfig &)>	_method;
 	static std::map<std::string, void (Response::*)(Request &, ResponseConfig &)>	initMetods();
@@ -49,7 +45,7 @@ public:
 	void		methodPost(Request &, ResponseConfig &);
 // void		methodDelete(Request &, ResponseConfig &);
 	std::string	getResponse();
-	void		requestBodyParsing(Request & request);
+	// void		requestBodyParsing(Request & request);
 
 };
 

@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:50:10 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/07 12:24:28 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/08 15:10:28 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,11 @@ private:
 	struct sockaddr_in	_clientAddrIn;
 	std::string			_ipAddress;
 	std::string			_response;
-	// int					_servIndex;
 	struct timeval		_timeout;
 	Server				&_serverRef;
 public:
 	std::string			request;
-	Client(int, Server &);//int);
+	Client(int, Server &);
 	~Client();
 	int					getFd() const;
 	int					getServerFd() const;
