@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:20 by mlarra            #+#    #+#             */
-/*   Updated: 2023/01/27 22:59:20 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/08 03:51:25 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ private:
 	std::string							_query;
 	std::map<std::string, std::string>	_envForCgi;
 	int									_ret;
+	std::string							_boundary;
+	std::string							_endBoundary;
+	std::string							_fullBuffer;
+	bool								_endBody;
+	std::string							_fileName;
+
 	static std::vector<std::string>		availableMethods;
 	static std::vector<std::string>		initMethods();
 	void								initRequestMap();
@@ -57,6 +63,17 @@ public:
 	const std::map<std::string, std::string>	&getEnvForCgi() const;
 	int											getRet() const;
 	void										setMethod(const std::string);
+	// std::string									getBoundary();
+	// std::string									getEndBoundary();
+	std::string									getFullBuffer();
+	bool										getEndBody();
+	// void										setBoundary(std::string);
+	// void										setEndBoundary(std::string);
+	// void										appendFullBuffer(std::string);
+	// void										setEndBody(bool);
+	void										findBoundary();
+	void										bodyParsing();
+	std::string									getFileName();
 };
 
 

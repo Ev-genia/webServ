@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:02 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/03 17:44:14 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/08 03:52:47 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,9 @@ void	Request::initRequestMap()
 	_requestMap["Connection"] = "Keep-Alive";
 }
 
-Request::Request(const std::string &str): _method(""), _version(""), _uri(""), _body(""), _query(""), _ret(200)
+Request::Request(const std::string &str): _method(""), _version(""), _uri(""),
+	_body(""), _query(""), _ret(200), _boundary(), _endBoundary(""), _fullBuffer(""),
+	_endBody(true), _fileName("")
 {
 	initRequestMap();
 	_envForCgi.clear();
@@ -62,10 +64,6 @@ Request	&Request::operator=(const Request &rhs)
 
 	return (*this);
 }
-
-/*
-GET / HTTP/1.1\nHost: developer.mozilla.org\nAccept-Language: fr\r\n\r\n<body>
-*/
 
 std::string	Request::nextLine(const std::string &str, size_t &i)
 {
@@ -116,13 +114,10 @@ void	Request::readVersion(const std::string &line, size_t i)
 		std::cerr << "Error in http request: No http version" << std::endl;
 		return ;
 	}
-// std::cout << "Request::readVersion|line[i]: " << &line[i] << std::endl;
-// std::cout << "Request::readVersion| i: " << i << std::endl;
 	if (line[i] == 'H' && line[i + 1] == 'T' && line[i + 2] == 'T'
 			&& line[i + 3] == 'P' && line[i + 4] == '/')
 	{
 		_version.assign(line, i + 5, 3);
-// std::cout << "Request::readVersion|HTTP version: " << _version << std::endl;
 	}
 	if (_version != "1.0" && _version != "1.1")
 	{
@@ -130,16 +125,13 @@ void	Request::readVersion(const std::string &line, size_t i)
 		std::cerr << "Error in http request: Bad http version (" << _version << ")" << std::endl;
 		return ;
 	}
-// std::cout << "Request::readVersion|_version: " << _version << std::endl;
 	checkMethod();
 }
 
 void	Request::readUri(const std::string &line, size_t i)
 {
 	size_t	j;
-// std::cout << "Request::readPath|line(enter): " << line << std::endl;
 	j = line.find_first_not_of(' ', i);
-// std::cout << "Request::readPath| j: " << j << std::endl;
 	if (j == std::string::npos)
 	{
 		_ret = 400;
@@ -147,7 +139,6 @@ void	Request::readUri(const std::string &line, size_t i)
 		return ;
 	}
 	i = line.find_first_of(' ', j);
-// std::cout << "Request::readPath| i: " << i << std::endl;
 	if (i == std::string::npos)
 	{
 		_ret = 400;
@@ -155,7 +146,6 @@ void	Request::readUri(const std::string &line, size_t i)
 		return ;
 	}
 	_uri.assign(line, j, i - j);
-// std::cout << "Request::readUri|_uri: " << _uri << std::endl;
 	readVersion(line, i);
 }
 
@@ -201,30 +191,6 @@ std::string	Request::readValue(const std::string &src)
 	return (strip(dst, ' '));
 }
 
-// void	Request::setLang()
-// {
-// 	std::string					header;
-// 	std::vector<std::string>	token;
-// 	size_t						i;
-
-// 	header = _requestMap["Accept-Language"];
-// 	if (header != "")
-// 	{
-// 		token = split(header, ',');
-// 		for (std::vector<std::string>::iterator it = token.begin(); it != token.end(); it++)
-// 		{
-// 			float		weight = 0.0;
-// 			std::string	lang;
-
-// 			lang = (*it).substr(0, (*it).find_first_of('-'));
-// 			strip(lang, ' ');
-// 			i = lang.find_last_of(';');
-// 			if (i != std::string::npos)
-// 				weight = atof();
-// 		}
-// 	}
-// }
-
 void	Request::setBody(const std::string &line)
 {
 	char	ends[] = {'\n', '\r'};
@@ -249,8 +215,6 @@ void	Request::findQuery()
 		_query.assign(_uri, i + 1, std::string::npos);
 		_uri = _uri.substr(0, i);
 	}
-// std::cout << "Request::findQuery| _uri: " << _uri << std::endl;
-// std::cout << "Request::findQuery| _query: " << _query << std::endl;
 }
 
 void	Request::createCgi()
@@ -264,9 +228,9 @@ void	Request::parseRequest(const std::string &enterRequest)
 	std::string	line;
 	std::string	key;
 	std::string	value;
-	
+std::cout << "Request::parseRequest| enterRequest: " << enterRequest << std::endl;
 	line = nextLine(enterRequest, poz);
-std::cout << "-----------------------------------" << std::endl;
+std::cout << "*************" << std::endl;
 std::cout << "Request::parseRequest|line: " << line << std::endl;
 	readFirstLine(line);
 	while (line != "\r" && line != "" && _ret != 400)
@@ -281,12 +245,8 @@ std::cout << "Request::parseRequest|line: " << line << std::endl;
 	}
 	if (_requestMap["Www-Authenticate"] != "")
 		_envForCgi["Www-Authenticate"] = _requestMap["Www-Authenticate"];
-	
-	// setLang();
-	setBody(enterRequest.substr(poz, std::string::npos));
+	_body = enterRequest.substr(poz, std::string::npos);
 	findQuery();
-	// if (_uri.find("cgi_bin") != std::string::npos)
-	// 	createCgi();
 }
 
 Request::~Request()
@@ -337,3 +297,94 @@ void	Request::setMethod(const std::string enterMethod)
 {
 	_method = enterMethod;
 }
+
+// std::string	Request::getBoundary()
+// {
+// 	return (_boundary);
+// }
+
+// std::string	Request::getEndBoundary()
+// {
+// 	return (_endBoundary);
+// }
+
+std::string	Request::getFullBuffer()
+{
+	return (_fullBuffer);
+}
+
+bool	Request::getEndBody()
+{
+	return (_endBody);
+}
+
+// void	Request::setBoundary(std::string enterBoundary)
+// {
+// 	_boundary = enterBoundary;
+// }
+
+// void	Request::setEndBoundary(std::string enterEndBoundary)
+// {
+// 	_endBoundary = enterEndBoundary;
+// }
+
+// void	Request::appendFullBuffer(std::string enterAppend)
+// {
+// 	_fullBuffer.append(enterAppend);
+// }
+
+// void	Request::setEndBody(bool value)
+// {
+// 	_endBody = value;
+// }
+
+void	Request::bodyParsing()
+{
+	size_t	poz = 0;
+
+	while (_fullBuffer.find(_endBoundary) != std::string::npos)
+	{
+		if ((poz = _fullBuffer.find("filename=")) != std::string::npos)
+		{
+			_fullBuffer.erase(0, poz + 10);
+			_fileName = _fullBuffer.substr(0, _fullBuffer.find("\""));
+			_fullBuffer.erase(0, _fullBuffer.find("\r\n\r\n") + 4);
+		}
+		size_t	pozEOF = _fullBuffer.find(_boundary);
+		size_t	pozEnter = _fullBuffer.find("\r\n", pozEOF);
+		std::ofstream	fout;
+
+		fout.open(("www/server3/storage/" + _fileName).c_str(), std::ofstream::out);
+		fout << _fullBuffer.substr(0, pozEnter);
+		fout.close();
+		_fullBuffer.erase(0, pozEOF + _boundary.length());
+	}
+	_fullBuffer = "";
+}
+
+void	Request::findBoundary()
+{
+	std::map<std::string, std::string>::iterator it = _requestMap.find("Content-Type");
+	std::string	preBoundary;
+
+	preBoundary = it->second.substr(it->second.find("boundary=") + 9);
+	_boundary = preBoundary.substr(preBoundary.rfind('-') + 1);
+	_endBoundary = _boundary + "--";
+	if (_body != "")
+	{
+		_fullBuffer.append(_body);
+		if (_fullBuffer.find(_endBoundary) != std::string::npos)
+			_endBody = true;
+	}
+	_body = "";
+	if (_endBody == true)
+	{
+		bodyParsing();
+	}
+}
+
+std::string	Request::getFileName()
+{
+	return (_fileName);
+}
+

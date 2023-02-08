@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:24:49 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/07 16:51:26 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/08 01:23:16 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ Handler::~Handler()
 
 void	Handler::initFds()
 {
-	// FD_ZERO(&_fdSet);
 	FD_ZERO(&_fdReadSave);
 	FD_ZERO(&_fdWriteSave);
 	_maxFd = 0;
@@ -63,10 +62,8 @@ void	Handler::processChunk(Client *client)
 	client->request = head + "\r\n\r\n" + body + "\r\n\r\n";
 }
 
-void	Handler::process(Client *client)//, Config & conf)
+void	Handler::process(Client *client)
 {
-	// Response		response;
-	// std::string		recvd = "";
 
 	if (client->request.find("Transfer-Encoding: chunked") != std::string::npos &&
 		client->request.find("Transfer-Encoding: chunked") < client->request.find("\r\n\r\n"))
@@ -74,7 +71,6 @@ void	Handler::process(Client *client)//, Config & conf)
 	else if (client->request != "")
 	{
 		Request	request(client->request);
-// std::cout << "Handler::process|request.getMethod(): " << request.getMethod() << std::endl;
 		if (request.getRet() != 200)
 			request.setMethod("GET");
 std::cout << "end request" << std::endl;
@@ -84,22 +80,20 @@ std::cout << "end request" << std::endl;
 std::cout << "response start" << std::endl;
 
 		response.call(request, responseConf);
-// std::cout << "response call end" << std::endl;
 
 		client->setResponse(response.getResponse());
-std::cout << "Handler::process| response.getResponse(): " << response.getResponse() << std::endl;
-std::cout << "client->setResponse end" << std::endl;
-		// _requests.erase(socket);
-		// _requests.insert(std::make_pair(socket, response.getResponse()));
+// std::cout << "Handler::process| response.getResponse(): " << response.getResponse() << std::endl;
+// std::cout << "client->setResponse end" << std::endl;
 	}
 }
 
 void	Handler::serverRun()
 {
-	int				ret;
+	int				ret = 0;
 	char			*buffer = (char *)malloc(10000001);
 	int				fdClient;
 	// struct timeval	timeout;
+	
 
 	while (true)
 	{
@@ -107,13 +101,13 @@ void	Handler::serverRun()
 		_fdWrite = _fdWriteSave;
 		select(_maxFd + 1, &_fdRead, &_fdWrite, 0, 0);
 		//проход по серверам
-		for (std::size_t i = 0; /*ret &&*/ i < _servers->size(); i++)
+		for (std::size_t i = 0; i < _servers->size(); i++)
 		{
 			int	serverFd = (*_servers)[i].getSocketFd();
 
 			if (FD_ISSET(serverFd, &_fdRead))
 			{
-				Client *client = new Client(serverFd, (*_servers)[i]);//, i);
+				Client *client = new Client(serverFd, (*_servers)[i]);
 				client->acceptClient();
 				FD_SET(client->getFd(), &_fdReadSave);
 				_clients.push_back(client);
@@ -122,14 +116,13 @@ void	Handler::serverRun()
 			}
 		}
 //проход по читающим fd
-		for (std::vector<Client *>::iterator it = _clients.begin(); /*ret &&*/ it != _clients.end(); it++)
+		for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); it++)
 		{
 			fdClient = (*it)->getFd();
 			if (FD_ISSET(fdClient, &_fdRead))
 			{
-				if (ret > 0)
+				if ((ret = recv(fdClient, buffer, RECV_SIZE - 1, 0)) > 0)
 				{
-					ret = recv(fdClient, buffer, RECV_SIZE - 1, 0);
 					buffer[ret] = 0;
 					(*it)->request += buffer;
 					memset(buffer, 0, RECV_SIZE);
@@ -142,8 +135,27 @@ void	Handler::serverRun()
 					_clients.erase(it);
 					break;
 				}
+				size_t	pos = 0;
+				size_t	bodySize = 0;
+				bool	isContentLength = false;
 				if ((*it)->request.find("\r\n\r\n") != std::string::npos)
 				{
+					if ((bodySize = (*it)->request.find("Content-Length")) != std::string::npos)
+					{
+						isContentLength = true;
+						bodySize = strtoul((*it)->request.substr(bodySize + 15, (*it)->request.find("\r\n", bodySize) - bodySize).c_str(), 0, 0);
+					}
+					if ((*it)->request.substr(0, 5).find("POST") != std::string::npos)
+					{
+						if ((isContentLength && ((*it)->request.substr(pos + 4).size() >= bodySize)) ||
+							((*it)->request.substr(pos + 4).find("\r\n\r\n") != std::string::npos))
+						{
+							FD_SET(fdClient, &_fdWriteSave);
+							FD_CLR(fdClient, &_fdReadSave);
+						}
+						else
+							break;
+					}
 					FD_SET(fdClient, &_fdWriteSave);
 					FD_CLR(fdClient, &_fdReadSave);
 				}

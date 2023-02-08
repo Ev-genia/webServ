@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wcollen <wcollen@student.21-school.ru>     +#+  +:+       +#+        */
+/*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:23:10 by wcollen           #+#    #+#             */
-/*   Updated: 2023/02/07 22:32:11 by wcollen          ###   ########.fr       */
+/*   Updated: 2023/02/07 22:44:56 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,16 +230,6 @@ void	Config::check()
 	for (size_t i = 0; i < tableSize; i++)
 	{
 		listens.push_back(_serverTable[i].getListen());
-		
-		
-		//int j = 0;
-		// while (j < ports.size() - 1)
-		// {
-		// 	if (ports[j].port == ports[j + 1].port)
-		// 		throw std::runtime_error("Same ports on the same server");
-		// 	j++;
-		// }
-		// i++;
 	}
 	for (size_t i = 0; i < listens.size() - 1; i++)
 	{
@@ -251,16 +241,6 @@ void	Config::check()
 				throw std::runtime_error("Same ports on the same server");
 			}
 		}
-		
-		
-		//int j = 0;
-		// while (j < ports.size() - 1)
-		// {
-		// 	if (ports[j].port == ports[j + 1].port)
-		// 		throw std::runtime_error("Same ports on the same server");
-		// 	j++;
-		// }
-		// i++;
 	}
 
 

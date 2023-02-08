@@ -6,14 +6,14 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:24:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/07 14:05:59 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/08 01:52:36 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WEBSERV_HPP
 # define WEBSERV_HPP
 
-# define RECV_SIZE 2048
+# define RECV_SIZE 5000
 # define CGI_BUFF_SIZE 2048
 
 # include <iostream>

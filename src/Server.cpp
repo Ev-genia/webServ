@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 11:39:55 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 14:09:08 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/07 23:23:28 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	Server::setAutoindex(bool index)
 	this->_autoindex = index;
 }
 
-void	Server::setAddr()//TODO:Переделать _params на вектор listens
+void	Server::setAddr()
 {
 	memset((char *)&_addrIn, 0, sizeof(_addrIn));
 	_addrIn.sin_family = AF_INET;
