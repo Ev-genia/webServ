@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:49:54 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/07 23:20:39 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/08 23:20:28 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ Client::Client(int enterServerFd, Server & enterServer): _fd(-1), _serverFd(ente
 	memset(&_timeout, 0, sizeof(_timeout));
 	gettimeofday(&_timeout, 0);
 	this->request = "";
+	_readyToSend = -1;
+	_sendEnd = 0;
+	requestObj = NULL;
 }
 
 Client::~Client()
