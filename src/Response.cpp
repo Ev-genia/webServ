@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:26:03 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/09 12:39:29 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/09 12:50:42 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ void	Response::methodPost(Request & request, ResponseConfig &responseConf)
 			_response = readHtml(_errorMap[413]);
 		else if (request.getEndBody() == true)
 		{
-			std::ifstream	ifs(("www/server3/storage/" + request.getFileName()).c_str(), std::ios_base::out);
+			std::ifstream	ifs((_path + request.getFileName()).c_str(), std::ios_base::out);
 			if (ifs.is_open())
 				_response = head.getHeader(_response.size(), _path, _code, _type, responseConf.getContentLocation()) + "\r\n" + _response;
 			else
