@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/06 12:50:10 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/09 00:54:47 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/08 15:10:28 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "webserv.hpp"
 
 class Server;
-class Request;
 
 class Client
 {
@@ -41,9 +40,6 @@ public:
 	void				setResponse(std::string);
 	int					getTime();
 
-	int					_readyToSend;
-	int					_sendEnd;
-	Request				*requestObj;
 };
 
 

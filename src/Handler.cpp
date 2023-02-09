@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:24:49 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/09 02:52:45 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/08 15:10:04 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 Handler::Handler(std::vector<Server> * enterServers): _servers(enterServers)
 {
-	_makeBound = false;
 }
 
 Handler::~Handler()
@@ -65,7 +64,7 @@ void	Handler::processChunk(Client *client)
 
 void	Handler::process(Client *client)
 {
-// std::cout << "Handler::process| request: " << client->request << std::endl;
+std::cout << "Handler::process| request: " << client->request << std::endl;
 	if (client->request.find("Transfer-Encoding: chunked") != std::string::npos &&
 		client->request.find("Transfer-Encoding: chunked") < client->request.find("\r\n\r\n"))
 		processChunk(client);
@@ -75,6 +74,7 @@ void	Handler::process(Client *client)
 		if (request.getRet() != 200)
 			request.setMethod("GET");
 std::cout << "Handler::process| end request" << std::endl;
+// std::cout << "Handler::process| location for this client: " << (client->getServerRef()).getLocations().size() << std::endl;
 
 		ResponseConfig responseConf(client->getServerRef(), request);
 
@@ -84,97 +84,21 @@ std::cout << "response start" << std::endl;
 		response.call(request, responseConf);
 
 		client->setResponse(response.getResponse());
+// std::cout << "Handler::process| response.getResponse(): " << response.getResponse() << std::endl;
+// std::cout << "client->setResponse end" << std::endl;
 	}
-}
-
-int	Handler::initRequest(Client &client, std::string str)
-{
-	if (client.requestObj == NULL)
-	{
-		client.requestObj = new Request(client.request);
-		client.requestObj->responseConfObj = new ResponseConfig(client.getServerRef(), *(client.requestObj));
-		client.requestObj->responseObj = new Response();
-	}
-	client.requestObj->parseRequest(str);
-	return (client.requestObj->getEndBody());
-}
-
-int	Handler::readFromClient(Client &client)
-{
-	long		ret;
-	char		buf[RECV_SIZE];
-
-	ret = read(client.getFd(), buf, RECV_SIZE);
-	if (ret > 0)
-	{	
-		client.request.append(buf, ret);
-		if (initRequest(client, std::string(buf)) == true)
-			return (-1);
-		return (1);
-	}
-	else
-		return (0);
-}
-
-std::string	Handler::makeEndBoundary(std::string request)
-{
-	std::string	endBound = "";
-	std::string	preBoundary = "";
-	std::string	boundary = "";
-	size_t		i;
-
-	if (request.find("Content-Type") != std::string::npos)
-	{
-		preBoundary = request.substr(request.find("boundary=") + 9);
-		preBoundary = preBoundary.substr(preBoundary.find_first_not_of('-'));
-		i = preBoundary.find_first_of("\r\n");
-		boundary = preBoundary.substr(0, i);
-		endBound = boundary + "--";
-		_makeBound = true;
-	}
-	return (endBound);
-}
-
-std::string	Handler::getPartAnswer(int fd)
-{
-	std::string	partAnswer;
-	std::string	fullAnswer;
-	bool		endAnswer = false;
-
-	contentSize = getRequest(fd)->getResponse()->getContentSize();
-	fullAnswer = getRequest(fd)->getResponse()->getAnswer();
-	if (fullAnswer.length() > BUFFER_SIZE)
-	{
-		partAnswer = fullAnswer.substr(0, BUFFER_SIZE);
-	}
-	else
-	{
-		endAnswer = true;
-		return (fullAnswer);
-	}
-	if (getRequest(fd)->getResponse()->cutAnswer() == 0)
-	{
-		endAnswer = true;
-	}
-	return (partAnswer);
-}
-
-int	Handler::writeToClient(Client &client)
-{
-	std::string	partResonse = getPartAnswer(fd);
 }
 
 void	Handler::serverRun()
 {
 	int				ret = 0;
-	char			*buffer = (char *)malloc(BUFFER_SIZE);
+	char			*buffer = (char *)malloc(10000001);
 	int				fdClient;
 	// struct timeval	timeout;
 	
 
 	while (true)
 	{
-		std::string	endBound;
 		_fdRead = _fdReadSave;
 		_fdWrite = _fdWriteSave;
 		select(_maxFd + 1, &_fdRead, &_fdWrite, 0, 0);
@@ -197,134 +121,93 @@ void	Handler::serverRun()
 		for (std::vector<Client *>::iterator it = _clients.begin(); it != _clients.end(); it++)
 		{
 			fdClient = (*it)->getFd();
-			if (FD_ISSET(fdClient, &_fdRead) && (*it)->_readyToSend == -1)
+			if (FD_ISSET(fdClient, &_fdRead))
 			{
-				ret = readFromClient(*(*it));
-				if (ret == 0)
+				ret = recv(fdClient, buffer, RECV_SIZE, 0);
+std::cout << "Handler::serverRun| ret: " << ret << std::endl;
+				if (ret > 0)
 				{
-					close(fdClient);
+					buffer[ret] = 0;
+					(*it)->request += buffer;
+std::cout << "Handler::serverRun| buffer: " << buffer << std::endl;
+					memset(buffer, 0, RECV_SIZE);
+					// continue;
+				}
+				else if (ret == 0)
+				{
+					FD_CLR(fdClient, &_fdReadSave);
+					FD_CLR(fdClient, &_fdWriteSave);
+					delete (*it);
+					_clients.erase(it);
+					break;
+				}
+				size_t	pos = 0;
+				size_t	bodySize = 0;
+				bool	isContentLength = false;
+				if ((pos = (*it)->request.find("\r\n\r\n")) != std::string::npos)// &&
+					// ((*it)->request.substr(0, 5).find("GET") != std::string::npos))
+				{
+					if ((bodySize = (*it)->request.find("Content-Length")) != std::string::npos)
+					{
+						isContentLength = true;
+						bodySize = strtoul((*it)->request.substr(bodySize + 15, (*it)->request.find("\r\n", bodySize) - bodySize).c_str(), 0, 0);
+std::cout << "Handler::serverRun| bodySize: " << bodySize << std::endl;
+					}
+					if ((*it)->request.substr(0, 5).find("POST") != std::string::npos)
+					{
+						if ((isContentLength && ((*it)->request.substr(pos + 4).size() >= bodySize)) ||
+							((*it)->request.substr(pos + 4).find("\r\n\r\n") != std::string::npos))
+						{
+							FD_SET(fdClient, &_fdWriteSave);
+							FD_CLR(fdClient, &_fdReadSave);
+						}
+						else
+							break;
+					}
+					FD_SET(fdClient, &_fdWriteSave);
 					FD_CLR(fdClient, &_fdReadSave);
 				}
-				else if (ret < 0)
-				{
-					FD_CLR(fdClient, &_fdRead);
-					(*it)->_readyToSend = 1;
-					FD_SET(fdClient, &_fdWriteSave);
-				}
-			if (FD_ISSET(fdClient, &_fdWrite) && (*it)->_readyToSend == 1)
+				else
+					break;
+				process(*it);
+			}
+
+//проход по пишущим fd
+			if (FD_ISSET(fdClient, &_fdWrite))
 			{
-				(*it)->_sendEnd = writeToClient(*(*it));
-				if ((*it)->_sendEnd == 1)
+				ret = send(fdClient, (*it)->getResponse().c_str(), (*it)->getResponse().size(), 0);
+				if (ret <= 0)
 				{
-					(*it)->_readyToSend = -1;
 					FD_CLR(fdClient, &_fdWriteSave);
+					FD_CLR(fdClient, &_fdReadSave);
+					delete *it;
+					_clients.erase(it);
+					break;
+				}
+				if ((unsigned long)ret < (*it)->getResponse().length())
+				{
+					(*it)->setResponse((*it)->getResponse().substr(ret));
+				}
+				else
+				{
+					FD_CLR(fdClient, &_fdWriteSave);
+					(*it)->setResponse("");
+					delete *it;
+					_clients.erase(it);
+					break;
 				}
 			}
+			//check timeout
+			// memset(&timeout, 0, sizeof(timeout));
+			// gettimeofday(&timeout, 0);
+			// if ((FD_ISSET(fdClient, &_fdRead)) && (*it)->getTime() - timeout.tv_sec > 10)
+			// {
+			// 	FD_CLR(fdClient, &_fdReadSave);
+			// 	FD_CLR(fdClient, &_fdWriteSave);
+			// 	delete *it;
+			// 	_clients.erase(it);
+			// 	break;
+			// }
 		}
 	}
 }
-
-// 				// ret = recv(fdClient, buffer, RECV_SIZE, 0);
-// std::cout << "=======================" << std::endl;
-// std::cout << "Handler::serverRun| buffer: " << buffer << std::endl;
-// std::cout << "=======================" << std::endl;
-
-// 				// ret = read(fdClient, buffer, RECV_SIZE);
-// std::cout << "Handler::serverRun| ret: " << ret << std::endl;
-// 				if (ret > 0)
-// 				{
-// 					buffer[ret] = 0;
-// 					(*it)->request += buffer;
-// // std::cout << "Handler::serverRun| buffer: " << buffer << std::endl;
-// 					memset(buffer, 0, RECV_SIZE);
-// 					// continue;
-// 				}
-// 				else if (ret == 0)
-// 				{
-// 					FD_CLR(fdClient, &_fdReadSave);
-// 					// FD_CLR(fdClient, &_fdWriteSave);
-// 					delete (*it);
-// 					_clients.erase(it);
-// 					// break;
-// 				}
-// 				if (_makeBound == false)
-// 					endBound = makeEndBoundary((*it)->request);
-
-// 				size_t	pos = 0;
-// 				size_t	bodySize = 0;
-// 				bool	isContentLength = false;
-// 				if ((pos = (*it)->request.find("\r\n\r\n")) != std::string::npos)// &&
-// 					// ((*it)->request.substr(0, 5).find("GET") != std::string::npos))
-// 				{
-// 					if ((bodySize = (*it)->request.find("Content-Length")) != std::string::npos)
-// 					{
-// 						isContentLength = true;
-// 						bodySize = strtoul((*it)->request.substr(bodySize + 15, (*it)->request.find("\r\n", bodySize) - bodySize).c_str(), 0, 0);
-// // std::cout << "Handler::serverRun| bodySize: " << bodySize << std::endl;
-// 					}
-// std::cout << "=======================" << std::endl;
-// std::cout << "(*it)->request.substr(pos + 4): " << (*it)->request.substr(pos + 4) << std::endl;
-// std::cout << "=======================" << std::endl;
-// 					if ((*it)->request.substr(0, 5).find("POST") != std::string::npos)
-// 					{
-						
-// 						if ((isContentLength && ((*it)->request.substr(pos + 4).size() >= bodySize)) ||
-// 							// ((*it)->request.substr(pos + 4).find("\r\n\r\n") != std::string::npos) )
-// 							(*it)->request.find(endBound) != std::string::npos)
-// 						{
-// 							FD_SET(fdClient, &_fdWriteSave);
-// 							FD_CLR(fdClient, &_fdRead);
-// 							(*it)->_readyToSend = 1;
-// std::cout << "endBound: " << endBound << std::endl;
-	
-// 						}
-// 						else
-// 							continue;
-// 					}
-// 					FD_SET(fdClient, &_fdWriteSave);
-// 					FD_CLR(fdClient, &_fdReadSave);
-// 				}
-// 				else
-// 					break;
-// 				process(*it);
-// 			}
-
-// //проход по пишущим fd
-// 			if (FD_ISSET(fdClient, &_fdWrite))
-// 			{
-// 				ret = send(fdClient, (*it)->getResponse().c_str(), (*it)->getResponse().size(), 0);
-// 				if (ret <= 0)
-// 				{
-// 					FD_CLR(fdClient, &_fdWriteSave);
-// 					FD_CLR(fdClient, &_fdReadSave);
-// 					delete *it;
-// 					_clients.erase(it);
-// 					break;
-// 				}
-// 				if ((unsigned long)ret < (*it)->getResponse().length())
-// 				{
-// 					(*it)->setResponse((*it)->getResponse().substr(ret));
-// 				}
-// 				else
-// 				{
-// 					FD_CLR(fdClient, &_fdWriteSave);
-// 					(*it)->setResponse("");
-// 					delete *it;
-// 					_clients.erase(it);
-// 					break;
-// 				}
-// 			}
-// 			//check timeout
-// 			// memset(&timeout, 0, sizeof(timeout));
-// 			// gettimeofday(&timeout, 0);
-// 			// if ((FD_ISSET(fdClient, &_fdRead)) && (*it)->getTime() - timeout.tv_sec > 10)
-// 			// {
-// 			// 	FD_CLR(fdClient, &_fdReadSave);
-// 			// 	FD_CLR(fdClient, &_fdWriteSave);
-// 			// 	delete *it;
-// 			// 	_clients.erase(it);
-// 			// 	break;
-// 			// }
-// 		}
-// 	}
-// }

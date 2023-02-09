@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:22:52 by wcollen           #+#    #+#             */
-/*   Updated: 2023/02/08 15:24:14 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/08 11:46:55 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "webserv.hpp"
 
-# define BUFFER_SIZE 2048
+# define BUFFER_SIZE 2024
 # define WORDS_COUNT 12
 
 typedef  std::pair<std::string, std::string> strStrPair;

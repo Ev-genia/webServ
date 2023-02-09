@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:25:53 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/09 01:34:59 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/08 10:34:25 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ class Request;
 class Response
 {
 private:
-	// std::string					_response;
+	std::string					_response;
 	std::string					_path;
 	int							_code;
 	std::string					_type;
@@ -46,8 +46,6 @@ public:
 // void		methodDelete(Request &, ResponseConfig &);
 	std::string	getResponse();
 	// void		requestBodyParsing(Request & request);
-	std::string					_response;
-
 
 };
 

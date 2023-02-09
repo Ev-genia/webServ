@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:26:03 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/09 01:53:25 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/08 12:59:06 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ void	Response::methodPost(Request & request, ResponseConfig &responseConf)
 	// 	_response = readHtml(_errorMap[_code]);
 	// _response = head.getHeader(_response.size(), _path, _code, _type, responseConf.getContentLocation()) + "\r\n" + _response;
 	{
-		// request.findBoundary();
+		request.findBoundary();
 std::cout << "Response::methodPost| request.getEndBody(): " << request.getEndBody() << std::endl;
 std::cout << "Response::methodPost| request.getFullBuffer().length(): " << request.getFullBuffer().length() << std::endl;
 		if (request.getFullBuffer().length() > responseConf.getBodySize())

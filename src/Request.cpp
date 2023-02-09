@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:02 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/09 01:53:11 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/08 13:28:52 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ void	Request::initRequestMap()
 
 Request::Request(const std::string &str): _method(""), _version(""), _uri(""),
 	_body(""), _query(""), _ret(200), _boundary(), _endBoundary(""), _fullBuffer(""),
-	_endBody(false), _fileName(""), _parseFirstLine(false), _parseHeders(false)
+	_endBody(false), _fileName("")
 {
 	initRequestMap();
-	// _envForCgi.clear();
-	// parseRequest(str);
-	// if (_ret != 200)
-	// 	std::cerr << "Error init request" << std::endl;
+	_envForCgi.clear();
+	parseRequest(str);
+	if (_ret != 200)
+		std::cerr << "Error init request" << std::endl;
 }
 
 Request	&Request::operator=(const Request &rhs)
@@ -222,27 +222,14 @@ void	Request::createCgi()
 	
 }
 
-// int	Request::parseFirstLine(std::string &str)
-// {
-// 	std::size_t pos = 0;
-// 	if ((pos = str.find(' ')) == std::string::npos)
-// 	{
-// 		// _response = readHtml(_errorMap[_code]);
-// 		responseObj = new Response();
-
-// 	}
-// }
-
-
-void	Request::parseRequest(std::string &str)
+void	Request::parseRequest(const std::string &enterRequest)
 {
 	size_t		poz = 0;
 	std::string	line;
 	std::string	key;
 	std::string	value;
-// std::cout << "Request::parseRequest| enterRequest: " << enterRequest << std::endl;
-
-	line = nextLine(str, poz);
+std::cout << "Request::parseRequest| enterRequest: " << enterRequest << std::endl;
+	line = nextLine(enterRequest, poz);
 std::cout << "*************" << std::endl;
 std::cout << "Request::parseRequest|line: " << line << std::endl;
 	readFirstLine(line);
@@ -254,26 +241,12 @@ std::cout << "Request::parseRequest|line: " << line << std::endl;
 			_requestMap[key] = value;
 		// if (key.find("Secret") != std::string::npos)
 		// 	_envForCgi[formatHeaderForCGI(key)] = value;
-		line = nextLine(str, poz);
+		line = nextLine(enterRequest, poz);
 	}
 	if (_requestMap["Www-Authenticate"] != "")
 		_envForCgi["Www-Authenticate"] = _requestMap["Www-Authenticate"];
-	_body = str.substr(poz, std::string::npos);
+	_body = enterRequest.substr(poz, std::string::npos);
 	findQuery();
-	if (_requestMap["Allow"] == "GET")
-	{
-		responseObj->call(*this, *responseConfObj);
-		_endBody = true;
-	}
-	else if(_requestMap["Allow"] == "POST")
-	{
-		findBoundary(str);
-	}
-
-	// if (!_parseFirstLine)
-	// {
-	// 	parseFirstLine(str);
-	// }
 }
 
 Request::~Request()
@@ -389,18 +362,17 @@ void	Request::bodyParsing()
 	_fullBuffer = "";
 }
 
-void	Request::findBoundary(std::string &str)
+void	Request::findBoundary()
 {
 	std::map<std::string, std::string>::iterator it = _requestMap.find("Content-Type");
-	std::string		preBoundary;
-	ResponseHeader	head;
+	std::string	preBoundary;
 
 	preBoundary = it->second.substr(it->second.find("boundary=") + 9);
 	_boundary = preBoundary.substr(preBoundary.rfind('-') + 1);
 	_endBoundary = _boundary + "--";
-	if (str != "")
+	if (_body != "")
 	{
-		_fullBuffer.append(str);
+		_fullBuffer.append(_body);
 		if (_fullBuffer.find(_endBoundary) != std::string::npos)
 		{
 std::cout << "Request::findBoundary| _fullBuffer: " << _fullBuffer << std::endl;
@@ -412,16 +384,10 @@ std::cout << "Request::findBoundary| _fullBuffer: " << _fullBuffer << std::endl;
 		// 	_endBody = true;
 		// }
 	}
-	str = "";
+	_body = "";
 	if (_endBody == true)
 	{
 		bodyParsing();
-		std::ifstream	ifs(("www/server3/storage/" + this->getFileName()).c_str(), std::ios_base::out);
-		if (ifs.is_open())
-		{
-std::cout << "Response::methodPost| ifs.is_open()" << std::endl;
-			responseObj->_response = head.getHeader(responseObj->_response.size(), "www/server3/storage/" + this->getFileName(), 200, "_type", this->responseConfObj->getContentLocation()) + "\r\n";
-		}
 	}
 }
 

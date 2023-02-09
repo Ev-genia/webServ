@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:23:51 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/09 02:30:57 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/06 17:41:15 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,6 @@ private:
 	fd_set					_fdWrite;
 	// std::vector<int>		_fds;
 	int						_maxFd;
-	std::string				makeEndBoundary(std::string request);
-	bool					_makeBound;
-
 public:
 	Handler(std::vector<Server> *);
 	~Handler();
@@ -42,9 +39,6 @@ public:
 	void	serverRun();
 	void	process(Client *);
 	void	processChunk(Client *);
-	int		readFromClient(Client &);
-	int		initRequest(Client &, std::string);
-	int		writeToClient(Client &);
 
 };
 

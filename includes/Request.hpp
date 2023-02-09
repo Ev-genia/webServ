@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:20 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/09 01:46:01 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/08 03:51:25 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 # define REQUEST_HPP
 
 # include "webserv.hpp"
-
-class Response;
-class ResponseConfig;
 
 class Request
 {
@@ -34,13 +31,11 @@ private:
 	std::string							_fullBuffer;
 	bool								_endBody;
 	std::string							_fileName;
-	bool								_parseFirstLine;
-	bool								_parseHeders;
-
 
 	static std::vector<std::string>		availableMethods;
 	static std::vector<std::string>		initMethods();
 	void								initRequestMap();
+	void								parseRequest(const std::string &);
 	void								readFirstLine(const std::string &);
 	void								readUri(const std::string &, size_t);
 	void								readVersion(const std::string &, size_t);
@@ -76,14 +71,9 @@ public:
 	// void										setEndBoundary(std::string);
 	// void										appendFullBuffer(std::string);
 	// void										setEndBody(bool);
-	void										findBoundary(std::string &);
+	void										findBoundary();
 	void										bodyParsing();
 	std::string									getFileName();
-	void										parseRequest(std::string &);
-	int											parseFirstLine(std::string &);
-	Response									*responseObj;
-	ResponseConfig								*responseConfObj;
-	ResponseHeader								*responseHaed;
 };
 
 
