@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:26:03 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/09 11:43:46 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/09 12:39:29 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ std::map<std::string, void (Response::*)(Request &, ResponseConfig &)>	Response:
 
 	methodsMap["GET"] = &Response::methodGet;
 	methodsMap["POST"] = &Response::methodPost;
-	// methodsMap["DELETE"] = &Response::methodDelete;
+	methodsMap["DELETE"] = &Response::methodDelete;
 
 	return (methodsMap);
 }
@@ -139,8 +139,7 @@ void	Response::methodGet(Request &request, ResponseConfig &responseConf)
 	else
 		_response = readHtml(_errorMap[_code]);
 	_response = head.getHeader(_response.size(), _path, _code, _type, responseConf.getContentLocation()) + "\r\n" + _response;
-// std::cout << "Response::methodGet| _type: " << _type << std::endl;
-	std::cout << "********RESPONSE*********" << std::endl;
+	std::cout << "******RESPONSE(GET)******" << std::endl;
 	std::cout << _response << std::endl;
 	std::cout << "********RESPONSE*********" << std::endl;
 }
@@ -198,8 +197,30 @@ void	Response::methodPost(Request & request, ResponseConfig &responseConf)
 			}
 		}
 	}
-	std::cout << "********RESPONSE*********" << std::endl;
+	std::cout << "*****RESPONSE(POST)******" << std::endl;
 	std::cout << _response << std::endl;
 	std::cout << "******END RESPONSE*******" << std::endl;
 }
 
+void	Response::methodDelete(Request & request, ResponseConfig &responseConf)
+{
+	ResponseHeader	head;
+	(void)request;
+
+	_response = "";
+	if (pathIsFile(_path))
+	{
+		if (remove(_path.c_str()) == 0)
+			_code = 204;
+		else
+			_code = 403;
+	}
+	else
+		_code = 404;
+	if (_code == 403 || _code == 404)
+		_response = this->readHtml(_errorMap[_code]);
+	_response = head.getHeader(_response.size(), _path, _code, _type, responseConf.getContentLocation()) + "\r\n" + _response;
+	std::cout << "****RESPONSE(DELETE)*****" << std::endl;
+	std::cout << _response << std::endl;
+	std::cout << "******END RESPONSE*******" << std::endl;
+}
