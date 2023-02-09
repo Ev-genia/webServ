@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:02 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/08 13:28:52 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/08 03:52:47 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	Request::initRequestMap()
 
 Request::Request(const std::string &str): _method(""), _version(""), _uri(""),
 	_body(""), _query(""), _ret(200), _boundary(), _endBoundary(""), _fullBuffer(""),
-	_endBody(false), _fileName("")
+	_endBody(true), _fileName("")
 {
 	initRequestMap();
 	_envForCgi.clear();
@@ -374,15 +374,7 @@ void	Request::findBoundary()
 	{
 		_fullBuffer.append(_body);
 		if (_fullBuffer.find(_endBoundary) != std::string::npos)
-		{
-std::cout << "Request::findBoundary| _fullBuffer: " << _fullBuffer << std::endl;
 			_endBody = true;
-		}
-		// else
-		// {
-		// 	_fullBuffer.append("\r\n\r\n--" + preBoundary + "--");
-		// 	_endBody = true;
-		// }
 	}
 	_body = "";
 	if (_endBody == true)

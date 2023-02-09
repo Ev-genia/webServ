@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:23:10 by wcollen           #+#    #+#             */
-/*   Updated: 2023/02/08 12:08:56 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/07 22:44:56 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Config::Config(const char *fileName)
 							 "method", "exec_cgi", "extension_cgi", "redirection"};
 	for (int i = 0; i < WORDS_COUNT; i++)
 		_keyWords[i] = words[i];
-	// _serverTable.reserve(2);
+	_serverTable.reserve(2);
 	if ((fd = open(fileName, O_RDONLY)) == -1)
 		throw std::runtime_error("Config file not found");
 	bzero(buf,BUFFER_SIZE);
@@ -130,18 +130,17 @@ void		Config::parseServerConfig(bool &inServer, bool &inLocation, int &pos, int 
 	{
 		strStrPair param = this->splitConfigParam(_contentString.substr(pos));
 		if (param.first == "listen")
-		{
-			_serverTable[servCount].setListen(splitListenParam(param.second));
+			{_serverTable[servCount].setListen(splitListenParam(param.second));
 			std::cout<<"Listen: "<<_serverTable[servCount].getListen().host<< ", "<<_serverTable[servCount].getListen().port<<std::endl;
-		}
-		else
+			}
+		else 
 			_serverTable[servCount].getParams().insert(param);
 		while (_contentString[pos] != '\n')
 			pos++;
 		while (isspace(_contentString[pos]))
 			pos++;
 		wordInConfig = this->isKeyWord(_contentString.substr(pos), _keyWords, WORDS_COUNT);
-		if (wordInConfig.first == "location" && inServer == true)
+		if (wordInConfig.first == "location" && inServer == true)	
 			this->parseLocationConfig(inLocation, pos, servCount, wordInConfig);
 	}
 }
@@ -243,6 +242,7 @@ void	Config::check()
 			}
 		}
 	}
+
 
 	for (size_t i = 0; i < tableSize - 1; i++)
 	{

@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 11:39:55 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/08 12:07:17 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/07 23:23:28 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ int	Server::getSocketFd() const
 	return _socketFd;
 }
 
-std::vector<Location> &Server::getLocations()
+std::vector<Location> Server::getLocations() const
 {
-	return _locations;
+	return this->_locations;
 }
 
 t_listen		&Server::getListen()
