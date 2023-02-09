@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 15:26:03 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/08 03:52:23 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/09 11:43:46 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,13 @@ int	Response::readContent(Request &request)
 	else if (_isAutoIndex && pathIsDir(_path.c_str()))
 	{
 std::cout << "Response::readContent|_isAutoIndex| _path: " << _path << std::endl;
-		strStream << getPage(_path.c_str(), to_string(_hostPort->host), _hostPort->port, request);
+		strStream << getPage(_path.c_str(), request);
 		_response = strStream.str();
 		_type = "text/html";
 	}
 	else
 	{
-std::cout << "Response::readContent|else| _path: " << _path << std::endl;
+// std::cout << "Response::readContent|else| _path: " << _path << std::endl;
 		_response = readHtml(_errorMap[404]);
 		return (404);
 	}
@@ -138,11 +138,11 @@ void	Response::methodGet(Request &request, ResponseConfig &responseConf)
 	}
 	else
 		_response = readHtml(_errorMap[_code]);
-	// if (_code == 500)
-	// 	_response = readHtml(_errorMap[_code]);
 	_response = head.getHeader(_response.size(), _path, _code, _type, responseConf.getContentLocation()) + "\r\n" + _response;
-std::cout << "Response::methodGet| _type: " << _type << std::endl;
-std::cout << "Response::methodGet| _response: " << _response << std::endl;
+// std::cout << "Response::methodGet| _type: " << _type << std::endl;
+	std::cout << "********RESPONSE*********" << std::endl;
+	std::cout << _response << std::endl;
+	std::cout << "********RESPONSE*********" << std::endl;
 }
 
 std::string	Response::getResponse()
@@ -150,45 +150,31 @@ std::string	Response::getResponse()
 	return (_response);
 }
 
-// void	Response::requestBodyParsing(Request & request)
-// {
-// 	size_t	poz = 0;
-
-// 	while (request.getFullBuffer().find(request.getEndBoundary()) != std::string::npos)
-// 	{
-// 		if ((poz = request.getFullBuffer().find("filename=")) != std::string::npos)
-// 		{
-// 			request.s
-// 		}
-// 	}
-// }
-
-
 void	Response::methodPost(Request & request, ResponseConfig &responseConf)
 {
 	ResponseHeader	head;
 
-	// if (responseConf.getCgiExec() != "")
-	// {
-	// 	CgiHandler	cgi(request, responseConf);
-	// 	size_t		i = 0;
-	// 	size_t		j = _response.size() - 2;
+	if (responseConf.getCgiExec() != "")
+	{
+		CgiHandler	cgi(request, responseConf);
+		size_t		i = 0;
+		size_t		j = _response.size() - 2;
 
-	// 	_response = cgi.executeCgi(responseConf.getCgiExec());
-	// 	while (_response.find("\r\n\r\n", i) != std::string::npos || _response.find("\r\n", i) == i)
-	// 	{
-	// 		std::string	str = _response.substr(i, _response.find("\r\n", i) - i);
-	// 		if (str.find("Status: ") == 0)
-	// 			_code = std::atoi(str.substr(8, 3).c_str());
-	// 		else if (str.find("Content-type: ") == 0)
-	// 			_type = str.substr(14, str.size());
-	// 		i += 2;
-	// 	}
-	// 	while (_response.find("\r\n") == j)
-	// 		j -=2;
-	// 	_response = _response.substr(i, j - i);
-	// }
-	// else
+		_response = cgi.executeCgi(responseConf.getCgiExec());
+		while (_response.find("\r\n\r\n", i) != std::string::npos || _response.find("\r\n", i) == i)
+		{
+			std::string	str = _response.substr(i, _response.find("\r\n", i) - i);
+			if (str.find("Status: ") == 0)
+				_code = std::atoi(str.substr(8, 3).c_str());
+			else if (str.find("Content-type: ") == 0)
+				_type = str.substr(14, str.size());
+			i += 2;
+		}
+		while (_response.find("\r\n") == j)
+			j -=2;
+		_response = _response.substr(i, j - i);
+	}
+	else
 	// {
 	// 	_code = 204;
 	// 	_response = "";
@@ -196,35 +182,24 @@ void	Response::methodPost(Request & request, ResponseConfig &responseConf)
 	// if (_code == 500)
 	// 	_response = readHtml(_errorMap[_code]);
 	// _response = head.getHeader(_response.size(), _path, _code, _type, responseConf.getContentLocation()) + "\r\n" + _response;
-	
-	request.findBoundary();
-	if (request.getFullBuffer().length() > responseConf.getBodySize())
-		_response = readHtml(_errorMap[413]);
-	else if (request.getEndBody() == true)
 	{
-		// const char	*fName = (("www/server3/storage/" + request.getFileName()).c_str());
-		std::ifstream	ifs(("www/server3/storage/" + request.getFileName()).c_str(), std::ios_base::out);
-		if (ifs.is_open())
-			_response = head.getHeader(_response.size(), _path, _code, _type, responseConf.getContentLocation()) + "\r\n" + _response;
+		request.findBoundary();
+		if (request.getFullBuffer().length() > responseConf.getBodySize())
+			_response = readHtml(_errorMap[413]);
+		else if (request.getEndBody() == true)
+		{
+			std::ifstream	ifs(("www/server3/storage/" + request.getFileName()).c_str(), std::ios_base::out);
+			if (ifs.is_open())
+				_response = head.getHeader(_response.size(), _path, _code, _type, responseConf.getContentLocation()) + "\r\n" + _response;
+			else
+			{
+				_response = readHtml(_errorMap[500]);
+				_response = head.getHeader(_response.size(), _path, _code, _type, responseConf.getContentLocation()) + "\r\n" + _response;
+			}
+		}
 	}
-// 	std::map<std::string, std::string>	reqMap = request.getRequestMap();
-// 	std::map<std::string, std::string>::iterator it = reqMap.find("Content-Type");
-// 	std::string	preBoundary;
-
-// 	preBoundary = it->second.substr(it->second.find("boundary=") + 9);
-// 	request.setBoundary(preBoundary.substr(preBoundary.rfind('-') + 1));
-// 	// _endBoundary = _boundary + "--";
-// 	request.setEndBoundary(request.getBoundary() + "--");
-// std::cout << "Response::methodPost| request.getBody(): " << request.getBody() << std::endl;
-// 	if (request.getBody() != "")
-// 	{
-// 		request.appendFullBuffer(request.getBody());
-// 		if (request.getFullBuffer().find(request.getEndBody()) != std::string::npos)
-// 			request.setEndBody(true);
-// 	}
-// 	if (request.getEndBody() == true)
-// 	{
-// 		requestBodyParsing(request);
-
-// 	}
+	std::cout << "********RESPONSE*********" << std::endl;
+	std::cout << _response << std::endl;
+	std::cout << "******END RESPONSE*******" << std::endl;
 }
+

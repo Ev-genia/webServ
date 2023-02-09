@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:35:02 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/07 14:05:39 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/09 11:16:56 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,15 @@ int	pathIsDir(const std::string& path)
 	return (0);
 }
 
-std::string	getLink(std::string const &dirEntry, std::string const &dirName, std::string const &host, int port, Request &request)
-{
-	std::stringstream	ss;
+// std::string	getLink(std::string const &dirEntry, std::string const &dirName, std::string const &host, int port)
+// {
+// 	std::stringstream	ss;
 
-	ss << "\t\t<p><a href=\"." + host + ":" << port << dirName + "/" + dirEntry + "\">" + dirEntry + "</a></p>\n";
-	return (ss.str());
-}
+// 	ss << "\t\t<p><a href=\"." + host + ":" << port << dirName + "/" + dirEntry + "\">" + dirEntry + "</a></p>\n";
+// 	return (ss.str());
+// }
 
-std::string	getPage(const char *enterPath, std::string const &host, int port, Request &request)
+std::string	getPage(const char *enterPath, Request &request)
 {
 	std::string		dirName(enterPath);
 	DIR				*dir = opendir(enterPath);
@@ -102,8 +102,6 @@ std::string	getPage(const char *enterPath, std::string const &host, int port, Re
 	std::string	page = "<!DOCTYPE html>\n<html>\n<head>\n<title>" + dirName + "</title>\n</head>\n<body>\n<h2>AUTOINDEX ON</h2>\n<p>\n";
 
 	dirEntry = readdir(dir);
-	
-
 
 	while ((dirEntry = readdir(dir)) != NULL)
 	{
@@ -112,7 +110,7 @@ std::string	getPage(const char *enterPath, std::string const &host, int port, Re
 		if (request.getUri()[request.getUri().length() - 1] != '/')
 			page += "\t\t<p><a href=\"." + request.getUri() + "/" + dirEntry->d_name + "\">" + dirEntry->d_name + "</a></p>\n";
 		else
-			page += "\t\t<p><a href=\"." + request.getUri() + /*"/" + */dirEntry->d_name + "\">" + dirEntry->d_name + "</a></p>\n";
+			page += "\t\t<p><a href=\"." + request.getUri() + dirEntry->d_name + "\">" + dirEntry->d_name + "</a></p>\n";
 	}
 	closedir(dir);
 	page += "</p>\n</body>\n</html>\n";

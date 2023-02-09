@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 16:56:02 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/08 03:52:47 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/09 11:57:52 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	Request::initRequestMap()
 
 Request::Request(const std::string &str): _method(""), _version(""), _uri(""),
 	_body(""), _query(""), _ret(200), _boundary(), _endBoundary(""), _fullBuffer(""),
-	_endBody(true), _fileName("")
+	_endBody(false), _fileName("")
 {
 	initRequestMap();
 	_envForCgi.clear();
@@ -228,10 +228,13 @@ void	Request::parseRequest(const std::string &enterRequest)
 	std::string	line;
 	std::string	key;
 	std::string	value;
-std::cout << "Request::parseRequest| enterRequest: " << enterRequest << std::endl;
+
+	// std::cout << "Request::parseRequest| enterRequest: " << std::endl;
+	std::cout << "********REQUEST*********" << std::endl;
+	std::cout << enterRequest << std::endl;
 	line = nextLine(enterRequest, poz);
-std::cout << "*************" << std::endl;
-std::cout << "Request::parseRequest|line: " << line << std::endl;
+	std::cout << "******END REQUEST*******" << std::endl;
+// std::cout << "Request::parseRequest|line: " << line << std::endl;
 	readFirstLine(line);
 	while (line != "\r" && line != "" && _ret != 400)
 	{
@@ -375,6 +378,11 @@ void	Request::findBoundary()
 		_fullBuffer.append(_body);
 		if (_fullBuffer.find(_endBoundary) != std::string::npos)
 			_endBody = true;
+		else
+		{
+			_fullBuffer.append("\r\n\r\n--" + preBoundary + "--");
+			_endBody = true;
+		}
 	}
 	_body = "";
 	if (_endBody == true)

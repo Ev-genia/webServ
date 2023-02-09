@@ -6,7 +6,7 @@
 #    By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/30 12:15:15 by mlarra            #+#    #+#              #
-#    Updated: 2023/02/03 17:00:09 by mlarra           ###   ########.fr        #
+#    Updated: 2023/02/09 11:11:57 by mlarra           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ HEADERS		=	${DIR_HEADERS}webserv.hpp
 
 OBJ			=	${SRC:%.cpp=%.o}
 
-FLAGS		=	-g#-Wall -Wextra -Werror -std=c++98 
+FLAGS		=	-g -Wall -Wextra -Werror -std=c++98 
 
 CC			=	c++
 

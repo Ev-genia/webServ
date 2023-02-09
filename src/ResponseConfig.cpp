@@ -6,21 +6,19 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 16:23:11 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/06 12:30:48 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/09 11:54:01 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ResponseConfig.hpp"
 
-ResponseConfig::ResponseConfig(Server &server, Request &request): /*_hostPort(server.getListen()), */_server(server), _request(request)
+ResponseConfig::ResponseConfig(Server &server, Request &request): _server(server), _request(request)
 {
-// t_listen	tmp = server.getListen();
 	std::string	ret;
 	std::vector<Location> locations = server.getLocations();
 	std::vector<Location>::iterator it;
 	std::map<std::string, std::string> serverParams = server.getParams();
 	initErrorPages();
-//_path = removeSlashes(ret);
 	_root = serverParams["root"];
 	_exec_cgi = "";
 	_method_allowed = makeSet(makeVector(serverParams["method_allowed"], ' '));
@@ -34,10 +32,8 @@ ResponseConfig::ResponseConfig(Server &server, Request &request): /*_hostPort(se
 	{
 		if (_request.getUri().find(it->getPath()) != std::string::npos)//есть ли в uri эта часть it->getPath, а не полное совпадение
 		{
-// std::cout << "_request.getUri(): " << _request.getUri() << ", it->getPath(): " << it->getPath() << std::endl;
 			std::map <std::string, std::string> locationMap = it->getLocationMap();
 			_body_size =  strtoul(locationMap["body_size"].c_str(), 0, 10);
-			//если зашли в location, то метод берем отсюда, если нет, останется из конфига сервера
 			_method_allowed = makeSet(makeVector(locationMap["method_allowed"], ' '));
 			_exec_cgi = locationMap["exec_cgi"];
 			_extension_cgi = makeVector(locationMap["extension_cgi"], ' ');
@@ -58,7 +54,6 @@ ResponseConfig::ResponseConfig(Server &server, Request &request): /*_hostPort(se
 		else
 			temp = _root + _request.getUri().substr(_locationPath.length());
 		_contentLocation = removeSlashes(_request.getUri().substr(_locationPath.length()));
-	// std::cout << "root: " << _root << ", _request.getUri().substr(_locationPath.length()): " << _request.getUri().substr(_locationPath.length()) << std:: endl;
 	}
 	else
 	{
@@ -70,7 +65,7 @@ ResponseConfig::ResponseConfig(Server &server, Request &request): /*_hostPort(se
 	
 	}
 	_path = removeSlashes(temp);
-std::cout << "ResponseConfig::ResponseConfig| _path: " << _path << std::endl;
+// std::cout << "ResponseConfig::ResponseConfig| _path: " << _path << std::endl;
 	_hostPort = &(server.getListen());
 }
 

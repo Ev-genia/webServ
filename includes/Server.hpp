@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 13:22:42 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/02 14:09:38 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/09 12:00:44 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ public:
 	std::map<std::string, std::string>	&getParams();
 	s_listen							&getListen();
 	int									getSocketFd() const;
-	std::vector<Location>				getLocations() const;
+	std::vector<Location>				&getLocations();
 	void								initSocket();
 	void								setAddr();
 	void								setAutoindex(bool index);

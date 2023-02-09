@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:23:51 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/06 17:41:15 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/09 11:34:26 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ private:
 	fd_set					_fdWrite;
 	// std::vector<int>		_fds;
 	int						_maxFd;
+	bool					_makeBound;
+	std::string				makeEndBoundary(std::string request);
 public:
 	Handler(std::vector<Server> *);
 	~Handler();

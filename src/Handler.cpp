@@ -6,7 +6,7 @@
 /*   By: mlarra <mlarra@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 15:24:49 by mlarra            #+#    #+#             */
-/*   Updated: 2023/02/08 01:23:16 by mlarra           ###   ########.fr       */
+/*   Updated: 2023/02/09 11:45:03 by mlarra           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,18 +73,33 @@ void	Handler::process(Client *client)
 		Request	request(client->request);
 		if (request.getRet() != 200)
 			request.setMethod("GET");
-std::cout << "end request" << std::endl;
 		ResponseConfig responseConf(client->getServerRef(),  request);
 		
 		Response		response;
-std::cout << "response start" << std::endl;
 
 		response.call(request, responseConf);
 
 		client->setResponse(response.getResponse());
-// std::cout << "Handler::process| response.getResponse(): " << response.getResponse() << std::endl;
-// std::cout << "client->setResponse end" << std::endl;
 	}
+}
+
+std::string	Handler::makeEndBoundary(std::string request)
+{
+	std::string	endBound = "";
+	std::string	preBoundary = "";
+	std::string	boundary = "";
+	size_t		i;
+
+	if (request.find("Content-Type") != std::string::npos)
+	{
+		preBoundary = request.substr(request.find("boundary=") + 9);
+		preBoundary = preBoundary.substr(preBoundary.find_first_not_of('-'));
+		i = preBoundary.find_first_of("\r\n");
+		boundary = preBoundary.substr(0, i);
+		endBound = boundary + "--";
+		_makeBound = true;
+	}
+	return (endBound);
 }
 
 void	Handler::serverRun()
@@ -92,8 +107,8 @@ void	Handler::serverRun()
 	int				ret = 0;
 	char			*buffer = (char *)malloc(10000001);
 	int				fdClient;
-	// struct timeval	timeout;
-	
+	struct timeval	timeout;
+	std::string		endBound;
 
 	while (true)
 	{
@@ -148,10 +163,11 @@ void	Handler::serverRun()
 					if ((*it)->request.substr(0, 5).find("POST") != std::string::npos)
 					{
 						if ((isContentLength && ((*it)->request.substr(pos + 4).size() >= bodySize)) ||
-							((*it)->request.substr(pos + 4).find("\r\n\r\n") != std::string::npos))
+							// ((*it)->request.substr(pos + 4).find("\r\n\r\n") != std::string::npos))
+							(*it)->request.find(endBound) != std::string::npos)
 						{
 							FD_SET(fdClient, &_fdWriteSave);
-							FD_CLR(fdClient, &_fdReadSave);
+							FD_CLR(fdClient, &_fdRead);
 						}
 						else
 							break;
@@ -189,17 +205,17 @@ void	Handler::serverRun()
 					break;
 				}
 			}
-			//check timeout
-			// memset(&timeout, 0, sizeof(timeout));
-			// gettimeofday(&timeout, 0);
-			// if ((FD_ISSET(fdClient, &_fdRead)) && (*it)->getTime() - timeout.tv_sec > 10)
-			// {
-			// 	FD_CLR(fdClient, &_fdReadSave);
-			// 	FD_CLR(fdClient, &_fdWriteSave);
-			// 	delete *it;
-			// 	_clients.erase(it);
-			// 	break;
-			// }
+			// check timeout
+			memset(&timeout, 0, sizeof(timeout));
+			gettimeofday(&timeout, 0);
+			if ((FD_ISSET(fdClient, &_fdRead)) && (*it)->getTime() - timeout.tv_sec > 10)
+			{
+				FD_CLR(fdClient, &_fdReadSave);
+				FD_CLR(fdClient, &_fdWriteSave);
+				delete *it;
+				_clients.erase(it);
+				break;
+			}
 		}
 	}
 }
